@@ -1,0 +1,63 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "quant_tools"
+version = "0.0.1"
+description = "A LLM Agent Python package."
+authors = ["chensy cao <chensy.cao@foxmail.com>"]
+maintainers = []
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/CaoChensy/quant_tools.git"
+repository = "https://github.com/CaoChensy/quant_tools.git"
+keywords = ["llm", "agent", "embedding", "chatbot", "prompt"]
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [
+    { include = "quant_tools" },
+]
+
+
+[tool.poetry.dependencies]
+# base
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+pandas = ">=1.0"
+requests = "^2.32.3"
+pydantic = "^2.8.2"
+numpy = ">=1.23.5"
+tqdm = ">=4.65.0"
+colorama = ">=0.4.6"
+bs4 = {version = "^0.0.2", optional = true}
+
+
+[tool.poetry.group.test.dependencies]
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+pandas = ">=1.0"
+requests = "^2.32.3"
+pydantic = "^2.8.2"
+numpy = ">=1.23.5"
+tqdm = ">=4.65.0"
+colorama = ">=0.4.6"
+bs4 = {version = "^0.0.2", optional = true}
+
+
+[tool.poetry.extras]
+all = []
+
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/CaoChensy/quant_tools/issues"
+
+
+[tool.poetry.scripts]
