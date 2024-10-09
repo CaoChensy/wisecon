@@ -3,7 +3,6 @@ from pandas import DataFrame
 
 
 __all__ = [
-    "headers",
     "transform_tool_params",
 ]
 
