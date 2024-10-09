@@ -25,7 +25,7 @@ class ResponseData(BaseModel):
         self.data = data
         self.metadata = metadata
 
-    def pprint(self):
+    def pprint_metadata(self):
         """"""
         pprint.pprint(self.metadata, indent=4)
 
