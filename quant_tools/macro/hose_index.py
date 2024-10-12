@@ -1,24 +1,47 @@
-from pydantic import Field
 from typing import Any, List, Dict, Callable, Optional
-from quant_tools.types import BaseRequestConfig, ResponseData, BaseRequestData
+from quant_tools.types import BaseMapping
+from .base import MacroRequestData
 
 
 __all__ = [
-    "HoseIndexOldQueryConfig",
+    "HoseIndexOldMapping",
     "HoseIndexOld",
-    "HoseIndexNewQueryConfig",
+    "HoseIndexNewMapping",
     "HoseIndexNew",
 ]
 
 
-class HoseIndexOldQueryConfig(BaseRequestConfig):
+class HoseIndexOldMapping(BaseMapping):
     """"""
-    size: Optional[int] = Field(default=20)
+    columns: Dict = {
+        "REPORT_DATE": "报告日期",
+        "TIME": "时间",
+        "HOSE_INDEX": "国房景气指数（指数值）",
+        "HOSE_INDEX_SAME": "国房景气指数（同比增长）",
+        "LAND_INDEX": "土地开发面积指数（指数值）",
+        "LAND_INDEX_SAME": "土地开发面积指数（指数值）",
+        "GOODSHOSE_INDEX": "销售价格指数（同比增长）",
+        "GOODSHOSE_INDEX_SAME": "销售价格指数（同比增长）",
+    }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-    def to_params(self) -> Dict:
+class HoseIndexOld(MacroRequestData):
+    """"""
+    def __init__(
+            self,
+            size: Optional[int] = 20,
+            verbose: Optional[bool] = False,
+            logger: Optional[Callable] = None,
+            **kwargs: Any
+    ):
+        self.size = size
+        self.mapping = HoseIndexOldMapping()
+        self.verbose = verbose
+        self.logger = logger
+        self.kwargs = kwargs
+        self.request_set(description="中国 房价指数(08—10年)")
+
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -28,117 +51,36 @@ class HoseIndexOldQueryConfig(BaseRequestConfig):
         ]
         params = {
             "columns": ",".join(columns),
-            "pageNumber": "1",
             "pageSize": self.size,
             "sortColumns": "REPORT_DATE",
             "sortTypes": "-1",
-            "source": "WEB",
-            "client": "WEB",
             "reportName": "RPT_ECONOMY_HOSE_INDEX",
-            "_": self._current_time(),
         }
-        return params
+        return self.base_param(update=params)
 
 
-class HoseIndexOld(BaseRequestData):
+class HoseIndexNewMapping(BaseMapping):
+    """"""
+    columns: Dict = {
+        "REPORT_DATE": "时间",
+        "CITY": "城市",
+        "FIRST_COMHOUSE_SAME": "新建商品住宅价格指数（同比）",
+        "FIRST_COMHOUSE_SEQUENTIAL": "新建商品住宅价格指数（环比）",
+        "FIRST_COMHOUSE_BASE": "新建商品住宅价格指数（定基）",
+        "SECOND_HOUSE_SAME": "二手住宅价格指数（同比）",
+        "SECOND_HOUSE_SEQUENTIAL": "二手住宅价格指数（环比）",
+        "SECOND_HOUSE_BASE": "二手住宅价格指数（定基）",
+        "REPORT_DAY": "日期",
+    }
+
+
+class HoseIndexNew(MacroRequestData):
     """"""
     def __init__(
             self,
-            query_config: Optional[HoseIndexOldQueryConfig] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
-    ):
-        if query_config is None:
-            self.query_config = HoseIndexOldQueryConfig.model_validate(kwargs)
-        else:
-            self.query_config = query_config
-        self.verbose = verbose
-        self.logger = logger
-        self.kwargs = kwargs
-
-    def _base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json().get("result", {})
-        data = metadata.pop("data")
-        self.update_metadata(metadata)
-        self._logger(msg=f"[{__class__.__name__}] Find {len(data)} reports.", color="green")
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        metadata.update({
-            "description": "中国 房价指数(08—10年)",
-            "columns": {
-                "REPORT_DATE": "报告日期",
-                "TIME": "时间",
-                "HOSE_INDEX": "国房景气指数（指数值）",
-                "HOSE_INDEX_SAME": "国房景气指数（同比增长）",
-                "LAND_INDEX": "土地开发面积指数（指数值）",
-                "LAND_INDEX_SAME": "土地开发面积指数（指数值）",
-                "GOODSHOSE_INDEX": "销售价格指数（同比增长）",
-                "GOODSHOSE_INDEX_SAME": "销售价格指数（同比增长）",
-            }
-        })
-
-
-class HoseIndexNewQueryConfig(BaseRequestConfig):
-    """"""
-    cities: Optional[List[str]] = Field(default=["北京", "上海"])
-    report_date: Optional[str] = Field(default=None)
-    size: Optional[int] = Field(default=20)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def _data_filter(self):
-        """"""
-        if self.report_date:
-            _filter = f"(REPORT_DATE='{self.report_date}')"
-        elif self.cities:
-            cities = [f'"{item}"' for item in self.cities]
-            _filter = f'(CITY+in+({",".join(cities)}))'
-        else:
-            raise ValueError("report_date or cities must be set")
-        return _filter
-
-    def to_params(self) -> Dict:
-        """
-        :return:
-        """
-        columns = [
-            "REPORT_DATE", "CITY", "FIRST_COMHOUSE_SAME", "FIRST_COMHOUSE_SEQUENTIAL",
-            "FIRST_COMHOUSE_BASE", "SECOND_HOUSE_SAME", "SECOND_HOUSE_SEQUENTIAL",
-            "SECOND_HOUSE_BASE", "REPORT_DAY"
-        ]
-
-        params = {
-            "columns": ",".join(columns),
-            "filter": self._data_filter(),
-            "pageNumber": "1",
-            "pageSize": self.size,
-            "sortColumns": "REPORT_DATE,CITY",
-            "sortTypes": "-1,-1",
-            "source": "WEB",
-            "client": "WEB",
-            "reportName": "RPT_ECONOMY_HOUSE_PRICE",
-            "_": self._current_time(),
-        }
-        return params
-
-
-class HoseIndexNew(BaseRequestData):
-    """"""
-    def __init__(
-            self,
-            query_config: Optional[HoseIndexNewQueryConfig] = None,
+            cities: Optional[List[str]] = ["北京", "上海"],
+            report_date: Optional[str] = None,
+            size: Optional[int] = 20,
             verbose: Optional[bool] = False,
             logger: Optional[Callable] = None,
             **kwargs: Any
@@ -153,42 +95,42 @@ class HoseIndexNew(BaseRequestData):
         :param logger:
         :param kwargs:
         """
-        if query_config is None:
-            self.query_config = HoseIndexNewQueryConfig.model_validate(kwargs)
-        else:
-            self.query_config = query_config
+        self.cities = cities
+        self.report_date = report_date
+        self.size = size
+        self.mapping = HoseIndexNewMapping()
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
+        self.request_set(description="中国 新房价指数")
 
-    def _base_url(self) -> str:
+    def _data_filter(self):
         """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
+        if self.report_date:
+            _filter = f"(REPORT_DATE='{self.report_date}')"
+        elif self.cities:
+            cities = [f'"{item}"' for item in self.cities]
+            _filter = f'(CITY+in+({",".join(cities)}))'
+        else:
+            raise ValueError("report_date or cities must be set")
+        return _filter
 
-    def load_data(self) -> ResponseData:
+    def params(self) -> Dict:
         """
         :return:
         """
-        metadata = self.request_json().get("result", {})
-        data = metadata.pop("data")
-        self.update_metadata(metadata)
-        self._logger(msg=f"[{__class__.__name__}] Find {len(data)} reports.", color="green")
-        return ResponseData(data=data, metadata=metadata)
+        columns = [
+            "REPORT_DATE", "CITY", "FIRST_COMHOUSE_SAME", "FIRST_COMHOUSE_SEQUENTIAL",
+            "FIRST_COMHOUSE_BASE", "SECOND_HOUSE_SAME", "SECOND_HOUSE_SEQUENTIAL",
+            "SECOND_HOUSE_BASE", "REPORT_DAY"
+        ]
 
-    def update_metadata(self, metadata: Dict):
-        """"""
-        metadata.update({
-            "description": "中国 新房价指数",
-            "columns": {
-                "REPORT_DATE": "时间",
-                "CITY": "城市",
-                "FIRST_COMHOUSE_SAME": "新建商品住宅价格指数（同比）",
-                "FIRST_COMHOUSE_SEQUENTIAL": "新建商品住宅价格指数（环比）",
-                "FIRST_COMHOUSE_BASE": "新建商品住宅价格指数（定基）",
-                "SECOND_HOUSE_SAME": "二手住宅价格指数（同比）",
-                "SECOND_HOUSE_SEQUENTIAL": "二手住宅价格指数（环比）",
-                "SECOND_HOUSE_BASE": "二手住宅价格指数（定基）",
-                "REPORT_DAY": "日期",
-            }
-        })
+        params = {
+            "columns": ",".join(columns),
+            "filter": self._data_filter(),
+            "pageSize": self.size,
+            "sortColumns": "REPORT_DATE,CITY",
+            "sortTypes": "-1,-1",
+            "reportName": "RPT_ECONOMY_HOUSE_PRICE",
+        }
+        return params

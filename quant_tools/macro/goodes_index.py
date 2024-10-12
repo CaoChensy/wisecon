@@ -1,22 +1,51 @@
-from pydantic import Field
 from typing import Any, Dict, Callable, Optional
-from quant_tools.types import BaseRequestConfig, ResponseData, BaseRequestData
+from quant_tools.types import BaseMapping
+from .base import MacroRequestData
 
 
 __all__ = [
-    "GoodsIndexQueryConfig",
+    "GoodsIndexMapping",
     "GoodsIndex",
 ]
 
 
-class GoodsIndexQueryConfig(BaseRequestConfig):
+class GoodsIndexMapping(BaseMapping):
     """"""
-    size: Optional[int] = Field(default=20)
+    columns: Dict = {
+        "REPORT_DATE": "报告日期",
+        "TIME": "时间",
+        "BASE": "总指数",
+        "BASE_SAME": "总指数（同比）",
+        "BASE_SEQUENTIAL": "总指数（环比）",
+        "FARM_BASE": "农产品",
+        "FARM_BASE_SAME": "农产品（同比）",
+        "FARM_BASE_SEQUENTIAL": "农产品（环比）",
+        "MINERAL_BASE": "矿产品",
+        "MINERAL_BASE_SAME": "矿产品（同比）",
+        "MINERAL_BASE_SEQUENTIAL": "矿产品（环比）",
+        "ENERGY_BASE": "煤油电",
+        "ENERGY_BASE_SAME": "煤油电（同比）",
+        "ENERGY_BASE_SEQUENTIAL": "煤油电（环比）",
+    }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-    def to_params(self) -> Dict:
+class GoodsIndex(MacroRequestData):
+    """"""
+    def __init__(
+            self,
+            size: Optional[int] = 20,
+            verbose: Optional[bool] = False,
+            logger: Optional[Callable] = None,
+            **kwargs: Any
+    ):
+        self.size = size
+        self.mapping = GoodsIndexMapping()
+        self.verbose = verbose
+        self.logger = logger
+        self.kwargs = kwargs
+        self.request_set(description="中国 企业商品价格指数")
+
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -27,68 +56,9 @@ class GoodsIndexQueryConfig(BaseRequestConfig):
         ]
         params = {
             "columns": ",".join(columns),
-            "pageNumber": "1",
             "pageSize": self.size,
             "sortColumns": "REPORT_DATE",
             "sortTypes": "-1",
-            "source": "WEB",
-            "client": "WEB",
             "reportName": "RPT_ECONOMY_GOODS_INDEX",
-            "_": self._current_time(),
         }
-        return params
-
-
-class GoodsIndex(BaseRequestData):
-    """"""
-    def __init__(
-            self,
-            query_config: Optional[GoodsIndexQueryConfig] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
-    ):
-        if query_config is None:
-            self.query_config = GoodsIndexQueryConfig.model_validate(kwargs)
-        else:
-            self.query_config = query_config
-        self.verbose = verbose
-        self.logger = logger
-        self.kwargs = kwargs
-
-    def _base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json().get("result", {})
-        data = metadata.pop("data")
-        self.update_metadata(metadata)
-        self._logger(msg=f"[{__class__.__name__}] Find {len(data)} reports.", color="green")
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        metadata.update({
-            "description": "中国 企业商品价格指数",
-            "columns": {
-                "REPORT_DATE": "报告日期",
-                "TIME": "时间",
-                "BASE": "总指数",
-                "BASE_SAME": "总指数（同比）",
-                "BASE_SEQUENTIAL": "总指数（环比）",
-                "FARM_BASE": "农产品",
-                "FARM_BASE_SAME": "农产品（同比）",
-                "FARM_BASE_SEQUENTIAL": "农产品（环比）",
-                "MINERAL_BASE": "矿产品",
-                "MINERAL_BASE_SAME": "矿产品（同比）",
-                "MINERAL_BASE_SEQUENTIAL": "矿产品（环比）",
-                "ENERGY_BASE": "煤油电",
-                "ENERGY_BASE_SAME": "煤油电（同比）",
-                "ENERGY_BASE_SEQUENTIAL": "煤油电（环比）",
-            }
-        })
+        return self.base_param(update=params)

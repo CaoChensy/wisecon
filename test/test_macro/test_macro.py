@@ -6,215 +6,184 @@ class TestCPI(unittest.TestCase):
     """"""
 
     def test_asset_invest(self):
-        asset_invest = AssetInvest(size=10)
-        data = asset_invest.load_data()
-        print(data.pprint())
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = AssetInvest(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_boom_index(self):
         """"""
-        boom_index = BoomIndex(size=10)
-        data = boom_index.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = BoomIndex(size=10, verbose=True).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_cpi(self):
-        cpi = CPI(size=10)
-        data = cpi.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = CPI(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_currency_supply(self):
         """"""
-        currency_supply = CurrencySupply(size=10)
-        data = currency_supply.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = CurrencySupply(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_customs(self):
         """"""
-        customs = Customs(size=10)
-        data = customs.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = Customs(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_deposit_rate(self):
         """"""
-        deposit_rate = DepositRate(size=10)
-        data = deposit_rate.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = DepositRate(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_deposit_reserve(self):
         """"""
-        deposit_reserve = DepositReserve(size=10)
-        data = deposit_reserve.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = DepositReserve(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_faith_index(self):
         """"""
-        faith_index = FaithIndex(size=10)
-        data = faith_index.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = FaithIndex(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_fdi(self):
         """"""
-        fdi = FDI(size=10)
-        data = fdi.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = FDI(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_forex_deposit(self):
         """"""
-        forex_deposit = ForexDeposit(size=10)
-        data = forex_deposit.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = ForexDeposit(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_forex_loan(self):
         """"""
-        forex_loan = ForexLoan(size=10)
-        data = forex_loan.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = ForexLoan(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_gdp(self):
         """"""
-        gdp = GDP(size=10)
-        data = gdp.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = GDP(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_gold_currency(self):
         """"""
-        gold_currency = GoldCurrency(size=10)
-        data = gold_currency.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = GoldCurrency(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_goods_index(self):
         """"""
-        goods_index = GoodsIndex(size=10)
-        data = goods_index.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = GoodsIndex(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_gov_income(self):
         """"""
-        gov_income = GovIncome(size=10)
-        data = gov_income.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = GovIncome(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_old_hose(self):
         """"""
-        old_hose = HoseIndexOld(size=10)
-        data = old_hose.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = HoseIndexOld(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_new_hose(self):
         """"""
-        new_hose = HoseIndexNew(size=10)
-        data = new_hose.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = HoseIndexNew(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
-        new_hose = HoseIndexNew(size=10, cities=["杭州", "深圳"])
-        data = new_hose.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = HoseIndexNew(size=10, cities=["杭州", "深圳"]).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
-        new_hose = HoseIndexNew(size=10, report_date="2023-01-01")
-        data = new_hose.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = HoseIndexNew(size=10, report_date="2023-01-01").load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_imp_interest(self):
         """"""
-        imp_interest = ImpInterest(size=10, )
-        data = imp_interest.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = ImpInterest(size=10, ).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_indus_grow(self):
         """"""
-        indus_grow = IndusGrow(size=10)
-        data = indus_grow.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = IndusGrow(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_lpr(self):
         """"""
-        lpr = LPR(size=10)
-        data = lpr.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = LPR(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_new_loan(self):
         """"""
-        new_loan = NewLoan(size=10)
-        data = new_loan.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = NewLoan(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_oil_price(self):
         """"""
-        oil_price = OilPrice(size=10)
-        data = oil_price.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = OilPrice(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_pmi(self):
         """"""
-        pmi = PMI(size=10)
-        data = pmi.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = PMI(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_ppi(self):
         """"""
-        ppi = PPI(size=10)
-        data = ppi.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = PPI(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_stock_open(self):
         """"""
-        stock_open = StockOpen(size=10)
-        data = stock_open.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = StockOpen(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_stock_statistics(self):
         """"""
-        stock_statistics = StockStatistics(size=10)
-        data = stock_statistics.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = StockStatistics(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_tax(self):
         """"""
-        tax = Tax(size=10)
-        data = tax.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = Tax(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_total_retail(self):
         """"""
-        total_retail = TotalRetail(size=10)
-        data = total_retail.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = TotalRetail(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
     def test_transfer_fund(self):
         """"""
-        transfer_fund = TransferFund(size=10)
-        data = transfer_fund.load_data()
-        print(data.metadata)
-        print(data.to_frame(columns=data.metadata.get("columns")))
+        data = TransferFund(size=10).load()
+        data.show_columns()
+        print(data.to_frame(chinese_column=True))
 
 
 class TestLoopLoadData(unittest.TestCase):
@@ -253,8 +222,8 @@ class TestLoopLoadData(unittest.TestCase):
             "LPR数据": LPR,
         }
         for macro_name, macro_class in macro_mapping.items():
-            macro = macro_class(size=5)
-            data = macro.load_data()
-            print(data.metadata)
-            print(data.to_frame(columns=data.metadata.get("columns")).to_markdown())
+            print(macro_name)
+            data = macro_class(size=5).load()
+            data.show_columns()
+            print(data.to_frame(chinese_column=True).to_markdown())
             print("\n\n")

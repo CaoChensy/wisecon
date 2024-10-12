@@ -1,22 +1,48 @@
-from pydantic import Field
 from typing import Any, Dict, Callable, Optional
-from quant_tools.types import BaseRequestConfig, ResponseData, BaseRequestData
+from quant_tools.types import BaseMapping
+from .base import MacroRequestData
 
 
 __all__ = [
-    "FaithIndexQueryConfig",
+    "FaithIndexMapping",
     "FaithIndex",
 ]
 
 
-class FaithIndexQueryConfig(BaseRequestConfig):
+class FaithIndexMapping(BaseMapping):
     """"""
-    size: Optional[int] = Field(default=20)
+    columns: Dict = {
+        "REPORT_DATE": "报告日期",
+        "TIME": "时间",
+        "CONSUMERS_FAITH_INDEX": "消费者信心指数",
+        "FAITH_INDEX_SAME": "消费者信心指数（同比）",
+        "FAITH_INDEX_SEQUENTIAL": "消费者信心指数（环比）",
+        "CONSUMERS_ASTIS_INDEX": "消费者满意指数",
+        "ASTIS_INDEX_SAME": "消费者满意指数（同比）",
+        "ASTIS_INDEX_SEQUENTIAL": "消费者满意指数（环比）",
+        "CONSUMERS_EXPECT_INDEX": "消费者预期指数",
+        "EXPECT_INDEX_SAME": "消费者预期指数（同比）",
+        "EXPECT_INDEX_SEQUENTIAL": "消费者预期指数（环比）",
+    }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-    def to_params(self) -> Dict:
+class FaithIndex(MacroRequestData):
+    """"""
+    def __init__(
+            self,
+            size: Optional[int] = 20,
+            verbose: Optional[bool] = False,
+            logger: Optional[Callable] = None,
+            **kwargs: Any
+    ):
+        self.size = size
+        self.mapping = FaithIndexMapping()
+        self.verbose = verbose
+        self.logger = logger
+        self.kwargs = kwargs
+        self.request_set(description="中国 消费者信心指数")
+
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -27,65 +53,9 @@ class FaithIndexQueryConfig(BaseRequestConfig):
         ]
         params = {
             "columns": ",".join(columns),
-            "pageNumber": "1",
             "pageSize": self.size,
             "sortColumns": "REPORT_DATE",
             "sortTypes": "-1",
-            "source": "WEB",
-            "client": "WEB",
             "reportName": "RPT_ECONOMY_FAITH_INDEX",
-            "_": self._current_time(),
         }
-        return params
-
-
-class FaithIndex(BaseRequestData):
-    """"""
-    def __init__(
-            self,
-            query_config: Optional[FaithIndexQueryConfig] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
-    ):
-        if query_config is None:
-            self.query_config = FaithIndexQueryConfig.model_validate(kwargs)
-        else:
-            self.query_config = query_config
-        self.verbose = verbose
-        self.logger = logger
-        self.kwargs = kwargs
-
-    def _base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json().get("result", {})
-        data = metadata.pop("data")
-        self.update_metadata(metadata)
-        self._logger(msg=f"[{__class__.__name__}] Find {len(data)} reports.", color="green")
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        metadata.update({
-            "description": "中国 消费者信心指数",
-            "columns": {
-                "REPORT_DATE": "报告日期",
-                "TIME": "时间",
-                "CONSUMERS_FAITH_INDEX": "消费者信心指数",
-                "FAITH_INDEX_SAME": "消费者信心指数（同比）",
-                "FAITH_INDEX_SEQUENTIAL": "消费者信心指数（环比）",
-                "CONSUMERS_ASTIS_INDEX": "消费者满意指数",
-                "ASTIS_INDEX_SAME": "消费者满意指数（同比）",
-                "ASTIS_INDEX_SEQUENTIAL": "消费者满意指数（环比）",
-                "CONSUMERS_EXPECT_INDEX": "消费者预期指数",
-                "EXPECT_INDEX_SAME": "消费者预期指数（同比）",
-                "EXPECT_INDEX_SEQUENTIAL": "消费者预期指数（环比）",
-            }
-        })
+        return self.base_param(update=params)

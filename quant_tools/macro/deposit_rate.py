@@ -1,22 +1,50 @@
-from pydantic import Field
 from typing import Any, Dict, Callable, Optional
-from quant_tools.types import BaseRequestConfig, ResponseData, BaseRequestData
+from quant_tools.types import BaseMapping
+from .base import MacroRequestData
 
 
 __all__ = [
-    "DepositRateQueryConfig",
+    "DepositRateMapping",
     "DepositRate",
 ]
 
 
-class DepositRateQueryConfig(BaseRequestConfig):
+class DepositRateMapping(BaseMapping):
     """"""
-    size: Optional[int] = Field(default=20)
+    columns: Dict = {
+        "REPORT_DATE": "公布时间",
+        "PUBLISH_DATE": "生效时间",
+        "DEPOSIT_RATE_BB": "存款基准利率(调整前)",
+        "DEPOSIT_RATE_BA": "存款基准利率(调整后)",
+        "DEPOSIT_RATE_B": "存款基准利率(调整幅度)",
+        "LOAN_RATE_SB": "贷款基准利率(调整前)",
+        "LOAN_RATE_SA": "贷款基准利率(调整后)",
+        "LOAN_RATE_S": "贷款基准利率(调整幅度)",
+        "NEXT_SH_RATE": "消息公布次日指数涨跌(SH)",
+        "NEXT_SZ_RATE": "消息公布次日指数涨跌(SZ)",
+    }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-    def to_params(self) -> Dict:
+class DepositRate(MacroRequestData):
+    """"""
+    def __init__(
+            self,
+            size: Optional[int] = 20,
+            verbose: Optional[bool] = False,
+            logger: Optional[Callable] = None,
+            **kwargs: Any
+    ):
+        self.size = size
+        self.mapping = DepositRateMapping()
+        self.verbose = verbose
+        self.logger = logger
+        self.kwargs = kwargs
+        self.request_set(
+            response_type="json",
+            description="中国 利率调整",
+        )
+
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -26,64 +54,9 @@ class DepositRateQueryConfig(BaseRequestConfig):
         ]
         params = {
             "columns": ",".join(columns),
-            "pageNumber": "1",
             "pageSize": self.size,
             "sortColumns": "REPORT_DATE",
             "sortTypes": "-1",
-            "source": "WEB",
-            "client": "WEB",
             "reportName": "RPT_ECONOMY_DEPOSIT_RATE",
-            "_": self._current_time(),
         }
-        return params
-
-
-class DepositRate(BaseRequestData):
-    """"""
-    def __init__(
-            self,
-            query_config: Optional[DepositRateQueryConfig] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
-    ):
-        if query_config is None:
-            self.query_config = DepositRateQueryConfig.model_validate(kwargs)
-        else:
-            self.query_config = query_config
-        self.verbose = verbose
-        self.logger = logger
-        self.kwargs = kwargs
-
-    def _base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json().get("result", {})
-        data = metadata.pop("data")
-        self.update_metadata(metadata)
-        self._logger(msg=f"[{__class__.__name__}] Find {len(data)} reports.", color="green")
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        metadata.update({
-            "description": "中国 利率调整",
-            "columns": {
-                "REPORT_DATE": "公布时间",
-                "PUBLISH_DATE": "生效时间",
-                "DEPOSIT_RATE_BB": "存款基准利率(调整前)",
-                "DEPOSIT_RATE_BA": "存款基准利率(调整后)",
-                "DEPOSIT_RATE_B": "存款基准利率(调整幅度)",
-                "LOAN_RATE_SB": "贷款基准利率(调整前)",
-                "LOAN_RATE_SA": "贷款基准利率(调整后)",
-                "LOAN_RATE_S": "贷款基准利率(调整幅度)",
-                "NEXT_SH_RATE": "消息公布次日指数涨跌(SH)",
-                "NEXT_SZ_RATE": "消息公布次日指数涨跌(SZ)",
-            }
-        })
+        return self.base_param(update=params)
