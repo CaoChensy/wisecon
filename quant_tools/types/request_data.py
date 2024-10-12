@@ -1,7 +1,8 @@
 import time
 import requests
+from requests import Response
 from pydantic import BaseModel, Field
-from typing import Dict, Optional
+from typing import Dict, Union, Optional, Literal
 from quant_tools.utils import headers, LoggerMixin
 
 
@@ -40,7 +41,22 @@ class BaseRequestData(LoggerMixin):
         """"""
         return ""
 
-    def request_json(self) -> Dict:
+    def parse_json_data(self, response: Response, base_url: str, params: Dict) -> Dict:
+        """"""
+        data = response.json()
+        if data.get("success") is False:
+            url = assemble_url(base_url, params)
+            raise ValueError(f"Request failed: {url}")
+        return data
+
+    def parse_text_data(self, response: Response, base_url: str, params: Dict) -> str:
+        """"""
+        return response.text
+
+    def request_json(
+            self,
+            data_type: Optional[Literal["json", "str"]] = "json"
+    ) -> Union[str, Dict]:
         """"""
         base_url = self._base_url()
         if hasattr(self, "query_config"):
@@ -50,8 +66,8 @@ class BaseRequestData(LoggerMixin):
         else:
             raise AttributeError("No query_config or to_params found.")
         response = requests.get(base_url, params=params, headers=headers)
-        data = response.json()
-        if data.get("success") is False:
-            url = assemble_url(base_url, params)
-            raise ValueError(f"Request failed: {url}")
-        return data
+
+        if data_type == "json":
+            return self.parse_json_data(response, base_url, params)
+        elif data_type == "str":
+            return self.parse_text_data(response, base_url, params)
