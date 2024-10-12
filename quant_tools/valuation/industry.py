@@ -67,12 +67,10 @@ class IndustryValuation(BaseRequestData):
         condition = []
         if self.date:
             condition.append(f"(TRADE_DATE='{self.date}')")
-        elif self.start_date:
+        if self.start_date:
             condition.append(f"(TRADE_DATE>='{self.start_date}')")
-        elif self.end_date:
+        if self.end_date:
             condition.append(f"(TRADE_DATE<='{self.end_date}')")
-        else:
-            raise ValueError("Either date or start_date must be provided")
 
         if self.industry_code:
             condition.append(f"(BOARD_CODE=\"{self.industry_code}\")")
@@ -112,7 +110,7 @@ class IndustryValuation(BaseRequestData):
         """
         :return:
         """
-        metadata = self.request_json().get("result", {})
+        metadata = self.request_json(data_type="json").get("result", {})
         data = metadata.pop("data")
         data = self.clean_data(data=data)
         self.update_metadata(metadata)
