@@ -1,17 +1,25 @@
 import pprint
 import pandas as pd
 from pydantic import BaseModel, Field
-from typing import List, Dict, Union, Optional
+from typing import Any, List, Dict, Union, Literal, Optional
 
 
 __all__ = [
+    "Metadata",
     "ResponseData",
 ]
 
 
+class Metadata(BaseModel):
+    """"""
+    columns: Dict[str, Any] = Field(default={})
+    description: str = Field(default="")
+    response: Dict[str, Any] = Field(default={})
+
+
 class ResponseData(BaseModel):
     """"""
-    metadata: Optional[Dict] = Field(default={})
+    metadata: Optional[Metadata] = Field(default=None)
     data: List[Dict] = Field(default=[])
 
     def __init__(
@@ -29,15 +37,113 @@ class ResponseData(BaseModel):
         """"""
         pprint.pprint(self.metadata, indent=4)
 
-    def to_dict(self) -> List[Dict]:
+    def _trans_chinese_columns(self, item: Dict) -> Dict:
         """"""
-        return self.data
+        return {self.metadata.columns.get(key, key): value for key, value in item.items()}
 
-    def to_frame(self, columns: Optional[Union[List, List[Dict]]] = None) -> pd.DataFrame:
+    def to_dict(
+            self,
+            chinese_column: Optional[bool] = False,
+    ) -> List[Dict]:
+        """"""
+        if chinese_column:
+            data = [self._trans_chinese_columns(item) for item in self.data]
+        else:
+            data = self.data
+        return data
+
+    def to_frame(
+            self,
+            chinese_column: Optional[bool] = False,
+    ) -> pd.DataFrame:
         """"""
         df = pd.DataFrame(data=self.data)
-        if columns and isinstance(columns, dict):
-            df.rename(columns=columns, inplace=True)
-        elif columns and isinstance(columns, list):
-            df.columns = columns
+        if chinese_column:
+            df.rename(columns=self.metadata.columns, inplace=True)
         return df
+
+    def to_markdown(
+            self,
+            chinese_column: Optional[bool] = False,
+            **kwargs,
+    ) -> str:
+        """"""
+        return self.to_frame(chinese_column).to_markdown(**kwargs)
+
+    def to_csv(
+            self,
+            path: str,
+            chinese_column: Optional[bool] = False,
+            **kwargs: Any
+    ) -> None:
+        """"""
+        self.to_frame(chinese_column).to_csv(path, **kwargs)
+
+    def to_excel(
+            self,
+            path: str,
+            chinese_column: Optional[bool] = False,
+            **kwargs: Any
+    ) -> None:
+        """"""
+        self.to_frame(chinese_column).to_excel(path, **kwargs)
+
+    def to_parquet(
+            self,
+            path: str,
+            chinese_column: Optional[bool] = False,
+            index: Optional[bool] = False,
+            engine: Literal["auto", "pyarrow", "fastparquet"] = "auto",
+            compression: str | None = "snappy",
+            **kwargs: Any
+    ) -> None:
+        self.to_frame(chinese_column).to_parquet(
+            path, index=index, engine=engine,
+            compression=compression, **kwargs)
+
+    def to_pickle(
+            self,
+            path: str,
+            chinese_column: Optional[bool] = False,
+            **kwargs: Any,
+    ):
+        """"""
+        self.to_frame(chinese_column).to_pickle(path,  **kwargs)
+
+    def to_string(
+            self,
+            chinese_column: Optional[bool] = False,
+            **kwargs
+    ):
+        """"""
+        self.to_frame(chinese_column).to_string(**kwargs)
+
+    def to_sql(
+            self,
+            name: str,
+            con,
+            chinese_column: Optional[bool] = False,
+            if_exists: Literal["fail", "replace", "append"] = "fail",
+            index: Optional[bool] = True,
+            **kwargs
+    ):
+        """"""
+        self.to_frame(chinese_column).to_sql(
+            name=name, con=con, if_exists=if_exists,
+            index=index, **kwargs)
+
+    def to_duckdb(
+            self,
+            database: str,
+            name: str,
+            chinese_column: Optional[bool] = False,
+            if_exists: Literal["fail", "replace", "append"] = "replace",
+            **kwargs,
+    ):
+        """"""
+        from sqlalchemy import create_engine
+
+        df = self.to_frame(chinese_column)
+        engine = create_engine(database, **kwargs)
+        with engine.connect() as con:
+            df.to_sql(name, con=con, if_exists=if_exists, index=False)
