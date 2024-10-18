@@ -43,7 +43,7 @@ class StockPerformanceQueryConfig(BaseRequestConfig):
         _filter = ''.join(condition)
         return _filter
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """
         :return:
         """

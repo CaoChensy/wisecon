@@ -7,6 +7,7 @@ __all__ = ["BaseMapping"]
 
 class BaseMapping(BaseModel):
     """"""
+    columns: Dict[str, str]
 
     def reverse(self, mapping_name: str) -> Dict:
         """"""

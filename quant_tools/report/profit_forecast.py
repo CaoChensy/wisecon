@@ -38,7 +38,7 @@ class ProfitForecastConfig(BaseModel):
             condition = ""
         return condition
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """"""
         params = {
             "reportName": "RPT_WEB_RESPREDICT",

@@ -82,7 +82,7 @@ class MarketValuation(BaseRequestData):
             condition.append(f"(TRADE_MARKET_CODE=\"{self.market}\")")
         return "".join(condition)
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """"""
         params = {
             "sortColumns": "TRADE_DATE",

@@ -1,5 +1,6 @@
 from typing import Any, List, Dict, Callable, Optional
-from quant_tools.types import BaseMapping, ResponseData, BaseRequestData
+from quant_tools.types import BaseMapping, BaseRequestData
+from quant_tools.utils import time2int
 
 
 __all__ = [
@@ -56,8 +57,9 @@ class IndustryValuation(BaseRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
+        self.request_set(description="中国 行业市场估值")
 
-    def _base_url(self) -> str:
+    def base_url(self) -> str:
         """"""
         base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
         return base_url
@@ -76,7 +78,7 @@ class IndustryValuation(BaseRequestData):
             condition.append(f"(BOARD_CODE=\"{self.industry_code}\")")
         return "".join(condition)
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -91,12 +93,19 @@ class IndustryValuation(BaseRequestData):
             "source": "WEB",
             "client": "WEB",
             "filter": self._param_filter(),
-            "_": 1728362858276,
+            "_": time2int(),
         }
         return params
 
-    def clean_data(self, data) -> List[Dict]:
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
         """"""
+        response = json_data.get("result")
+        data = response.pop("data")
+        self.metadata.response = response
+
         columns = self.mapping.filter_columns(columns=self.mapping.columns)
 
         def _clean_data(item):
@@ -105,21 +114,3 @@ class IndustryValuation(BaseRequestData):
 
         data = list(map(_clean_data, data))
         return data
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json(data_type="json").get("result", {})
-        data = metadata.pop("data")
-        data = self.clean_data(data=data)
-        self.update_metadata(metadata)
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        columns = self.mapping.filter_columns(columns=self.mapping.columns)
-        metadata.update({
-            "description": "行业市场估值",
-            "columns": columns,
-        })

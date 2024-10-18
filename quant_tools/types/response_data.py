@@ -16,6 +16,11 @@ class Metadata(BaseModel):
     description: str = Field(default="")
     response: Dict[str, Any] = Field(default={})
 
+    def __init__(self, **kwargs):
+        """"""
+        super().__init__(**kwargs)
+        self.columns = {k: v for k, v in self.columns.items() if v}
+
 
 class ResponseData(BaseModel):
     """"""
@@ -25,7 +30,7 @@ class ResponseData(BaseModel):
     def __init__(
             self,
             data: List[Dict],
-            metadata: Optional[Dict] = None,
+            metadata: Optional[Metadata] = None,
             **kwargs
     ):
         """"""
@@ -33,9 +38,9 @@ class ResponseData(BaseModel):
         self.data = data
         self.metadata = metadata
 
-    def pprint_metadata(self):
+    def show_columns(self):
         """"""
-        pprint.pprint(self.metadata, indent=4)
+        pprint.pprint(self.metadata.columns, indent=4)
 
     def _trans_chinese_columns(self, item: Dict) -> Dict:
         """"""

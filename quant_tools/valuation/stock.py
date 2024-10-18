@@ -88,7 +88,7 @@ class StockValuation(BaseRequestData):
             condition.append(f"(SECURITY_CODE=\"{self.code}\")")
         return "".join(condition)
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """
         :return:
         """

@@ -71,8 +71,9 @@ class ETFMarket(BaseRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
+        self.request_set(description="ETF 市场")
 
-    def _base_url(self) -> str:
+    def base_url(self) -> str:
         """"""
         base_url = "https://push2.eastmoney.com/api/qt/clist/get"
         return base_url
@@ -87,7 +88,7 @@ class ETFMarket(BaseRequestData):
         else:
             raise ValueError("market must be a list of market codes")
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """
         :return:
         """
@@ -107,8 +108,12 @@ class ETFMarket(BaseRequestData):
         }
         return params
 
-    def clean_data(self, data) -> List[Dict]:
+    def clean_json(self, json_data: Optional[Dict]) -> List[Dict]:
         """"""
+        response = json_data.get("data")
+        data = response.pop("diff")
+        self.metadata.response = response
+
         columns = self.mapping.filter_columns(columns=self.mapping.columns)
 
         def _clean_data(item):
@@ -117,21 +122,3 @@ class ETFMarket(BaseRequestData):
 
         data = list(map(_clean_data, data))
         return data
-
-    def load_data(self) -> ResponseData:
-        """
-        :return:
-        """
-        metadata = self.request_json().get("data", {})
-        data = metadata.pop("diff")
-        data = self.clean_data(data=data)
-        self.update_metadata(metadata)
-        return ResponseData(data=data, metadata=metadata)
-
-    def update_metadata(self, metadata: Dict):
-        """"""
-        columns = self.mapping.filter_columns(columns=self.mapping.columns)
-        metadata.update({
-            "description": "ETF 市场",
-            "columns": columns,
-        })

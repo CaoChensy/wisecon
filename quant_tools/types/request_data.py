@@ -2,8 +2,10 @@ import time
 import requests
 from requests import Response
 from pydantic import BaseModel, Field
-from typing import Dict, Union, Optional, Literal
+from typing import List, Dict, Optional, Literal
 from quant_tools.utils import headers, LoggerMixin
+from .response_data import ResponseData, Metadata
+from .mapping import BaseMapping
 
 
 __all__ = [
@@ -28,7 +30,7 @@ class BaseRequestConfig(BaseModel):
         """"""
         return str(int(time.time() * 1E3))
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """"""
         return dict()
 
@@ -36,38 +38,76 @@ class BaseRequestConfig(BaseModel):
 class BaseRequestData(LoggerMixin):
     """"""
     query_config: Optional[BaseRequestConfig]
+    headers: Optional[Dict]
+    response_type: Literal["json", "text"]
+    metadata: Optional[Metadata]
+    mapping: Optional[BaseMapping]
 
-    def _base_url(self) -> str:
+    def request_set(
+            self,
+            _headers: Optional[Dict] = None,
+            response_type: Optional[Literal["json", "text"]] = "json",
+            description: Optional[str] = "",
+            other_headers: Optional[Dict] = None
+    ):
+        """"""
+        self.headers = _headers if _headers else headers
+        self.response_type = response_type
+        self.metadata = Metadata(description=description, columns=self.mapping.columns)
+        if other_headers:
+            self.headers.update(other_headers)
+
+    def base_url(self) -> str:
         """"""
         return ""
 
-    def parse_json_data(self, response: Response, base_url: str, params: Dict) -> Dict:
+    def params(self) -> Dict:
         """"""
-        data = response.json()
-        if data.get("success") is False:
-            url = assemble_url(base_url, params)
-            raise ValueError(f"Request failed: {url}")
-        return data
+        return dict()
 
-    def parse_text_data(self, response: Response, base_url: str, params: Dict) -> str:
+    def request(self) -> Response:
         """"""
+        base_url = self.base_url()
+        params = self.params()
+        self._logger(msg=f"URL: {assemble_url(base_url, params)}\n", color="green")
+        response = requests.get(base_url, params=params, headers=self.headers)
+        return response
+
+    def request_json(self) -> Dict:
+        """"""
+        response = self.request()
+        return response.json()
+
+    def request_text(self) -> str:
+        """"""
+        response = self.request()
         return response.text
 
-    def request_json(
-            self,
-            data_type: Optional[Literal["json", "str"]] = "json"
-    ) -> Union[str, Dict]:
+    def data(self, data: List[Dict], metadata: Optional[Metadata]) -> ResponseData:
         """"""
-        base_url = self._base_url()
-        if hasattr(self, "query_config"):
-            params = self.query_config.to_params()
-        elif hasattr(self, "to_params"):
-            params = self.to_params()
-        else:
-            raise AttributeError("No query_config or to_params found.")
-        response = requests.get(base_url, params=params, headers=headers)
+        return ResponseData(data=data, metadata=metadata)
 
-        if data_type == "json":
-            return self.parse_json_data(response, base_url, params)
-        elif data_type == "str":
-            return self.parse_text_data(response, base_url, params)
+    def clean_content(
+            self,
+            content: Optional[str],
+    ) -> List[Dict]:
+        return []
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        return []
+
+    def load(self) -> ResponseData:
+        """"""
+        if self.response_type == "text":
+            content = self.request_text()
+            data = self.clean_content(content)
+        elif self.response_type == "json":
+            json_data = self.request_json()
+            data = self.clean_json(json_data)
+        else:
+            raise ValueError(f"Invalid response type: {self.response_type}")
+        return self.data(data=data, metadata=self.metadata)

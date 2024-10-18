@@ -51,7 +51,7 @@ class NewsQueryConfig(BaseRequestConfig):
         }
         return theme_mapping.get(self.theme, "344")
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """
         :return:
         """

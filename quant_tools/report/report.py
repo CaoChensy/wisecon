@@ -63,7 +63,7 @@ class ReportQueryConfig(BaseModel):
         """"""
         return str(int(time.time() * 1E3))
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """"""
         if self.q_type is None:
             self._reports_type()

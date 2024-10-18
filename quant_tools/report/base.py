@@ -26,7 +26,7 @@ class BaseRequestConfig(BaseModel):
         """"""
         return str(int(time.time() * 1E3))
 
-    def to_params(self) -> Dict:
+    def params(self) -> Dict:
         """"""
         return dict()
 
