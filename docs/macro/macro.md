@@ -5,13 +5,11 @@
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = CPI(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = CPI(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -53,13 +51,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = PPI(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = PPI(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -91,13 +87,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = GDP(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = GDP(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -135,13 +129,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = PMI(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = PMI(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -175,13 +167,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = AssetInvest(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = AssetInvest(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -215,13 +205,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = HoseIndexOld(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = HoseIndexOld(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -257,13 +245,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = HoseIndexNew(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = HoseIndexNew(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -300,13 +286,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = BoomIndex(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = BoomIndex(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -342,13 +326,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = IndusGrow(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = IndusGrow(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -380,13 +362,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = GoodsIndex(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = GoodsIndex(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -428,13 +408,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = FaithIndex(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = FaithIndex(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -473,13 +451,12 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = TotalRetail(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = TotalRetail(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
+
 ```
 
 > 数据
@@ -514,13 +491,12 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = CurrencySupply(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = CurrencySupply(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
+
 ```
 
 > 数据
@@ -559,13 +535,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = Customs(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = Customs(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -605,13 +579,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = StockStatistics(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = StockStatistics(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -653,13 +625,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = GoldCurrency(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = GoldCurrency(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -695,13 +665,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = TransferFund(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = TransferFund(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -740,13 +708,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = StockOpen(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = StockOpen(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -786,13 +752,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = FDI(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = FDI(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -827,13 +791,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = GovIncome(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = GovIncome(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -868,13 +830,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = Tax(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = Tax(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -907,13 +867,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = NewLoan(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = NewLoan(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -948,13 +906,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = ImpInterest(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = ImpInterest(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -991,13 +947,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = ForexDeposit(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = ForexDeposit(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -1031,13 +985,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = ForexLoan(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = ForexLoan(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -1071,13 +1023,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = DepositReserve(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = DepositReserve(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -1117,13 +1067,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = DepositRate(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = DepositRate(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -1161,13 +1109,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = OilPrice(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = OilPrice(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
@@ -1201,13 +1147,11 @@ print("\n\n")
 > 示例
 
 ```python
-from zlai.tools.macro import *
+from quant_tools.macro import *
 
-macro_index = LPR(size=5)
-data = macro_index.load_data()
-print(data.metadata)
-print(data.to_frame(columns=data.metadata.get("columns")))
-print("\n\n")
+data = LPR(size=5).load()
+data.show_columns()
+data.to_frame(chinese_column=True)
 ```
 
 > 数据
