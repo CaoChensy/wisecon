@@ -2,7 +2,7 @@ import unittest
 import json
 from sseclient import SSEClient
 
-from quant_tools.utils import headers
+from wisecon.utils import headers
 
 
 class TestSSE(unittest.TestCase):

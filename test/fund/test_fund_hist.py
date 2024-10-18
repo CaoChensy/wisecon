@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.fund.fund_hist import FundHist
+from wisecon.fund.fund_hist import FundHist
 
 
 class TestFundList(unittest.TestCase):

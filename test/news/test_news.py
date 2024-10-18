@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.report.news import *
+from wisecon.report.news import *
 
 
 class TestNews(unittest.TestCase):

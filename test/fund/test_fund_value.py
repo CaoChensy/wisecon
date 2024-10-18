@@ -1,4 +1,4 @@
 import unittest
-from quant_tools.fund.fund_value import FundValue
+from wisecon.fund.fund_value import FundValue
 
 

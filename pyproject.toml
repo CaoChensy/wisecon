@@ -5,15 +5,15 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry]
-name = "quant_tools"
+name = "wisecon"
 version = "0.0.1"
 description = "A LLM Agent Python package."
 authors = ["chensy cao <chensy.cao@foxmail.com>"]
 maintainers = []
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/CaoChensy/quant_tools.git"
-repository = "https://github.com/CaoChensy/quant_tools.git"
+homepage = "https://github.com/CaoChensy/wisecon.git"
+repository = "https://github.com/CaoChensy/wisecon.git"
 keywords = ["llm", "agent", "embedding", "chatbot", "prompt"]
 classifiers = [
     "Topic :: Software Development :: Libraries",
@@ -57,7 +57,7 @@ all = []
 
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/CaoChensy/quant_tools/issues"
+"Bug Tracker" = "https://github.com/CaoChensy/wisecon/issues"
 
 
 [tool.poetry.scripts]

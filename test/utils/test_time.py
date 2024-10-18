@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.utils.time import *
+from wisecon.utils.time import *
 
 
 class TestTime(unittest.TestCase):

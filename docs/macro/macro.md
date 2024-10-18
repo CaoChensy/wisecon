@@ -5,7 +5,7 @@
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = CPI(size=5).load()
 data.show_columns()
@@ -51,7 +51,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = PPI(size=5).load()
 data.show_columns()
@@ -87,7 +87,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = GDP(size=5).load()
 data.show_columns()
@@ -129,7 +129,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = PMI(size=5).load()
 data.show_columns()
@@ -167,7 +167,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = AssetInvest(size=5).load()
 data.show_columns()
@@ -205,7 +205,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = HoseIndexOld(size=5).load()
 data.show_columns()
@@ -245,7 +245,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = HoseIndexNew(size=5).load()
 data.show_columns()
@@ -286,7 +286,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = BoomIndex(size=5).load()
 data.show_columns()
@@ -326,7 +326,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = IndusGrow(size=5).load()
 data.show_columns()
@@ -362,7 +362,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = GoodsIndex(size=5).load()
 data.show_columns()
@@ -408,7 +408,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = FaithIndex(size=5).load()
 data.show_columns()
@@ -451,7 +451,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = TotalRetail(size=5).load()
 data.show_columns()
@@ -491,7 +491,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = CurrencySupply(size=5).load()
 data.show_columns()
@@ -535,7 +535,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = Customs(size=5).load()
 data.show_columns()
@@ -579,7 +579,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = StockStatistics(size=5).load()
 data.show_columns()
@@ -625,7 +625,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = GoldCurrency(size=5).load()
 data.show_columns()
@@ -665,7 +665,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = TransferFund(size=5).load()
 data.show_columns()
@@ -708,7 +708,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = StockOpen(size=5).load()
 data.show_columns()
@@ -752,7 +752,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = FDI(size=5).load()
 data.show_columns()
@@ -791,7 +791,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = GovIncome(size=5).load()
 data.show_columns()
@@ -830,7 +830,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = Tax(size=5).load()
 data.show_columns()
@@ -867,7 +867,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = NewLoan(size=5).load()
 data.show_columns()
@@ -906,7 +906,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = ImpInterest(size=5).load()
 data.show_columns()
@@ -947,7 +947,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = ForexDeposit(size=5).load()
 data.show_columns()
@@ -985,7 +985,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = ForexLoan(size=5).load()
 data.show_columns()
@@ -1023,7 +1023,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = DepositReserve(size=5).load()
 data.show_columns()
@@ -1067,7 +1067,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = DepositRate(size=5).load()
 data.show_columns()
@@ -1109,7 +1109,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = OilPrice(size=5).load()
 data.show_columns()
@@ -1147,7 +1147,7 @@ data.to_frame(chinese_column=True)
 > 示例
 
 ```python
-from quant_tools.macro import *
+from wisecon.macro import *
 
 data = LPR(size=5).load()
 data.show_columns()

@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.valuation import StockValuation
+from wisecon.valuation import StockValuation
 
 
 class TestStockValuation(unittest.TestCase):

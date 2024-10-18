@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.valuation.market import MarketValuation
+from wisecon.valuation.market import MarketValuation
 
 
 class TestMarketValuation(unittest.TestCase):

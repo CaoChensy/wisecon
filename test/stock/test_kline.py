@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.stock.single_stock.kline import KLine
+from wisecon.stock.single_stock.kline import KLine
 
 
 class TestKLine(unittest.TestCase):

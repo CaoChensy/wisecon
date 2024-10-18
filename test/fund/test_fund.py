@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.fund import *
+from wisecon.fund import *
 
 
 class TestFundValue(unittest.TestCase):

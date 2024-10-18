@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.types.columns import StockFeatures
+from wisecon.types.columns import StockFeatures
 
 
 class TestColumns(unittest.TestCase):

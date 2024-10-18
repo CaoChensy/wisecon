@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.fund.fund_company import FundCompany
+from wisecon.fund.fund_company import FundCompany
 
 
 class TestFundList(unittest.TestCase):

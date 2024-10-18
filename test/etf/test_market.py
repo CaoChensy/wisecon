@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.etf.market import ETFMarket
+from wisecon.etf.market import ETFMarket
 
 
 class TestETFMarket(unittest.TestCase):

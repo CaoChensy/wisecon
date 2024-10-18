@@ -1,6 +1,6 @@
 import unittest
-from quant_tools.valuation import IndustryValuation
-from quant_tools.utils import year2date
+from wisecon.valuation import IndustryValuation
+from wisecon.utils import year2date
 
 
 class TestIndustryValuation(unittest.TestCase):

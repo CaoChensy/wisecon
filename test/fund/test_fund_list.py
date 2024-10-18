@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.fund import FundList
+from wisecon.fund import FundList
 
 
 

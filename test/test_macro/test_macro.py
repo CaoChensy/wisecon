@@ -1,5 +1,5 @@
 import unittest
-from quant_tools.macro import *
+from wisecon.macro import *
 
 
 class TestCPI(unittest.TestCase):
