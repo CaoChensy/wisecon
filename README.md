@@ -7,7 +7,7 @@
 ## 如何安装？
 
 ```bash
-pip install quant_tools
+pip install wisecon
 ```
 
 -----

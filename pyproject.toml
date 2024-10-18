@@ -25,7 +25,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 packages = [
-    { include = "quant_tools" },
+    { include = "wisecon" },
 ]
 
 
