@@ -4,15 +4,15 @@ from .base import *
 
 
 __all__ = [
-    "StockBalance",
-    "StockBalanceMapping",
+    "StockIncome",
+    "StockIncomeMapping",
 ]
 
 
 TypeMarket = Literal["沪深A股", "沪市A股", "科创板", "深市A股", "创业板", "京市A股"]
 
 
-class StockBalanceMapping(BaseMapping):
+class StockIncomeMapping(BaseMapping):
     """"""
     columns: Dict = {
         "SECUCODE": "证券代码",
@@ -29,53 +29,42 @@ class StockBalanceMapping(BaseMapping):
         "DATA_STATE": "数据状态",
         "NOTICE_DATE": "公告日期",
         "REPORT_DATE": "报告日期",
-        "TOTAL_ASSETS": "总资产",
-        "FIXED_ASSET": "固定资产",
-        "MONETARYFUNDS": "货币资金",
-        "MONETARYFUNDS_RATIO": "货币资金占比",
-        "ACCOUNTS_RECE": "应收账款",
-        "ACCOUNTS_RECE_RATIO": "应收账款占比",
-        "INVENTORY": "存货",
-        "INVENTORY_RATIO": "存货占比",
-        "TOTAL_LIABILITIES": "总负债",
-        "ACCOUNTS_PAYABLE": "应付账款",
-        "ACCOUNTS_PAYABLE_RATIO": "应付账款占比",
-        "ADVANCE_RECEIVABLES": "预收账款",
-        "ADVANCE_RECEIVABLES_RATIO": "预收账款占比",
-        "TOTAL_EQUITY": "总权益",
-        "TOTAL_EQUITY_RATIO": "总权益占比",
-        "TOTAL_ASSETS_RATIO": "总资产占比",
-        "TOTAL_LIAB_RATIO": "总负债占比",
-        "CURRENT_RATIO": "流动比率",
-        "DEBT_ASSET_RATIO": "资产负债率",
-        "CASH_DEPOSIT_PBC": "现金存款（央行）",
-        "CDP_RATIO": "现金存款占比",
-        "LOAN_ADVANCE": "贷款预支",
-        "LOAN_ADVANCE_RATIO": "贷款预支占比",
-        "AVAILABLE_SALE_FINASSET": "可供出售金融资产",
-        "ASF_RATIO": "可供出售金融资产占比",
-        "LOAN_PBC": "央行贷款",
-        "LOAN_PBC_RATIO": "央行贷款占比",
-        "ACCEPT_DEPOSIT": "接受存款",
-        "ACCEPT_DEPOSIT_RATIO": "接受存款占比",
-        "SELL_REPO_FINASSET": "出售回购金融资产",
-        "SRF_RATIO": "出售回购金融资产占比",
-        "SETTLE_EXCESS_RESERVE": "结算超额准备金",
-        "SER_RATIO": "超额准备金占比",
-        "BORROW_FUND": "借款资金",
-        "BORROW_FUND_RATIO": "借款资金占比",
-        "AGENT_TRADE_SECURITY": "代理交易证券",
-        "ATS_RATIO": "代理交易证券占比",
-        "PREMIUM_RECE": "应收保费",
-        "PREMIUM_RECE_RATIO": "应收保费占比",
-        "SHORT_LOAN": "短期借款",
-        "SHORT_LOAN_RATIO": "短期借款占比",
-        "ADVANCE_PREMIUM": "预收保费",
-        "ADVANCE_PREMIUM_RATIO": "预收保费占比"
+        "PARENT_NETPROFIT": "净利润",
+        "TOTAL_OPERATE_INCOME": "营业总收入",
+        "TOTAL_OPERATE_COST": "营业总支出",
+        "TOE_RATIO": "营业利润率",
+        "OPERATE_COST": "营业支出",
+        "OPERATE_EXPENSE": "营业费用",
+        "OPERATE_EXPENSE_RATIO": "营业费用占比",
+        "SALE_EXPENSE": "销售费用",
+        "MANAGE_EXPENSE": "管理费用",
+        "FINANCE_EXPENSE": "财务费用",
+        "OPERATE_PROFIT": "营业利润",
+        "TOTAL_PROFIT": "总利润",
+        "INCOME_TAX": "所得税",
+        "OPERATE_INCOME": "营业收入",
+        "INTEREST_NI": "利息净收入",
+        "INTEREST_NI_RATIO": "利息净收入占比",
+        "FEE_COMMISSION_NI": "手续费及佣金净收入",
+        "FCN_RATIO": "手续费及佣金净收入占比",
+        "OPERATE_TAX_ADD": "营业税金及附加",
+        "MANAGE_EXPENSE_BANK": "银行管理费用",
+        "FCN_CALCULATE": "手续费及佣金净收入计算",
+        "INTEREST_NI_CALCULATE": "利息净收入计算",
+        "EARNED_PREMIUM": "已赚保费",
+        "EARNED_PREMIUM_RATIO": "已赚保费占比",
+        "INVEST_INCOME": "投资收益",
+        "SURRENDER_VALUE": "退保价值",
+        "COMPENSATE_EXPENSE": "赔偿费用",
+        "TOI_RATIO": "营业总收入同比",
+        "OPERATE_PROFIT_RATIO": "营业利润率",
+        "PARENT_NETPROFIT_RATIO": "净利润率",
+        "DEDUCT_PARENT_NETPROFIT": "扣除后归属于母公司的净利润",
+        "DPN_RATIO": "扣除后净利润率"
     }
 
 
-class StockBalance(StockFormRequestData):
+class StockIncome(StockFormRequestData):
     """"""
     def __init__(
             self,
@@ -108,11 +97,12 @@ class StockBalance(StockFormRequestData):
         self.start_date = start_date
         self.end_date = end_date
         self.date = date
-        self.mapping = StockBalanceMapping()
+        self.mapping = StockIncomeMapping()
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="股票资产负债报表")
+        self.request_set(response_type="json", description="上市公司利润报表")
+        self.conditions = []
 
     def params_tread_market(self) -> str:
         """"""
@@ -128,20 +118,14 @@ class StockBalance(StockFormRequestData):
 
     def params_filter(self) -> str:
         """"""
-        conditions = ['(SECURITY_TYPE_CODE in ("058001001","058001008"))']
-        if self.start_date:
-            conditions.append(f"(REPORT_DATE>='{self.start_date}')")
-        if self.end_date:
-            conditions.append(f"(REPORT_DATE<='{self.end_date}')")
-        if self.date:
-            conditions.append(f"(REPORT_DATE='{self.date}')")
+        self.conditions.append('(SECURITY_TYPE_CODE in ("058001001","058001008"))')
+        self.filter_report_date()
+        self.filter_security_code()
         if self.market:
-            conditions.append(self.params_tread_market())
+            self.conditions.append(self.params_tread_market())
         if self.industry_name:
-            conditions.append(f'(INDUSTRY_NAME="{self.industry_name}")')
-        if self.security_code:
-            conditions.append(f'(SECURITY_CODE="{self.security_code}")')
-        return "".join(conditions)
+            self.conditions.append(f'(INDUSTRY_NAME="{self.industry_name}")')
+        return "".join(self.conditions)
 
     def params(self) -> Dict:
         """
@@ -153,6 +137,6 @@ class StockBalance(StockFormRequestData):
             "sortTypes": "-1,-1",
             "pageSize": self.size,
             "pageNumber": 1,
-            "reportName": "RPT_DMSK_FN_BALANCE",
+            "reportName": "RPT_DMSK_FN_INCOME",
         }
         return self.base_param(params)
