@@ -14,6 +14,7 @@
   * [KLine数据](stock/KLine)
   * [股票价值分析](stock/valuation)
   * [股票业绩数据](stock/performance)
+  * [股票财务数据](stock/financial)
 
 * **基金数据**
   * [ETF数据](etf/etf)
