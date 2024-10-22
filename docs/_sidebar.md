@@ -15,6 +15,7 @@
   * [股票价值分析](stock/valuation)
   * [股票业绩数据](stock/performance)
   * [股票财务数据](stock/financial)
+  * [指数成分股数据](stock/index)
 
 * **基金数据**
   * [ETF数据](etf/etf)
