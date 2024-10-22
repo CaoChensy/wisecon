@@ -4,36 +4,34 @@ from .base import *
 
 
 __all__ = [
-    "HolderChange",
-    "HolderChangeMapping",
+    "FreeHolderStockAnalysis",
+    "FreeHolderStockAnalysisMapping",
 ]
 
 
-class HolderChangeMapping(BaseMapping):
+class FreeHolderStockAnalysisMapping(BaseMapping):
     """"""
     columns: Dict = {
-        "HOLDER_NEW": "新的股东",
+        "COOPERATION_HOLDER_MARK": "合作股东标识",
         "END_DATE": "截止日期",
         "HOLDER_NAME": "股东名称",
-        "HOLDER_CODE": "股东代码",
         "HOLDER_TYPE": "股东类型",
-        "REPORT_DATE_NAME": "报告名称",
-        "HOLDER_SOURCE_CODE": "股东来源代码",
-        "HOLDER_SOURCE": "股东来源",
-        "HOLDER_NUM": "持有股数",
-        "HOLDADD_NUM": "增持股数",
-        "HOLDUP_NUM": "持股增加数",
-        "HOLDDOWN_NUM": "持股减少数",
-        "HOLDUNCHANGED_NUM": "持股不变数",
-        "IS_REPORT": "是否报告",
-        "CLOSE_PRICE": "收盘价",
-        "SEAB_JOIN": "关联股票",
-        "HOLDER_MARKET_CAP": "股东市值",
-        "IS_MAX_REPORTDATE": "是否为最新报告日期"
+        "HOLDNUM_CHANGE_TYPE": "持股变动类型",
+        "STATISTICS_TIMES": "统计次数",
+        "AVG_CHANGE_10TD": "10日平均变动",
+        "MAX_CHANGE_10TD": "10日最大变动",
+        "MIN_CHANGE_10TD": "10日最小变动",
+        "AVG_CHANGE_30TD": "30日平均变动",
+        "MAX_CHANGE_30TD": "30日最大变动",
+        "MIN_CHANGE_30TD": "30日最小变动",
+        "AVG_CHANGE_60TD": "60日平均变动",
+        "MAX_CHANGE_60TD": "60日最大变动",
+        "MIN_CHANGE_60TD": "60日最小变动",
+        "SEAB_JOIN": "关联股票"
     }
 
 
-class HolderChange(StockFormRequestData):
+class FreeHolderStockAnalysis(StockFormRequestData):
     """"""
     def __init__(
             self,
@@ -65,22 +63,30 @@ class HolderChange(StockFormRequestData):
         self.start_date = start_date
         self.end_date = end_date
         self.date = date
-        self.mapping = HolderChangeMapping()
+        self.mapping = FreeHolderStockAnalysisMapping()
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="十大股东持股变动统计")
+        self.request_set(response_type="json", description="十大流通股东 - 股东持股统计")
         self.conditions = []
+
+    def params_hold_change(self):
+        """"""
+        change_mapping = {"新进": "002", "增加": "003", "不变": "004", "减少": "005"}
+        if self.holder_change:
+            return change_mapping.get(self.holder_change, "001")
+        else:
+            return "001"
 
     def params_filter(self) -> str:
         """"""
         self.filter_report_date(date_name="END_DATE")
         if self.holder_type:
             self.conditions.append(f'(HOLDER_TYPE="{self.holder_type}")')
+        if self.holder_change:
+            self.conditions.append(f'(HOLDNUM_CHANGE_TYPE="{self.params_hold_change()}")')
         if self.holder_name:
             self.conditions.append(f'(HOLDER_NAME+like+"%{self.holder_name}%")')
-        if self.holder_change:
-            self.conditions.append(f'(HOLDNUM_CHANGE_NAME="{self.holder_change}")')
         return "".join(self.conditions)
 
     def params(self) -> Dict:
@@ -89,10 +95,10 @@ class HolderChange(StockFormRequestData):
         """
         params = {
             "filter": self.params_filter(),
-            "sortColumns": "HOLDER_NUM,HOLDER_NEW",
+            "sortColumns": "STATISTICS_TIMES,COOPERATION_HOLDER_MARK",
             "sortTypes": "-1,-1",
             "pageSize": self.size,
             "pageNumber": 1,
-            "reportName": "RPT_HOLDERS_BASIC_INFONEW",
+            "reportName": "RPT_COOPFREEHOLDERS_ANALYSISNEW",
         }
         return self.base_param(params)
