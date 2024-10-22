@@ -60,6 +60,7 @@ class FreeHolder(StockFormRequestData):
     """"""
     def __init__(
             self,
+            holder_name: Optional[str] = None,
             security_code: Optional[str] = None,
             holder_type: Optional[Literal["个人", "基金", "QFII", "社保", "券商", "信托"]] = None,
             holder_change: Optional[Literal["新进", "增加", "不变", "减少"]] = None,
@@ -82,6 +83,7 @@ class FreeHolder(StockFormRequestData):
         :param logger:
         :param kwargs:
         """
+        self.holder_name = holder_name
         self.security_code = security_code
         self.holder_type = holder_type
         self.holder_change = holder_change
@@ -93,7 +95,7 @@ class FreeHolder(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="上市公司十大流通股东")
+        self.request_set(response_type="json", description="上市公司十大流通股东 - 持股明细")
         self.conditions = []
 
     def params_filter(self) -> str:
@@ -102,6 +104,8 @@ class FreeHolder(StockFormRequestData):
         self.filter_security_code()
         if self.holder_type:
             self.conditions.append(f'(HOLDER_NEWTYPE="{self.holder_type}")')
+        if self.holder_name:
+            self.conditions.append(f'(HOLDER_NAME+like+"%{self.holder_name}%")')
         if self.holder_change:
             self.conditions.append(f'(HOLDNUM_CHANGE_NAME="{self.holder_change}")')
         return "".join(self.conditions)

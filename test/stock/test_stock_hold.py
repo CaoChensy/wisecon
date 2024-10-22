@@ -31,8 +31,8 @@ class TestHolder(unittest.TestCase):
 
     def test_columns(self):
         """"""
-        data = Holder(start_date="2024-09-30", size=3).load()
-        pprint(data.to_dict(chinese_column=True)[2], indent=4)
+        data = Holder(start_date="2024-09-30", size=4).load()
+        pprint(data.to_dict(chinese_column=True)[3], indent=4)
 
     def test_load(self):
         """
