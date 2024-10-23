@@ -10,7 +10,7 @@ __all__ = [
 
 
 class GDPMapping(BaseMapping):
-    """"""
+    """字段映射 GDP"""
     columns: Dict = {
         "REPORT_DATE": "报告日期",
         "TIME": "时间",
@@ -26,7 +26,7 @@ class GDPMapping(BaseMapping):
 
 
 class GDP(MacroRequestData):
-    """"""
+    """查询 GDP（中国）"""
     def __init__(
             self,
             size: Optional[int] = 20,
@@ -34,7 +34,18 @@ class GDP(MacroRequestData):
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
-        """"""
+        """
+        Args:
+            size: 最大数据量
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+
+        Examples:
+            >>> from wisecon.macro import GDP
+            >>> data = GDP(size=20).load()
+            >>> data.to_frame(chinese_column=True)
+        """
         self.size = size
         self.mapping = GDPMapping()
         self.verbose = verbose
@@ -43,9 +54,7 @@ class GDP(MacroRequestData):
         self.request_set(description="中国 国内生产总值(GDP)")
 
     def params(self) -> Dict:
-        """
-        :return:
-        """
+        """"""
         columns = [
             "REPORT_DATE", "TIME", "DOMESTICL_PRODUCT_BASE", "FIRST_PRODUCT_BASE",
             "SECOND_PRODUCT_BASE", "THIRD_PRODUCT_BASE", "SUM_SAME", "FIRST_SAME",
