@@ -86,9 +86,6 @@ class HolderStock(StockFormRequestData):
             verbose: 是否显示日志
             logger: 自定义日志
             **kwargs: 其他参数
-
-        Returns:
-            DataFrame
         """
         self.holder_name = holder_name
         self.holder_type = holder_type

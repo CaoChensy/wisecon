@@ -101,9 +101,6 @@ class StockCashFlow(StockFormRequestData):
             verbose: 是否打印日志
             logger: 日志对象
             **kwargs: 其他参数
-
-        Returns:
-            Data
         """
         self.security_code = security_code
         self.market = market

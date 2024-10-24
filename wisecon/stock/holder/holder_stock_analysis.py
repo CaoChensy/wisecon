@@ -66,9 +66,6 @@ class HolderStockAnalysis(StockFormRequestData):
             verbose: 是否打印日志
             logger: 日志记录器
             **kwargs: 其他参数
-
-        Returns:
-            DataFrame
         """
         self.holder_name = holder_name
         self.holder_type = holder_type

@@ -37,7 +37,7 @@ class HolderChange(StockFormRequestData):
     """查询 上市公司十大股东持股变动统计"""
     def __init__(
             self,
-            security_code: Optional[str] = None,
+            holder_name: Optional[str] = None,
             holder_type: Optional[Literal["个人", "基金", "QFII", "社保", "券商", "信托"]] = None,
             size: Optional[int] = 50,
             start_date: Optional[str] = None,
@@ -66,11 +66,8 @@ class HolderChange(StockFormRequestData):
             verbose: 是否显示日志
             logger: 自定义日志
             **kwargs: 其他参数
-
-        Returns:
-            DataFrame
         """
-        self.security_code = security_code
+        self.holder_name = holder_name
         self.holder_type = holder_type
         self.size = size
         self.start_date = start_date
@@ -88,6 +85,8 @@ class HolderChange(StockFormRequestData):
         self.filter_report_date(date_name="END_DATE")
         if self.holder_type:
             self.conditions.append(f'(HOLDER_TYPE="{self.holder_type}")')
+        if self.holder_name:
+            self.conditions.append(f'(HOLDER_NAME+like+"%{self.holder_name}%")')
         return "".join(self.conditions)
 
     def params(self) -> Dict:

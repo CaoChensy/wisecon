@@ -38,9 +38,6 @@ class Tick(BaseRequestData):
             verbose: 是否打印日志
             logger: 日志打印函数
             **kwargs: 其他参数
-
-        Returns:
-            DataFrame
         """
         self.code = code
         self.mapping = TickMapping()

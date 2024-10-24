@@ -27,7 +27,7 @@ class CurrencySupplyMapping(BaseMapping):
 
 
 class CurrencySupply(MacroRequestData):
-    """查询 货币供应量（中国）"""
+    """查询 中国货币供应量"""
     def __init__(
             self,
             size: Optional[int] = 20,
@@ -36,19 +36,18 @@ class CurrencySupply(MacroRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.macro import *
+            data = CurrencySupply(size=20).load()
+            data.to_frame(chinese_column=True)
+            ```
+
         Args:
             size: 最大数据量
             verbose: 是否打印日志
             logger: 自定义日志
             **kwargs: 其他参数
-
-        Returns:
-            货币供应总量
-
-        Examples:
-            >>> from wisecon.macro.currency_supply import CurrencySupply
-            >>> data = CurrencySupply(size=20).load()
-            >>> data.to_frame(chinese_column=True)
         """
         self.size = size
         self.mapping = CurrencySupplyMapping()
@@ -57,7 +56,7 @@ class CurrencySupply(MacroRequestData):
         self.kwargs = kwargs
         self.request_set(
             response_type="json",
-            description="中国 货币供应量",
+            description="中国货币供应量",
         )
 
     def params(self) -> Dict:

@@ -58,9 +58,6 @@ class KLine(BaseRequestData):
             verbose: 是否打印日志
             logger: 日志对象
             **kwargs: 其他参数
-
-        Returns:
-            DataFrame
         """
         self.code = code
         self.end = end
