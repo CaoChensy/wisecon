@@ -184,6 +184,7 @@ nav:
           - 成分股: api/stock/constituent_stock.md
           - 估值分析(Editing): api/stock/valuation.md
           - 表现分析(Editing): api/stock/performance.md
+          - 资金流(Editing): api/stock/capital_flow.md
       - ETF(Editing): api/etf/etf.md
       - 公募基金(Editing): api/fund/value.md
       - 宏观经济(Editing): api/macro.md

@@ -1,6 +1,7 @@
 from pydantic import Field
+from wisecon.types import BaseMapping
 from typing import Any, Dict, Literal, Callable, Optional
-from zlai.types.tools import ResponseData, BaseRequestData, BaseRequestConfig
+from .base import CapitalFlowRequestData
 
 
 __all__ = [
@@ -12,7 +13,7 @@ __all__ = [
 TypePlate = Literal["行业", "概念", "地区"]
 
 
-class PlateFlowQueryConfig(BaseRequestConfig):
+class PlateFlowQueryConfig(BaseMapping):
     """"""
     plate: Optional[TypePlate] = Field(default="行业", description="板块类型")
     size: Optional[int] = Field(default=50)
@@ -87,7 +88,7 @@ class PlateFlowQueryConfig(BaseRequestConfig):
         return params
 
 
-class PlateFlow(BaseRequestData):
+class PlateFlow(CapitalFlowRequestData):
     """"""
     def __init__(
             self,
@@ -269,7 +270,6 @@ class PlateFlow(BaseRequestData):
 
 """
 https://push2.eastmoney.com/api/qt/clist/get?
-
 &fid=f62&po=1&pz=50&pn=1&np=1&fltt=2&invt=2&
 &fs=b%3ABK0473
 &fields=f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205,f124,f1,f13"""
