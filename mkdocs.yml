@@ -152,6 +152,14 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+extra_javascript:
+  - javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
 # Page tree
 nav:
   - Quick start:
@@ -163,5 +171,11 @@ nav:
           - 股东分析: api/stock/holder.md
           - 上市公司财务报表: api/stock/financial.md
           - 成分股: api/stock/constituent_stock.md
-      - 公募基金: api/fund/value.md
-      - 宏观经济: api/macro.md
+          - 估值分析(Editing): api/stock/valuation.md
+          - 表现分析(Editing): api/stock/performance.md
+      - ETF(Editing): api/etf/etf.md
+      - 公募基金(Editing): api/fund/value.md
+      - 宏观经济(Editing): api/macro.md
+      - 财经文本:
+          - 财经新闻(Editing): api/text/news.md
+          - 财经研报(Editing): api/text/reports.md
