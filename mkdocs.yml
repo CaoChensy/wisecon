@@ -61,6 +61,7 @@ extra:
       link: https://github.com/CaoChensy/wisecon.git
 
 plugins:
+#  - mkdocstrings
   - mkdocstrings:
       handlers:
         python:
@@ -75,9 +76,9 @@ plugins:
             show_bases: false
             members_order: source
             separate_signature: true
-            filters: [ "!^param", "columns" ]
-            docstring_options:
-              ignore_init_summary: true
+            filters: [ "!^_", "!^params", "!^base_" ]
+#            docstring_options:
+#              ignore_init_summary: true
             merge_init_into_class: true
             show_signature_annotations: true
             show_symbol_type_heading: true
@@ -96,7 +97,7 @@ plugins:
   - git-committers:
       repository: CaoChensy/wisecon
       branch: master
-      enabled: true
+      enabled: false
   - git-revision-date-localized:
       enable_creation_date: true
 
@@ -152,8 +153,15 @@ markdown_extensions:
 
 # Page tree
 nav:
-  - Home: index.md
   - Quick start:
-      - Quick start: quick_start/quick_start.md
+      - Quick start: index.md
   - API Documentation:
+      - 上市公司:
+          - KLine: api/stock/kline.md
+          - Tick: api/stock/tick.md
+          - 股东分析: api/stock/holder.md
+          - 上市公司财务报表: api/stock/financial.md
+          - 成分股: api/stock/index.md
+      - 公募基金:
+          - 实时净值: api/fund/value.md
       - 宏观经济: api/macro.md
