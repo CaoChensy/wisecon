@@ -13,7 +13,7 @@ TypeMarket = Literal["沪深A股", "沪市A股", "科创板", "深市A股", "创
 
 
 class StockCashFlowMapping(BaseMapping):
-    """字段映射 上市公司资产负债报表"""
+    """字段映射 上市公司现金流量报表"""
     columns: Dict = {
         "SECUCODE": "证券代码",
         "SECURITY_CODE": "证券代码",
@@ -67,7 +67,7 @@ class StockCashFlowMapping(BaseMapping):
 
 
 class StockCashFlow(StockFormRequestData):
-    """查询 上市公司资产负债报表"""
+    """查询 上市公司现金流量报表"""
     def __init__(
             self,
             security_code: Optional[str] = None,
@@ -113,7 +113,7 @@ class StockCashFlow(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="上市公司资产负债报表")
+        self.request_set(response_type="json", description="上市公司现金流量报表")
         self.conditions = []
 
     def params_tread_market(self) -> str:
