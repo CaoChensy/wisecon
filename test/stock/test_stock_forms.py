@@ -1,6 +1,6 @@
 import unittest
 from pprint import pprint
-from wisecon.stock.forms import *
+from wisecon.stock.financial import *
 
 
 class TestDividend(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestStockBalance(unittest.TestCase):
 class TestEarnForcast(unittest.TestCase):
     def test_columns(self):
         data = EarnForcast(date="2024-09-30", size=5).load()
-        pprint(data.to_dict(chinese_column=True)[0], indent=4)
+        # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
@@ -51,7 +51,7 @@ class TestEarnForcast(unittest.TestCase):
 class TestEarn(unittest.TestCase):
     def test_columns(self):
         data = Earn(date="2024-09-30", size=5).load()
-        pprint(data.to_dict(chinese_column=True)[0], indent=4)
+        # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
@@ -64,7 +64,7 @@ class TestEarn(unittest.TestCase):
 class TestFastEarn(unittest.TestCase):
     def test_columns(self):
         data = EarnFast(date="2024-09-30", size=5).load()
-        pprint(data.to_dict(chinese_column=True)[0], indent=4)
+        # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
@@ -77,7 +77,7 @@ class TestFastEarn(unittest.TestCase):
 class TestScheduledDisclosure(unittest.TestCase):
     def test_columns(self):
         data = ScheduledDisclosure(date="2024-09-30", size=5).load()
-        pprint(data.to_dict(chinese_column=True)[0], indent=4)
+        # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
@@ -90,7 +90,7 @@ class TestScheduledDisclosure(unittest.TestCase):
 class TestStockIncome(unittest.TestCase):
     def test_columns(self):
         data = StockIncome(date="2024-09-30", size=5).load()
-        pprint(data.to_dict(chinese_column=True)[0], indent=4)
+        # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 

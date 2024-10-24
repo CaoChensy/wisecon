@@ -1,5 +1,5 @@
 import unittest
-from wisecon.stock.single_stock.kline import KLine
+from wisecon.stock.kline import KLine
 
 
 class TestKLine(unittest.TestCase):
@@ -16,4 +16,4 @@ class TestKLine(unittest.TestCase):
         for period in ["1min", "5min", "15min", "30min", "60min", "1day", "1week", "1month"]:
             data = KLine(code="300069", period=period, limit=5).load()
             data.show_columns()
-            print(data.to_frame(columns=data.metadata.get("columns")).to_markdown())
+            print(data.to_frame(chinese_column=True).to_markdown())
