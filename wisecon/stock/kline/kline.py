@@ -1,5 +1,5 @@
 from typing import Any, Dict, Callable, Optional, Literal, List
-from wisecon.types import BaseMapping, ResponseData, BaseRequestData
+from wisecon.types import BaseMapping, BaseRequestData
 
 
 __all__ = [
@@ -12,7 +12,7 @@ TypePeriod = Literal["1min", "5min", "15min", "30min", "60min", "1day", "1week",
 
 
 class KLineMapping(BaseMapping):
-    """"""
+    """字段映射 股票-KLine"""
     columns: Dict = {
         "open": "开盘",
         "close": "收盘",
@@ -28,8 +28,7 @@ class KLineMapping(BaseMapping):
 
 
 class KLine(BaseRequestData):
-    """"""
-
+    """查询 股票-KLine"""
     def __init__(
             self,
             code: Optional[str] = None,
@@ -41,6 +40,28 @@ class KLine(BaseRequestData):
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
+        """
+        Notes:
+            ```python
+            from wisecon.stock.kline import KLine
+
+            data = KLine(code="300069", end="20240910", period="1day", limit=9).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            code: 股票代码
+            end: 截止日期
+            limit: 返回数据条数
+            period: K线周期`["1min", "5min", "15min", "30min", "60min", "1day", "1week", "1month"]`
+            adjust: 复权类型`["前复权", "后赋权", "不赋权"]`
+            verbose: 是否打印日志
+            logger: 日志对象
+            **kwargs: 其他参数
+
+        Returns:
+            DataFrame
+        """
         self.code = code
         self.end = end
         self.limit = limit
@@ -50,19 +71,19 @@ class KLine(BaseRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(description="股票 k-line")
+        self.request_set(description="股票-KLine")
 
     def base_url(self) -> str:
         """"""
         base_url = "https://push2his.eastmoney.com/api/qt/stock/kline/get"
         return base_url
 
-    def _adjust_type(self) -> int:
+    def params_adjust_type(self) -> int:
         """"""
         adjust_mapping = {"前复权": 1, "后赋权": 2, "不赋权": 0}
         return adjust_mapping.get(self.adjust, 1)
 
-    def _period(self) -> str:
+    def params_period(self) -> str:
         """"""
         period_mapping = {
             "1min": "1", "5min": "5", "15min": "15", "30min": "30", "60min": "60",
@@ -78,8 +99,8 @@ class KLine(BaseRequestData):
             "secid": f"0.{self.code}",
             "fields1": "f1,f2,f3,f4,f5,f6",
             "fields2": "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61",
-            "klt": self._period(),
-            "fqt": self._adjust_type(),
+            "klt": self.params_period(),
+            "fqt": self.params_adjust_type(),
             "end": self.end,
             "lmt": self.limit,
         }
