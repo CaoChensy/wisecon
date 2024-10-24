@@ -162,6 +162,5 @@ nav:
           - 股东分析: api/stock/holder.md
           - 上市公司财务报表: api/stock/financial.md
           - 成分股: api/stock/index.md
-      - 公募基金:
-          - 实时净值: api/fund/value.md
+      - 公募基金: api/fund/value.md
       - 宏观经济: api/macro.md
