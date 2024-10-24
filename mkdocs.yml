@@ -91,7 +91,8 @@ plugins:
           import:
             - url: https://docs.python.org/3/objects.inv
               domains: [ py, std ]
-  - search
+  - search:
+      separator: '[\s\u200b\-]'
   - social
 #  - git-authors
   - git-committers:
@@ -161,6 +162,6 @@ nav:
           - Tick: api/stock/tick.md
           - 股东分析: api/stock/holder.md
           - 上市公司财务报表: api/stock/financial.md
-          - 成分股: api/stock/index.md
+          - 成分股: api/stock/constituent_stock.md
       - 公募基金: api/fund/value.md
       - 宏观经济: api/macro.md

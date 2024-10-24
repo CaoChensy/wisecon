@@ -10,7 +10,7 @@ __all__ = [
 
 
 class IndexStockMapping(BaseMapping):
-    """"""
+    """字段映射 指数成分股数据"""
     columns: Dict = {
         "SECUCODE": "证券代码",
         "SECURITY_CODE": "证券代码",
@@ -32,7 +32,7 @@ class IndexStockMapping(BaseMapping):
 
 
 class IndexStock(IndexStockRequestData):
-    """"""
+    """查询 指数成分股数据"""
     def __init__(
             self,
             index_name: Optional[Literal["沪深300", "上证50", "中证500", "科创50"]] = None,
@@ -42,11 +42,20 @@ class IndexStock(IndexStockRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.index import *
 
-        :param size:
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = IndexStock(index_name="沪深300", size=5).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            index_name: 指数名称`["沪深300", "上证50", "中证500", "科创50"]`
+            size: 返回条数
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
         """
         self.index_name = index_name
         self.size = size
