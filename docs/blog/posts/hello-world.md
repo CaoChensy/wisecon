@@ -1,0 +1,16 @@
+---
+draft: true
+pin: true
+date: 2024-10-24
+authors:
+  - chensy
+categories:
+  - 碎碎念
+---
+
+# 2024-10-24
+
+开始一个新的开发进程啦，加油啦。
+
+<!-- more -->
+...

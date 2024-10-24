@@ -101,6 +101,17 @@ plugins:
       enabled: true
   - git-revision-date-localized:
       enable_creation_date: true
+  - blog:
+      blog_dir: blog
+      post_url_date_format: yyyy/MM/dd
+      authors_profiles: true
+  - rss:
+      match_path: blog/posts/.*
+      date_from_meta:
+        as_creation: date
+      categories:
+        - categories
+        - tags
 
 # Extensions
 markdown_extensions:
@@ -179,3 +190,5 @@ nav:
       - 财经文本:
           - 财经新闻(Editing): api/text/news.md
           - 财经研报(Editing): api/text/reports.md
+  - Blog:
+      - blog: blog/index.md
