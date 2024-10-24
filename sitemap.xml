@@ -17,6 +17,10 @@
          <lastmod>2024-10-24</lastmod>
     </url>
     <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/capital_flow/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
          <loc>https://caochensy.github.io/wisecon/api/stock/constituent_stock/</loc>
          <lastmod>2024-10-24</lastmod>
     </url>
@@ -50,6 +54,10 @@
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/api/text/reports/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/blog/</loc>
          <lastmod>2024-10-24</lastmod>
     </url>
 </urlset>
