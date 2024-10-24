@@ -52,6 +52,8 @@
     
       <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -433,6 +435,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -486,7 +492,9 @@
         
       
         
-          
+      
+        
+      
         
       
     
@@ -506,24 +514,16 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
         
           
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="api/stock/" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     上市公司
   </span>
   
 
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_1">
@@ -617,6 +617,67 @@
               
             
               
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/stock/constituent_stock/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    成分股
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/stock/valuation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    估值分析(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/stock/performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    表现分析(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
           </ul>
         </nav>
@@ -633,11 +694,32 @@
   
   
     <li class="md-nav__item">
+      <a href="api/etf/etf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ETF(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/fund/value/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    公募基金
+    公募基金(Editing)
   </span>
   
 
@@ -658,11 +740,109 @@
         
   
   <span class="md-ellipsis">
-    宏观经济
+    宏观经济(Editing)
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    财经文本
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            财经文本
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/text/news/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    财经新闻(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/text/reports/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    财经研报(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -714,15 +894,6 @@
   <a href="#wisecon_2" class="md-nav__link">
     <span class="md-ellipsis">
       WisEcon如何使用?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      数据清单
     </span>
   </a>
   
@@ -794,61 +965,7 @@
 <h2 id="wisecon_2">WisEcon如何使用?<a class="headerlink" href="#wisecon_2" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>wisecon<span class="w"> </span>-U
 </span></code></pre></div>
-<h2 id="_1">数据清单<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>股票价值分析</p>
-</blockquote>
-<p>数据清单: <code>市场价值分析/行业价值分析/个股价值分析</code></p>
-<blockquote>
-<p>上市公司财务数据</p>
-</blockquote>
-<p>数据清单: <code>上市公司业绩报表/上市公司业绩快报/上市公司业绩预报/上市公司预约披露时间/上市公司资产负债表/上市公司利润表/上市公司现金流量表/上市公司分红配送</code></p>
-<blockquote>
-<p>指数成分股数据</p>
-</blockquote>
-<p>数据清单: <code>["沪深300", "上证50", "中证500", "科创50"]</code></p>
-<blockquote>
-<p>股东分析</p>
-</blockquote>
-<p>数据清单: <code>/股东持股明细/股东持股变动统计/股东持股分析/股东持股统计/股东协同</code></p>
 <hr />
-<ul>
-<li>
-<p><a href="">首页</a></p>
-</li>
-<li>
-<p><strong>宏观数据</strong></p>
-</li>
-<li>
-<p><a href="macro/macro/">宏观数据</a></p>
-</li>
-<li>
-<p><strong>研报数据</strong></p>
-</li>
-<li>
-<p><a href="reports/reports/">研报数据</a></p>
-</li>
-<li>
-<p><strong>新闻数据</strong></p>
-</li>
-<li>
-<p><a href="news/news/">新闻数据</a></p>
-</li>
-<li>
-<p><strong>股票数据</strong></p>
-</li>
-<li><a href="stock/tick">Tick数据</a></li>
-<li><a href="stock/KLine">KLine数据</a></li>
-<li><a href="stock/valuation">股票价值分析</a></li>
-<li><a href="stock/performance">股票业绩数据</a></li>
-<li>
-<p><a href="stock/index">指数成分股数据</a></p>
-</li>
-<li>
-<p><strong>基金数据</strong></p>
-</li>
-<li><a href="etf/etf">ETF数据</a></li>
-</ul>
 
 
 
@@ -1005,6 +1122,12 @@
     
     
       <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
       
     
   </body>
