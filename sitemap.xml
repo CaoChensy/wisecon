@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://caochensy.github.io/wisecon/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/_coverpage/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/_navbar/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/_sidebar/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/api/macro/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/fund/value/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/financial/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/holder/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/kline/</loc>
+         <lastmod>2024-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/tick/</loc>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/etf/etf/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/macro/macro/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/news/news/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/quick_start/quick_start/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/reports/reports/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/stock/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/stock/financial/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/stock/holder/</loc>
-         <lastmod>2024-10-23</lastmod>
-    </url>
-    <url>
-         <loc>https://caochensy.github.io/wisecon/stock/kline/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/stock/performance/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/stock/tick/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/stock/valuation/</loc>
-         <lastmod>2024-10-23</lastmod>
+         <lastmod>2024-10-24</lastmod>
     </url>
 </urlset>
