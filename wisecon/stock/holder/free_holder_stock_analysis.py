@@ -10,7 +10,7 @@ __all__ = [
 
 
 class FreeHolderStockAnalysisMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司十大流通股东股东持股统计"""
     columns: Dict = {
         "COOPERATION_HOLDER_MARK": "合作股东标识",
         "END_DATE": "截止日期",
@@ -32,7 +32,7 @@ class FreeHolderStockAnalysisMapping(BaseMapping):
 
 
 class FreeHolderStockAnalysis(StockFormRequestData):
-    """"""
+    """查询 上市公司十大流通股东股东持股统计"""
     def __init__(
             self,
             holder_name: Optional[str] = None,
@@ -47,14 +47,28 @@ class FreeHolderStockAnalysis(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.holder import *
 
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = FreeHolderStockAnalysis(size=20, start_date="2024-09-30").load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            holder_name: 股东名称
+            holder_type: 股东类型 `["个人", "基金", "QFII", "社保", "券商", "信托"]`
+            holder_change: 变动方向 `["新进", "增加", "不变", "减少"]`
+            size: 返回条数
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否显示日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+
+        Returns:
+            DataFrame
         """
         self.holder_name = holder_name
         self.holder_type = holder_type
@@ -67,7 +81,7 @@ class FreeHolderStockAnalysis(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="十大流通股东 - 股东持股统计")
+        self.request_set(response_type="json", description="上市公司十大流通股东股东持股统计")
         self.conditions = []
 
     def params_hold_change(self):

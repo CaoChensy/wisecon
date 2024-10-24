@@ -10,7 +10,7 @@ __all__ = [
 
 
 class FreeHolderChangeMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司十大流通股东持股变动统计"""
     columns: Dict = {
         "HOLDER_NEW": "新的股东",
         "END_DATE": "截止日期",
@@ -34,7 +34,7 @@ class FreeHolderChangeMapping(BaseMapping):
 
 
 class FreeHolderChange(StockFormRequestData):
-    """"""
+    """查询 上市公司十大流通股东持股变动统计"""
     def __init__(
             self,
             holder_name: Optional[str] = None,
@@ -48,14 +48,27 @@ class FreeHolderChange(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.holder import *
 
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = FreeHolderChange(size=20, start_date="2024-09-30").load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            holder_name: 股东名称
+            holder_type: 股东类型 `["个人", "基金", "QFII", "社保", "券商", "信托"]`
+            size: 返回条数
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否显示日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+
+        Returns:
+            DataFrame
         """
         self.holder_name = holder_name
         self.holder_type = holder_type
@@ -67,7 +80,7 @@ class FreeHolderChange(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="十大流通股东持股变动统计")
+        self.request_set(response_type="json", description="上市公司十大流通股东持股变动统计")
         self.conditions = []
 
     def params_filter(self) -> str:

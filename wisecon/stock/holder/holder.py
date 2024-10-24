@@ -10,7 +10,7 @@ __all__ = [
 
 
 class HolderMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司十大股东持股明细"""
     columns: Dict = {
         "SECUCODE": "证券代码",
         "SECURITY_CODE": "证券代码",
@@ -49,7 +49,7 @@ class HolderMapping(BaseMapping):
 
 
 class Holder(StockFormRequestData):
-    """"""
+    """查询 上市公司十大股东持股明细"""
     def __init__(
             self,
             holder_name: Optional[str] = None,
@@ -65,14 +65,29 @@ class Holder(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.holder import *
 
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = Holder(size=20, start_date="2024-09-30").load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            holder_name: 股东名称
+            security_code: 股票代码
+            holder_type: 股东类型 `["个人", "基金", "QFII", "社保", "券商", "信托"]`
+            holder_change: 持股变动 `["新进", "增加", "不变", "减少"]`
+            size: 返回条数
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否显示日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+
+        Returns:
+            DataFrame
         """
         self.holder_name = holder_name
         self.security_code = security_code
@@ -86,7 +101,7 @@ class Holder(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="上市公司十大股东 - 持股明细")
+        self.request_set(response_type="json", description="上市公司十大股东持股明细")
         self.conditions = []
 
     def params_filter(self) -> str:
