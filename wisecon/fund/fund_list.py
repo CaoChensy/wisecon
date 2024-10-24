@@ -1,7 +1,7 @@
 import json
 from typing import Any, List, Dict, Callable, Optional
-from wisecon.types import BaseMapping, BaseRequestData, Metadata
-from wisecon.utils import headers, filter_str_by_mark
+from wisecon.types import BaseMapping, BaseRequestData
+from wisecon.utils import filter_str_by_mark
 
 
 __all__ = [
@@ -11,7 +11,7 @@ __all__ = [
 
 
 class FundListMapping(BaseMapping):
-    """"""
+    """字段映射 全部基金列表"""
     columns: Dict = {
         "fund_code": "基金代码",
         "fund_pinyin": "基金拼音简写",
@@ -22,14 +22,27 @@ class FundListMapping(BaseMapping):
 
 
 class FundList(BaseRequestData):
-    """ ERF Market """
+    """查询 全部基金列表"""
     def __init__(
             self,
             verbose: Optional[bool] = False,
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
-        """"""
+        """
+        Notes:
+            ```python
+            from wisecon.fund import *
+
+            data = FundList().load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+        """
         self.mapping = FundListMapping()
         self.verbose = verbose
         self.logger = logger

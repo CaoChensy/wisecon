@@ -11,7 +11,7 @@ __all__ = [
 
 
 class FundValueMapping(BaseMapping):
-    """"""
+    """字段映射 基金当前净值"""
     columns: Dict = {
         "fundcode": "基金代码",
         "name": "基金名称",
@@ -24,7 +24,7 @@ class FundValueMapping(BaseMapping):
 
 
 class FundValue(BaseRequestData):
-    """ Fund Value """
+    """查询 基金当前净值"""
     def __init__(
             self,
             fund_code: str,
@@ -32,7 +32,21 @@ class FundValue(BaseRequestData):
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
-        """"""
+        """
+        Notes:
+            ```python
+            from wisecon.fund.fund_value import FundValue
+
+            data = FundValue(fund_code="000001").load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            fund_code: 基金代码
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+        """
         self.fund_code = fund_code
         self.mapping = FundValueMapping()
         self.verbose = verbose

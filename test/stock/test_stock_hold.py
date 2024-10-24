@@ -94,7 +94,7 @@ class TestHolderChange(unittest.TestCase):
         """
         :return:
         """
-        data = FreeHolderChange(start_date="2015-03-31", holder_name="工商银行", size=10, verbose=True).load()
+        data = HolderChange(start_date="2015-03-31", holder_name="工商银行", size=10, verbose=True).load()
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 

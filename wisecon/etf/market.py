@@ -1,7 +1,6 @@
-from pydantic import Field, BaseModel
-from typing import Any, List, Dict, Callable, Optional, Literal
+from typing import Any, List, Dict, Callable, Optional
 from wisecon.utils import time2int
-from wisecon.types import BaseMapping, BaseRequestConfig, ResponseData, BaseRequestData
+from wisecon.types import BaseMapping, BaseRequestData
 
 
 __all__ = [

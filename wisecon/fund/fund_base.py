@@ -1,12 +1,7 @@
-import json
-import requests
 from bs4 import BeautifulSoup
-from typing import Any, List, Dict, Callable, Literal, Optional
-from wisecon.types import BaseMapping, BaseRequestData, ResponseData, Metadata
-from wisecon.utils import (
-    headers, LoggerMixin, jquery_mock_callback, time2int, filter_dict_by_key,
-    filter_str_by_mark,
-)
+from typing import Any, List, Dict, Callable, Optional
+from wisecon.types import BaseMapping, BaseRequestData
+
 
 __all__ = [
     "FundBaseMapping",
@@ -15,7 +10,7 @@ __all__ = [
 
 
 class FundBaseMapping(BaseMapping):
-    """"""
+    """字段映射 基金基本信息"""
     columns: Dict = {
         'FullName': '基金全称',
         'ShortName': '基金简称',
@@ -41,8 +36,7 @@ class FundBaseMapping(BaseMapping):
 
 
 class FundBase(BaseRequestData):
-    """ Fund History """
-
+    """查询 基金基本信息"""
     def __init__(
             self,
             fund_code: str,
@@ -50,17 +44,27 @@ class FundBase(BaseRequestData):
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
-        """"""
+        """
+        Notes:
+            ```python
+            from wisecon.fund.fund_value import FundValue
+
+            data = FundValue(fund_code="000001").load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            fund_code: 基金代码
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+        """
         self.fund_code = fund_code
         self.mapping = FundBaseMapping()
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-
-        self.request_set(
-            response_type="text",
-            description="基金基本信息",
-        )
+        self.request_set(response_type="text", description="基金基本信息",)
 
     def base_url(self) -> str:
         """"""

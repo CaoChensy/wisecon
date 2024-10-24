@@ -1,9 +1,9 @@
 import json
-import requests
 from functools import partial
 from typing import Any, List, Dict, Callable, Optional
-from wisecon.types import BaseMapping, BaseRequestData, Metadata, ResponseData
-from wisecon.utils import headers, LoggerMixin, jquery_mock_callback, time2int, filter_dict_by_key
+from wisecon.types import BaseMapping, BaseRequestData
+from wisecon.utils import jquery_mock_callback, time2int, filter_dict_by_key
+from .base import other_headers
 
 
 __all__ = [
@@ -13,7 +13,7 @@ __all__ = [
 
 
 class FundHistMapping(BaseMapping):
-    """"""
+    """字段映射 基金历史净值"""
     columns: Dict = {
         "FSRQ": "净值日期",
         "DWJZ": "单位净值",
@@ -25,7 +25,7 @@ class FundHistMapping(BaseMapping):
 
 
 class FundHist(BaseRequestData):
-    """ Fund History """
+    """查询 基金历史净值"""
     def __init__(
             self,
             fund_code: str,
@@ -36,7 +36,24 @@ class FundHist(BaseRequestData):
             logger: Optional[Callable] = None,
             **kwargs: Any
     ):
-        """"""
+        """
+        Notes:
+            ```python
+            from wisecon.fund import FundHist
+
+            data = FundHist(fund_code="000001", start_date="2020-01-01", end_date="2024-01-01", limit=10).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            fund_code: 基金代码
+            start_date: 开始日期
+            end_date: 结束日期
+            limit: 返回条数
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
+        """
         self.fund_code = fund_code
         self.start_date = start_date
         self.end_date = end_date
@@ -45,11 +62,7 @@ class FundHist(BaseRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(
-            response_type="text",
-            description="基金历史净值",
-            other_headers={'Referer': 'https://fundf10.eastmoney.com/'},
-        )
+        self.request_set(response_type="text", description="基金历史净值", other_headers=other_headers)
 
     def base_url(self) -> str:
         """"""
