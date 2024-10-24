@@ -1,2 +1,3 @@
-# ETF数据
+::: wisecon.etf.market
 
+-----
