@@ -97,7 +97,7 @@ plugins:
   - git-committers:
       repository: CaoChensy/wisecon
       branch: master
-      enabled: false
+      enabled: true
   - git-revision-date-localized:
       enable_creation_date: true
 
