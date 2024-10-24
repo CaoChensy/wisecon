@@ -1,6 +1,6 @@
 from typing import Any, Dict, Literal, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from .base import StockFormRequestData
 
 
 __all__ = [
@@ -10,7 +10,7 @@ __all__ = [
 
 
 class EarnForcastMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司业绩预告"""
     columns: Dict = {
         "SECUCODE": "证券代码",
         "SECURITY_CODE": "证券代码",
@@ -49,7 +49,7 @@ class EarnForcastMapping(BaseMapping):
 
 
 class EarnForcast(StockFormRequestData):
-    """业绩预告"""
+    """查询 上市公司业绩预告"""
     def __init__(
             self,
             security_code: Optional[str] = None,
@@ -64,15 +64,28 @@ class EarnForcast(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.financial import EarnForcast
 
-        :param security_code: 600000
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = EarnForcast(date="2024-09-30", size=5).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            security_code: 证券代码
+            size: 数据条数据
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            forcast_state: 预测状态 `["reduction", "increase"]`
+            predict_finance: 预测指标 `["归母净利润", "扣非净利润", "每股收益", "营业总收入"]`
+            verbose: 是否打印日志
+            logger: 日志对象
+            **kwargs: 其他参数
+
+        Returns:
+            Data
         """
         self.security_code = security_code
         self.size = size
@@ -85,7 +98,7 @@ class EarnForcast(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="股票业绩预告")
+        self.request_set(response_type="json", description="上市公司业绩预告")
         self.conditions = []
 
     def params_filter(self) -> str:

@@ -1,6 +1,6 @@
-from typing import Any, Dict, Literal, Callable, Optional
+from typing import Any, Dict, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from .base import StockFormRequestData
 
 
 __all__ = [
@@ -10,7 +10,7 @@ __all__ = [
 
 
 class ScheduledDisclosureMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司预约披露时间"""
     columns: Dict = {
         "SECURITY_CODE": "证券代码",
         "SECURITY_NAME_ABBR": "证券简称",
@@ -37,7 +37,7 @@ class ScheduledDisclosureMapping(BaseMapping):
 
 
 class ScheduledDisclosure(StockFormRequestData):
-    """业绩报表"""
+    """查询 上市公司预约披露时间"""
     def __init__(
             self,
             security_code: Optional[str] = None,
@@ -51,15 +51,27 @@ class ScheduledDisclosure(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.financial import ScheduledDisclosure
 
-        :param security_code: 600000
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = ScheduledDisclosure(date="2024-09-30", size=5).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            security_code: 证券代码
+            industry_name: 行业名称
+            size: 数据条数据
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否打印日志
+            logger: 日志对象
+            **kwargs: 其他参数
+
+        Returns:
+            Data
         """
         self.security_code = security_code
         self.size = size
@@ -71,7 +83,7 @@ class ScheduledDisclosure(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="预约披露时间")
+        self.request_set(response_type="json", description="上市公司预约披露时间")
         self.conditions = []
 
     def params_filter(self) -> str:

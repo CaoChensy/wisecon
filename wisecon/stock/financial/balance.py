@@ -1,6 +1,6 @@
 from typing import Any, Dict, Literal, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from .base import StockFormRequestData
 
 
 __all__ = [
@@ -13,7 +13,7 @@ TypeMarket = Literal["沪深A股", "沪市A股", "科创板", "深市A股", "创
 
 
 class StockBalanceMapping(BaseMapping):
-    """"""
+    """字段映射 上市公司资产负债报表"""
     columns: Dict = {
         "SECUCODE": "证券代码",
         "SECURITY_CODE": "证券代码",
@@ -76,7 +76,7 @@ class StockBalanceMapping(BaseMapping):
 
 
 class StockBalance(StockFormRequestData):
-    """"""
+    """查询 上市公司资产负债报表"""
     def __init__(
             self,
             security_code: Optional[str] = None,
@@ -91,15 +91,28 @@ class StockBalance(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Notes:
+            ```python
+            from wisecon.stock.financial import StockBalance
 
-        :param security_code: 600000
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+            data = StockBalance(date="2024-09-30", size=5).load()
+            data.to_frame(chinese_column=True)
+            ```
+
+        Args:
+            security_code: 证券代码
+            market: 市场: `["沪深A股", "沪市A股", "科创板", "深市A股", "创业板", "京市A股"]`
+            industry_name: 行业名称
+            size: 数据条数据
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否打印日志
+            logger: 日志对象
+            **kwargs: 其他参数
+
+        Returns:
+            Data
         """
         self.security_code = security_code
         self.market = market
@@ -112,7 +125,7 @@ class StockBalance(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="股票资产负债报表")
+        self.request_set(response_type="json", description="上市公司资产负债报表")
 
     def params_tread_market(self) -> str:
         """"""
