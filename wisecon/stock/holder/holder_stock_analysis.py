@@ -1,6 +1,6 @@
 from typing import Any, Dict, Literal, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from .base import StockFormRequestData
 
 
 __all__ = [
@@ -10,7 +10,7 @@ __all__ = [
 
 
 class HolderStockAnalysisMapping(BaseMapping):
-    """"""
+    """字段映射 """
     columns: Dict = {
         "COOPERATION_HOLDER_MARK": "合作股东标识",
         "END_DATE": "截止日期",
@@ -32,7 +32,7 @@ class HolderStockAnalysisMapping(BaseMapping):
 
 
 class HolderStockAnalysis(StockFormRequestData):
-    """"""
+    """查询 十大股东股东持股统计"""
     def __init__(
             self,
             holder_name: Optional[str] = None,
@@ -47,14 +47,25 @@ class HolderStockAnalysis(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Args:
+            holder_name: 股东名称
+            holder_type: 股东类型
+            holder_change: 持股变动
+            size: 返回数据条数
+            start_date: 开始日期
+            end_date: 结束日期
+            date: 指定日期
+            verbose: 是否打印日志
+            logger: 日志记录器
+            **kwargs: 其他参数
 
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+        Returns:
+            DataFrame
+
+        Examples:
+            >>> from wisecon.stock.holder import *
+            >>> data = HolderStockAnalysis(size=20).load()
+            >>> data.to_frame(chinese_column=True)
         """
         self.holder_name = holder_name
         self.holder_type = holder_type
@@ -67,7 +78,7 @@ class HolderStockAnalysis(StockFormRequestData):
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
-        self.request_set(response_type="json", description="十大流通股东 - 股东持股统计")
+        self.request_set(response_type="json", description="十大股东 - 股东持股统计")
         self.conditions = []
 
     def params_hold_change(self):

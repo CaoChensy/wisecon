@@ -1,6 +1,6 @@
 from typing import Any, Dict, Literal, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from .base import IndexStockRequestData
 
 
 __all__ = [

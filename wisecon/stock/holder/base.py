@@ -1,6 +1,5 @@
 from typing import Dict, Optional, List
 from wisecon.types import BaseRequestData
-from wisecon.utils import time2int
 
 
 __all__ = [

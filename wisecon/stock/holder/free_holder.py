@@ -1,6 +1,6 @@
 from typing import Any, Dict, Literal, Callable, Optional
 from wisecon.types import BaseMapping
-from .base import *
+from wisecon.stock.holder.base import StockFormRequestData
 
 
 __all__ = [
@@ -73,15 +73,19 @@ class FreeHolder(StockFormRequestData):
             **kwargs: Any
     ):
         """
+        Args:
+            size: 最大数据量
+            verbose: 是否打印日志
+            logger: 自定义日志
+            **kwargs: 其他参数
 
-        :param security_code: 600000
-        :param size:
-        :param start_date: 2024-09-30
-        :param end_date: 2024-09-30
-        :param date: 2024-09-30
-        :param verbose:
-        :param logger:
-        :param kwargs:
+        Returns:
+            货币供应总量
+
+        Examples:
+            >>> from wisecon.macro.currency_supply import CurrencySupply
+            >>> data = CurrencySupply(size=20).load()
+            >>> data.to_frame(chinese_column=True)
         """
         self.holder_name = holder_name
         self.security_code = security_code
