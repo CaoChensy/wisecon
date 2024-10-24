@@ -76,7 +76,7 @@ plugins:
             show_bases: false
             members_order: source
             separate_signature: true
-            filters: [ "!^_", "!^params", "!^base_" ]
+            filters: [ "!^_", "!^params", "!^base_", "!^clean" ]
 #            docstring_options:
 #              ignore_init_summary: true
             merge_init_into_class: true
