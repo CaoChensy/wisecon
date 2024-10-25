@@ -191,5 +191,7 @@ nav:
       - 财经文本:
           - 财经新闻(Editing): api/text/news.md
           - 财经研报(Editing): api/text/reports.md
+      - 其他工具:
+          - Time: api/utils/time.md
   - Blog:
       - blog: blog/index.md
