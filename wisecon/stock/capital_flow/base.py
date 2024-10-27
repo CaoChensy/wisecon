@@ -4,6 +4,7 @@ from wisecon.utils import time2int
 
 
 __all__ = [
+    "TypeMarket",
     "CapitalFlowMapping",
     "CapitalFlowRequestData",
     "CapitalFlowHistoryBaseMapping",
@@ -11,6 +12,9 @@ __all__ = [
     "CapitalFlowCurrentBaseMapping",
     "CapitalFlowCurrentRequestData",
 ]
+
+
+TypeMarket = Literal["全部股票", "沪深A股", "沪市A股", "科创板", "深市A股", "创业板", "沪市B股", "深市B股"]
 
 
 class CapitalFlowMapping(BaseMapping):

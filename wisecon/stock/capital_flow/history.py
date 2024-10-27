@@ -15,7 +15,12 @@ class CapitalFlowHistoryMapping(CapitalFlowHistoryBaseMapping):
 
 
 class CapitalFlowHistory(CapitalFlowHistoryRequestData):
-    """查询 资金流向历史数据(大盘沪深两市/板块历史数据)"""
+    """查询 资金流向历史数据(大盘沪深两市/板块历史数据)
+
+    1. 查询沪深两市市场历史资金动向数据
+    2. 查询某行业、地区、概念板块历史资金动向数据
+    3. 查询具体股票的历史资金动向数据
+    """
     def __init__(
             self,
             market: Optional[TypeMarket] = None,
@@ -35,7 +40,15 @@ class CapitalFlowHistory(CapitalFlowHistoryRequestData):
             data = CapitalFlowHistory(market="沪深两市", size=10).load()
             data.to_frame(chinese_column=True)
 
-            # 2. 查询板块的资金历史流向数据
+            # 2.1 查询板块的资金历史流向数据(概念)
+            data = CapitalFlowHistory(plate_code="BK1044", size=10).load()
+            data.to_frame(chinese_column=True)
+
+            # 2.2 查询板块的资金历史流向数据(地区)
+            data = CapitalFlowHistory(plate_code="BK0158", size=10).load()
+            data.to_frame(chinese_column=True)
+
+            # 2.3 查询板块的资金历史流向数据(行业)
             data = CapitalFlowHistory(plate_code="BK1044", size=10).load()
             data.to_frame(chinese_column=True)
 
@@ -46,7 +59,7 @@ class CapitalFlowHistory(CapitalFlowHistoryRequestData):
 
         Args:
             market: 市场名称: `["沪深两市", "沪市", "深市", "创业板", "沪B", "深B"]`
-            plate_code: 板块代码
+            plate_code: 板块代码, 支持地区板块、行业板块、概念板块
             security_code: 股票代码
             size: 数据条数
             verbose: 是否显示日志
