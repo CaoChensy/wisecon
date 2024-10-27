@@ -27,7 +27,7 @@ class PlateCode(APICListRequestData):
             ```python
             from wisecon.stock.capital_flow import *
 
-            # 1. 查询市场总体资金流量
+            # 1. 查询有哪些概念板块
             data = PlateCode(plate_type="概念").load()
             data.to_frame(chinese_column=True)
             ```
