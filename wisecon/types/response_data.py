@@ -50,7 +50,16 @@ class ResponseData(BaseModel):
             self,
             chinese_column: Optional[bool] = False,
     ) -> List[Dict]:
-        """"""
+        """
+        Notes:
+            TODO: 增加处理未解析字段的方法。
+
+        Args:
+            chinese_column:
+
+        Returns:
+
+        """
         if chinese_column:
             data = [self._trans_chinese_columns(item) for item in self.data]
         else:
