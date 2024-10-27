@@ -1,5 +1,5 @@
 from typing import Dict, Optional, List
-from wisecon.types import BaseRequestData
+from wisecon.types import APIDataV1RequestData
 from wisecon.utils import time2int
 
 
@@ -8,14 +8,8 @@ __all__ = [
 ]
 
 
-class MacroRequestData(BaseRequestData):
+class MacroRequestData(APIDataV1RequestData):
     """"""
-
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
     def base_param(self, update: Dict) -> Dict:
         """"""
         params = {
@@ -26,13 +20,3 @@ class MacroRequestData(BaseRequestData):
         }
         params.update(update)
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("result", {})
-        data = response.pop("data")
-        self.metadata.response = response
-        return data

@@ -1,5 +1,10 @@
 from typing import Dict, Optional, List, Literal
-from wisecon.types import BaseRequestData, BaseMapping
+from wisecon.types import (
+    BaseMapping,
+    APICListRequestData,
+    APIStockFFlowDayLineRequestData,
+    APIUListNPRequestData,
+)
 from wisecon.utils import time2int
 
 
@@ -81,31 +86,16 @@ class CapitalFlowMapping(BaseMapping):
     }
 
 
-class CapitalFlowRequestData(BaseRequestData):
+class CapitalFlowRequestData(APICListRequestData):
     """查询 当前资金流量统计"""
     sort_by: Optional[str]
     days: Optional[Literal[1, 3, 5, 10]]
-
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://push2.eastmoney.com/api/qt/clist/get"
-        return base_url
 
     def base_param(self, update: Dict) -> Dict:
         """"""
         params = {}
         params.update(update)
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("data", {})
-        data = response.pop("diff")
-        self.metadata.response = response
-        return data
 
     def params_sort_by(self) -> str:
         """"""
@@ -167,15 +157,10 @@ class CapitalFlowHistoryBaseMapping(BaseMapping):
     }
 
 
-class CapitalFlowHistoryRequestData(BaseRequestData):
+class CapitalFlowHistoryRequestData(APIStockFFlowDayLineRequestData):
     """查询 历史资金流量统计"""
     sort_by: Optional[str]
     days: Optional[Literal[1, 3, 5, 10]]
-
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get"
-        return base_url
 
     def base_param(self, update: Dict) -> Dict:
         """"""
@@ -188,18 +173,6 @@ class CapitalFlowHistoryRequestData(BaseRequestData):
         }
         params.update(update)
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        columns = list(self.mapping.columns.keys())
-        response = json_data.get("data", {})
-        data = response.pop("klines")
-        data = [dict(zip(columns, item.split(","))) for item in data]
-        self.metadata.response = response
-        return data
 
 
 class CapitalFlowCurrentBaseMapping(BaseMapping):
@@ -246,13 +219,8 @@ class CapitalFlowCurrentBaseMapping(BaseMapping):
     }
 
 
-class CapitalFlowCurrentRequestData(BaseRequestData):
+class CapitalFlowCurrentRequestData(APIUListNPRequestData):
     """查询 当前资金流量统计"""
-
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://push2.eastmoney.com/api/qt/ulist.np/get"
-        return base_url
 
     def base_param(self, update: Dict) -> Dict:
         """"""
@@ -270,13 +238,3 @@ class CapitalFlowCurrentRequestData(BaseRequestData):
         }
         params.update(update)
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("data", {})
-        data = response.pop("diff")
-        self.metadata.response = response
-        return data

@@ -2,7 +2,10 @@ from typing import Dict
 from pydantic import BaseModel
 
 
-__all__ = ["BaseMapping"]
+__all__ = [
+    "BaseMapping",
+    "APICListMapping",
+]
 
 
 class BaseMapping(BaseModel):
@@ -19,3 +22,13 @@ class BaseMapping(BaseModel):
     def filter_columns(self, columns: Dict) -> Dict:
         """"""
         return {k: v for k, v in columns.items() if v}
+
+
+class APICListMapping(BaseMapping):
+    """"""
+    columns: Dict[str, str] = {
+        "f12": "code",
+        "f13": "prefix_code",
+        "f14": "名称",
+        "f62": "今日主力净流入(净额)"
+    }

@@ -12,6 +12,10 @@ __all__ = [
     "assemble_url",
     "BaseRequestConfig",
     "BaseRequestData",
+    "APICListRequestData",
+    "APIStockFFlowDayLineRequestData",
+    "APIUListNPRequestData",
+    "APIDataV1RequestData",
 ]
 
 
@@ -111,3 +115,72 @@ class BaseRequestData(LoggerMixin):
         else:
             raise ValueError(f"Invalid response type: {self.response_type}")
         return self.data(data=data, metadata=self.metadata)
+
+
+class APICListRequestData(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        return "https://push2.eastmoney.com/api/qt/clist/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.get("data", {})
+        data = response.pop("diff")
+        self.metadata.response = response
+        return data
+
+
+class APIStockFFlowDayLineRequestData(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        return "https://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        columns = list(self.mapping.columns.keys())
+        response = json_data.get("data", {})
+        data = response.pop("klines")
+        data = [dict(zip(columns, item.split(","))) for item in data]
+        self.metadata.response = response
+        return data
+
+
+class APIUListNPRequestData(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        return "https://push2.eastmoney.com/api/qt/ulist.np/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.get("data", {})
+        data = response.pop("diff")
+        self.metadata.response = response
+        return data
+
+
+class APIDataV1RequestData(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://datacenter-web.eastmoney.com/api/data/v1/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.get("result", {})
+        data = response.pop("data")
+        self.metadata.response = response
+        return data
+
+# todo: 封装请求数据类
