@@ -15,9 +15,10 @@ class PlateFlowMapping(CapitalFlowMapping):
 class PlateFlow(CapitalFlowRequestData):
     """查询 市场、板块（行业、概念、地区）资金流向数据
 
-    1. 查询市场总体资金流量；返回全部股票当前1/3/5/10天的资金动向
-    2. 查询全部 `行业、地区、概念` 板块资金流量；返回全部板块下股票当前1/3/5/10天的资金动向
-    3. 查询指定板块资金流量；返回具体板块下股票当前1/3/5/10天的资金动向
+    1. 查询市场总体资金流量；返回全部股票当前`1/3/5/10`天的资金动向
+    2. 查询全部 `行业、地区、概念` 板块资金流量；返回全部板块下股票当前`1/3/5/10`天的资金动向
+    3. 查询指定板块资金流量；返回具体板块下股票当前`1/3/5/10`天的资金动向
+    4. 查询不同行业、地区、概念板块下的主力流入流出排名
 
     Notes:
         ```markdown
@@ -45,7 +46,8 @@ class PlateFlow(CapitalFlowRequestData):
             plate_code: Optional[str] = None,
             size: Optional[int] = 50,
             sort_by: Optional[str] = None,
-            days: Optional[Literal[1, 3, 5, 10]] = 1,
+            ascending: Optional[bool] = False,
+            days: Optional[Literal[1, 3, 5, 10]] = None,
             verbose: Optional[bool] = False,
             logger: Optional[Callable] = None,
             **kwargs: Any
@@ -75,6 +77,22 @@ class PlateFlow(CapitalFlowRequestData):
             # 3.1 概念板块
             data = PlateFlow(plate_code="BK1044", days=1).load()
             data.to_frame(chinese_column=True)
+
+            # 4. 主力排名
+            data = PlateFlow(market="全部股票", sort_by="f184").load()
+            data.to_frame(chinese_column=True)
+
+            # 4.1 主力流入排名
+            PlateFlow(plate_type="行业", days=1, sort_by="f62")
+            PlateFlow(plate_type="行业", days=3, sort_by="f267")
+            PlateFlow(plate_type="行业", days=5, sort_by="f164")
+            PlateFlow(plate_type="行业", days=10, sort_by="f174")
+
+            # 4.2 主力流出排名
+            PlateFlow(plate_type="行业", days=1, sort_by="f62", ascending=True)
+            PlateFlow(plate_type="行业", days=3, sort_by="f267", ascending=True)
+            PlateFlow(plate_type="行业", days=5, sort_by="f164", ascending=True)
+            PlateFlow(plate_type="行业", days=10, sort_by="f174", ascending=True)
             ```
 
         Args:
@@ -93,6 +111,7 @@ class PlateFlow(CapitalFlowRequestData):
         self.plate_code = plate_code
         self.size = size
         self.sort_by = sort_by
+        self.ascending = ascending
         self.days = days
         self.mapping = PlateFlowMapping()
         self.verbose = verbose
@@ -133,6 +152,12 @@ class PlateFlow(CapitalFlowRequestData):
         """"""
         return f"b:{self.plate_code}"
 
+    def params_ascending(self) -> int:
+        if self.ascending:
+            return 0
+        else:
+            return 1
+
     def params_fs(self) -> str:
         """"""
         if self.market:
@@ -155,7 +180,7 @@ class PlateFlow(CapitalFlowRequestData):
 
         params = {
             "fid": sort_by,
-            "po": 1,
+            "po": self.params_ascending(),
             "pz": self.size,
             "pn": 1,
             "np": 1,

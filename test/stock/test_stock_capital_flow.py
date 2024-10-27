@@ -60,6 +60,23 @@ class TestPlateFlow(unittest.TestCase):
         print(data.metadata.response)
         print(data.to_frame(chinese_column=True).to_markdown())
 
+    def test_sort(self):
+        """"""
+        data = PlateFlow(market="全部股票", sort_by="f184").load()
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_plate_type_indu_sort(self):
+        """"""
+        data = PlateFlow(plate_type="行业", days=1, ascending=False).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_plate_type_indu_sort_true(self):
+        """"""
+        data = PlateFlow(plate_type="行业", days=1, ascending=True).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
+
 
 class TestHistoryCapitalFlow(unittest.TestCase):
 
