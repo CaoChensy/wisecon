@@ -1,15 +1,20 @@
 from typing import Dict, Optional, List, Literal
 from wisecon.types import BaseRequestData, BaseMapping
+from wisecon.utils import time2int
 
 
 __all__ = [
     "CapitalFlowMapping",
     "CapitalFlowRequestData",
+    "CapitalFlowHistoryBaseMapping",
+    "CapitalFlowHistoryRequestData",
+    "CapitalFlowCurrentBaseMapping",
+    "CapitalFlowCurrentRequestData",
 ]
 
 
 class CapitalFlowMapping(BaseMapping):
-    """"""
+    """字段映射 当前资金流量统计"""
     columns: Dict = {
         "f1": "",
         "f2": "最新价",
@@ -73,7 +78,7 @@ class CapitalFlowMapping(BaseMapping):
 
 
 class CapitalFlowRequestData(BaseRequestData):
-    """"""
+    """查询 当前资金流量统计"""
     sort_by: Optional[str]
     days: Optional[Literal[1, 3, 5, 10]]
 
@@ -127,3 +132,147 @@ class CapitalFlowRequestData(BaseRequestData):
         else:
             return fields_mapping[1]
 
+
+class CapitalFlowHistoryBaseMapping(BaseMapping):
+    """字段映射 历史资金流量统计"""
+    fields: List = [
+        "日期", "主力净流入净额", "小单净流入净额", "中单净流入净额", "大单净流入净额", "超大单净流入净额",
+        "主力净流入净占比", "小单净流入净占比", "中单净流入净占比", "大单净流入净占比", "超大单净流入净占比",
+        "收盘价", "涨跌幅", "a", "b"
+    ]
+    columns: Dict = {
+        "f1": "日期",
+        "f2": "主力净流入净额",
+        "f3": "小单净流入净额",
+        "f7": "中单净流入净额",
+        "f51": "大单净流入净额",
+        "f52": "超大单净流入净额",
+        "f53": "主力净流入净占比",
+        "f54": "小单净流入净占比",
+        "f55": "中单净流入净占比",
+        "f56": "大单净流入净占比",
+        "f57": "超大单净流入净占比",
+        "f58": "上证收盘价",
+        "f59": "上证涨跌幅",
+        "f60": "深证收盘价",
+        "f61": "深证涨跌幅",
+        "f62": "f62",
+        "f63": "f63",
+        "f64": "f64",
+        "f65": "f65",
+    }
+
+
+class CapitalFlowHistoryRequestData(BaseRequestData):
+    """查询 历史资金流量统计"""
+    sort_by: Optional[str]
+    days: Optional[Literal[1, 3, 5, 10]]
+
+    def base_url(self) -> str:
+        """"""
+        base_url = "https://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get"
+        return base_url
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "lmt": 0,
+            "klt": 101,
+            "fields1": "f1,f2,f3,f7",
+            "fields2": "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65",
+            "_": time2int()
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        columns = list(self.mapping.columns.keys())
+        response = json_data.get("data", {})
+        data = response.pop("klines")
+        data = [dict(zip(columns, item.split(","))) for item in data]
+        self.metadata.response = response
+        return data
+
+
+class CapitalFlowCurrentBaseMapping(BaseMapping):
+    """字段映射 当前资金流量统计"""
+    columns: Dict = {
+        "f6": "金额",
+        "f62": "今日主力净流入(净额)",
+        "f64": "超大单流入",
+        "f65": "超大单流出",
+        "f66": "今日超大单净流入(净额)",
+        "f69": "今日超大单净流入(净占比)",
+
+        "f70": "大单流入",
+        "f71": "大单流出",
+        "f72": "今日大单净流入(净额)",
+        "f75": "今日大单净流入(净占比)",
+
+        "f76": "中单流入",
+        "f77": "中单流出",
+        "f78": "今日中单净流入(净额)",
+        "f81": "今日中单净流入(净占比)",
+
+        "f82": "小单流入",
+        "f83": "小单流出",
+        "f84": "今日小单净流入(净额)",
+        "f87": "今日小单净流入(净占比)",
+        "f124": "",
+        "f164": "一周主力净流入",
+        "f166": "一周超大单净流入",
+        "f168": "一周大单净流入",
+        "f170": "一周中单净流入",
+        "f172": "一周小单净流入",
+        "f184": "今日主力净流入(占比)",
+        "f252": "一月主力净流入",
+        "f253": "一月超大单净流入",
+        "f254": "一月大单净流入",
+        "f255": "一月中单净流入",
+        "f256": "一月小单净流入",
+        "f278": "",
+        "f279": "",
+        "f280": "",
+        "f281": "",
+        "f282": "",
+    }
+
+
+class CapitalFlowCurrentRequestData(BaseRequestData):
+    """查询 当前资金流量统计"""
+
+    def base_url(self) -> str:
+        """"""
+        base_url = "https://push2.eastmoney.com/api/qt/ulist.np/get"
+        return base_url
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        fields = [
+            "f62", "f184", "f66", "f69", "f72", "f75", "f78", "f81",
+            "f84", "f87", "f64", "f65", "f70", "f71", "f76", "f77",
+            "f82", "f83", "f164", "f166", "f168", "f170", "f172", "f252",
+            "f253", "f254", "f255", "f256", "f124", "f6", "f278", "f279",
+            "f280", "f281", "f282"
+        ]
+        params = {
+            "fields": ",".join(fields),
+            "fltt": 2,
+            "_": time2int()
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.get("data", {})
+        data = response.pop("diff")
+        self.metadata.response = response
+        return data
