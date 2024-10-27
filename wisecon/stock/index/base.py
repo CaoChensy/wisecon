@@ -1,5 +1,5 @@
 from typing import Dict, Optional, List
-from wisecon.types import BaseRequestData
+from wisecon.types import APIDataV1RequestData
 
 
 __all__ = [
@@ -7,19 +7,8 @@ __all__ = [
 ]
 
 
-class IndexStockRequestData(BaseRequestData):
+class IndexStockRequestData(APIDataV1RequestData):
     """"""
-    conditions: Optional[List[str]]
-    security_code: Optional[str]
-    start_date: Optional[str]
-    end_date: Optional[str]
-    date: Optional[str]
-
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
-        return base_url
-
     def base_param(self, update: Dict) -> Dict:
         """
 
@@ -38,28 +27,3 @@ class IndexStockRequestData(BaseRequestData):
         }
         params.update(update)
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("result", {})
-        data = response.pop("data")
-        self.metadata.response = response
-        return data
-
-    def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
-        """"""
-        if self.start_date:
-            self.conditions.append(f"({date_name}>='{self.start_date}')")
-        if self.end_date:
-            self.conditions.append(f"({date_name}<='{self.end_date}')")
-        if self.date:
-            self.conditions.append(f"({date_name}='{self.date}')")
-
-    def filter_security_code(self):
-        """"""
-        if self.security_code:
-            self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
-

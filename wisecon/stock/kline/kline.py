@@ -1,5 +1,5 @@
 from typing import Any, Dict, Callable, Optional, Literal, List
-from wisecon.types import BaseMapping, BaseRequestData
+from wisecon.types import BaseMapping, APIStockKline
 
 
 __all__ = [
@@ -27,7 +27,7 @@ class KLineMapping(BaseMapping):
     }
 
 
-class KLine(BaseRequestData):
+class KLine(APIStockKline):
     """查询 股票-KLine"""
     def __init__(
             self,
@@ -70,11 +70,6 @@ class KLine(BaseRequestData):
         self.kwargs = kwargs
         self.request_set(description="股票-KLine")
 
-    def base_url(self) -> str:
-        """"""
-        base_url = "https://push2his.eastmoney.com/api/qt/stock/kline/get"
-        return base_url
-
     def params_adjust_type(self) -> int:
         """"""
         adjust_mapping = {"前复权": 1, "后赋权": 2, "不赋权": 0}
@@ -102,19 +97,3 @@ class KLine(BaseRequestData):
             "lmt": self.limit,
         }
         return params
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        response = json_data.get("data", {})
-        data = response.pop("klines")
-        self.metadata.response = response
-
-        def trans_kline_data(line: str) -> Dict:
-            """"""
-            line_data = line.split(",")
-            return dict(zip(list(self.mapping.columns.keys()), line_data))
-
-        data = list(map(trans_kline_data, data))
-        return data

@@ -16,6 +16,8 @@ __all__ = [
     "APIStockFFlowDayLineRequestData",
     "APIUListNPRequestData",
     "APIDataV1RequestData",
+    "APIStockKline",
+    "APIStockKlineWithSSE",
 ]
 
 
@@ -169,6 +171,12 @@ class APIUListNPRequestData(BaseRequestData):
 
 class APIDataV1RequestData(BaseRequestData):
     """"""
+    conditions: Optional[List[str]]
+    security_code: Optional[str]
+    start_date: Optional[str]
+    end_date: Optional[str]
+    date: Optional[str]
+
     def base_url(self) -> str:
         """"""
         return "https://datacenter-web.eastmoney.com/api/data/v1/get"
@@ -181,6 +189,76 @@ class APIDataV1RequestData(BaseRequestData):
         response = json_data.get("result", {})
         data = response.pop("data")
         self.metadata.response = response
+        return data
+
+    def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
+        """"""
+        if self.start_date:
+            self.conditions.append(f"({date_name}>='{self.start_date}')")
+        if self.end_date:
+            self.conditions.append(f"({date_name}<='{self.end_date}')")
+        if self.date:
+            self.conditions.append(f"({date_name}='{self.date}')")
+
+    def filter_security_code(self):
+        """"""
+        if self.security_code:
+            self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
+
+
+class APIStockKline(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://push2his.eastmoney.com/api/qt/stock/kline/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        response = json_data.get("data", {})
+        data = response.pop("klines")
+        self.metadata.response = response
+
+        def trans_kline_data(line: str) -> Dict:
+            """"""
+            line_data = line.split(",")
+            return dict(zip(list(self.mapping.columns.keys()), line_data))
+
+        data = list(map(trans_kline_data, data))
+        return data
+
+
+class APIStockKlineWithSSE(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://push2his.eastmoney.com/api/qt/stock/kline/get"
+
+    def base_sse(self) -> str:
+        """"""
+        return "https://push2his.eastmoney.com/api/qt/stock/kline/sse"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+
+        def clean_data(data: Dict) -> Dict:
+            """"""
+            columns = [
+                "f11", "f13", "f15", "f17", "f19",
+                "f31", "f33", "f35", "f37", "f39",
+                "f191",
+            ]
+            for key, value in data.items():
+                if key in columns:
+                    data.update({key: value / 100})
+            return data
+
+        data = list(map(clean_data, [json_data.pop("data")]))
+        self.metadata.response = json_data
         return data
 
 # todo: 封装请求数据类
