@@ -1,8 +1,9 @@
 import time
 import requests
+from datetime import datetime
 from requests import Response
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional, Literal
+from typing import List, Dict, Union, Optional, Literal
 from wisecon.utils import headers, LoggerMixin
 from .response_data import ResponseData, Metadata
 from .mapping import BaseMapping
@@ -12,12 +13,7 @@ __all__ = [
     "assemble_url",
     "BaseRequestConfig",
     "BaseRequestData",
-    "APICListRequestData",
-    "APIStockFFlowDayLineRequestData",
-    "APIUListNPRequestData",
-    "APIDataV1RequestData",
-    "APIStockKline",
-    "APIStockKlineWithSSE",
+    "ValidateParams",
 ]
 
 
@@ -41,7 +37,57 @@ class BaseRequestConfig(BaseModel):
         return dict()
 
 
-class BaseRequestData(LoggerMixin):
+class ValidateParams:
+    """"""
+    security_code: Union[str, List[str]]
+
+    def validate_date_is_end_if_quarter(self, date: str):
+        """"""
+        date = datetime.strptime(date, "%Y-%m-%d")
+        mark = [
+            (date.month == 3 and date.day == 31),
+            (date.month == 6 and date.day == 30),
+            (date.month == 9 and date.day == 30),
+            (date.month == 12 and date.day == 31),
+        ]
+        if not any(mark):
+            raise ValueError(f"Date must be the last day of the quarter, your date: {date}")
+
+    def validate_code(self, code: Union[str, List[str]], length: int = 6):
+        """"""
+        if isinstance(code, str):
+            code = [code]
+        mark = all([len(c) == 6 for c in code])
+        if not mark:
+            raise ValueError(f"Security code must be {length} characters.")
+
+    def validate_holder_code(self, code: str):
+        """"""
+        self.validate_code(code)
+
+    def validate_security_code(self, code: Union[str, List[str]]):
+        """"""
+        self.validate_code(code)
+
+    def validate_max_security_codes(self) -> None:
+        """"""
+        if isinstance(self.security_code, list) and len(self.security_code) > 10:
+            raise ValueError("security_code maximum length is 10.")
+
+    def validate_size(self, size: int, max_size: int):
+        """"""
+        if size > max_size:
+            raise ValueError(f"Size must be less than {max_size}, your size: {size}")
+
+    def validate_params(self):
+        """"""
+        if hasattr(self, "security_code"):
+            self.validate_security_code(self.security_code)
+        if hasattr(self, "holder_code"):
+            self.validate_holder_code(self.holder_code)
+
+
+class BaseRequestData(LoggerMixin, ValidateParams):
     """"""
     query_config: Optional[BaseRequestConfig]
     headers: Optional[Dict]
@@ -117,148 +163,3 @@ class BaseRequestData(LoggerMixin):
         else:
             raise ValueError(f"Invalid response type: {self.response_type}")
         return self.data(data=data, metadata=self.metadata)
-
-
-class APICListRequestData(BaseRequestData):
-    """"""
-    def base_url(self) -> str:
-        return "https://push2.eastmoney.com/api/qt/clist/get"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("data", {})
-        data = response.pop("diff")
-        self.metadata.response = response
-        return data
-
-
-class APIStockFFlowDayLineRequestData(BaseRequestData):
-    """"""
-    def base_url(self) -> str:
-        return "https://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        columns = list(self.mapping.columns.keys())
-        response = json_data.get("data", {})
-        data = response.pop("klines")
-        data = [dict(zip(columns, item.split(","))) for item in data]
-        self.metadata.response = response
-        return data
-
-
-class APIUListNPRequestData(BaseRequestData):
-    """"""
-    def base_url(self) -> str:
-        return "https://push2.eastmoney.com/api/qt/ulist.np/get"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("data", {})
-        data = response.pop("diff")
-        self.metadata.response = response
-        return data
-
-
-class APIDataV1RequestData(BaseRequestData):
-    """"""
-    conditions: Optional[List[str]]
-    security_code: Optional[str]
-    start_date: Optional[str]
-    end_date: Optional[str]
-    date: Optional[str]
-
-    def base_url(self) -> str:
-        """"""
-        return "https://datacenter-web.eastmoney.com/api/data/v1/get"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        response = json_data.get("result", {})
-        data = response.pop("data")
-        self.metadata.response = response
-        return data
-
-    def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
-        """"""
-        if self.start_date:
-            self.conditions.append(f"({date_name}>='{self.start_date}')")
-        if self.end_date:
-            self.conditions.append(f"({date_name}<='{self.end_date}')")
-        if self.date:
-            self.conditions.append(f"({date_name}='{self.date}')")
-
-    def filter_security_code(self):
-        """"""
-        if self.security_code:
-            self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
-
-
-class APIStockKline(BaseRequestData):
-    """"""
-    def base_url(self) -> str:
-        """"""
-        return "https://push2his.eastmoney.com/api/qt/stock/kline/get"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        response = json_data.get("data", {})
-        data = response.pop("klines")
-        self.metadata.response = response
-
-        def trans_kline_data(line: str) -> Dict:
-            """"""
-            line_data = line.split(",")
-            return dict(zip(list(self.mapping.columns.keys()), line_data))
-
-        data = list(map(trans_kline_data, data))
-        return data
-
-
-class APIStockKlineWithSSE(BaseRequestData):
-    """"""
-    def base_url(self) -> str:
-        """"""
-        return "https://push2his.eastmoney.com/api/qt/stock/kline/get"
-
-    def base_sse(self) -> str:
-        """"""
-        return "https://push2his.eastmoney.com/api/qt/stock/kline/sse"
-
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-
-        def clean_data(data: Dict) -> Dict:
-            """"""
-            columns = [
-                "f11", "f13", "f15", "f17", "f19",
-                "f31", "f33", "f35", "f37", "f39",
-                "f191",
-            ]
-            for key, value in data.items():
-                if key in columns:
-                    data.update({key: value / 100})
-            return data
-
-        data = list(map(clean_data, [json_data.pop("data")]))
-        self.metadata.response = json_data
-        return data
-
-# todo: 封装请求数据类
