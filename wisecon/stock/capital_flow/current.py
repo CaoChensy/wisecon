@@ -68,6 +68,7 @@ class CapitalFlowCurrent(CapitalFlowCurrentRequestData):
         self.logger = logger
         self.kwargs = kwargs
         self.request_set(description="当前股票资金流量统计", )
+        self.validate_max_security_codes(security_code=security_code)
 
     def params_market_code(self) -> str:
         """"""
@@ -80,11 +81,6 @@ class CapitalFlowCurrent(CapitalFlowCurrentRequestData):
         else:
             raise ValueError(
                 f'market error {self.market} not in ["沪深两市", "沪市", "深市", "创业板", "沪B", "深B"]')
-
-    def validate_security_code(self) -> None:
-        """"""
-        if isinstance(self.security_code, list) and len(self.security_code) > 10:
-            raise ValueError("security_code maximum length is 10.")
 
     def params_security_code(self) -> str:
         """"""
