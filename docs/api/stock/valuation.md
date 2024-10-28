@@ -58,46 +58,8 @@ $$PEG=\frac{PE(TTM)}{EPS复合年增长率}$$
 - PEG值用于评估公司成长性与当前估值之间的关系。
 - 一般认为，PEG值小于1表示公司被低估，反之则可能被高估。
 
-## 市场价值分析
-
-> 示例代码
-
-```python
-
-```
-
-> 数据输出
-
-```text
-
-```
-
-## 行业价值分析
-
-> 示例代码
-
-```python
-
-```
-
-> 数据输出
-
-```text
-
-```
-
-## 个股价值分析
-
-> 示例代码
-
-```python
-
-```
-
-> 数据输出
-
-```text
-
-```
+::: wisecon.stock.valuation.stock
+::: wisecon.stock.valuation.industry
+::: wisecon.stock.valuation.market
 
 ------
