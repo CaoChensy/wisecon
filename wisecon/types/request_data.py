@@ -41,9 +41,22 @@ class ValidateParams:
     """"""
     security_code: Union[str, List[str]]
 
+    def validate_date_format(self, date: Union[str, List[str]], _format: str = "%Y-%m-%d"):
+        """"""
+        if isinstance(date, str):
+            date = [date]
+        for d in date:
+            if isinstance(d, str):
+                try:
+                    datetime.strptime(d, _format)
+                except ValueError:
+                    raise ValueError(f"Invalid date format: {d}. Expected format: {_format}")
+
     def validate_date_is_end_if_quarter(self, date: str):
         """"""
-        date = datetime.strptime(date, "%Y-%m-%d")
+        _format = "%Y-%m-%d"
+        self.validate_date_format(date, _format=_format)
+        date = datetime.strptime(date, _format)
         mark = [
             (date.month == 3 and date.day == 31),
             (date.month == 6 and date.day == 30),

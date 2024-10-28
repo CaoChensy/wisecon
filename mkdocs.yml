@@ -182,9 +182,12 @@ nav:
           - 股东分析: api/stock/holder.md
           - 上市公司财务报表: api/stock/financial.md
           - 成分股: api/stock/constituent_stock.md
+          - 资金流分析: api/stock/capital_flow.md
+          - 主力持仓: api/stock/main_holder.md
+          - 股票排行(Editing): api/stock/ranking.md
           - 估值分析(Editing): api/stock/valuation.md
           - 表现分析(Editing): api/stock/performance.md
-          - 资金流分析: api/stock/capital_flow.md
+
       - ETF(Editing): api/etf/etf.md
       - 公募基金(Editing): api/fund/value.md
       - 宏观经济(Editing): api/macro.md
