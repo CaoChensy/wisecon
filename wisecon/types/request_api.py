@@ -83,9 +83,12 @@ class APIDataV1RequestData(BaseRequestData):
     ) -> List[Dict]:
         """"""
         response = json_data.get("result", {})
-        data = response.pop("data")
-        self.metadata.response = response
-        return data
+        try:
+            data = response.pop("data")
+            self.metadata.response = response
+            return data
+        except Exception as e:
+            raise ValueError(f"Error in cleaning json data; response: {json_data}")
 
     def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
         """"""
