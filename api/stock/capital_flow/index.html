@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://caochensy.github.io/wisecon/api/stock/capital_flow/">
       
       
-        <link rel="prev" href="../performance/">
+        <link rel="prev" href="../constituent_stock/">
       
       
-        <link rel="next" href="../../etf/etf/">
+        <link rel="next" href="../main_holder/">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS 订阅" href="../../../feed_rss_created.xml">
@@ -530,6 +530,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -675,48 +679,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../valuation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    估值分析(Editing)
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../performance/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    表现分析(Editing)
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -813,21 +775,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" CapitalFlowCurrent">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wisecon.stock.capital_flow.current.CapitalFlowCurrent.validate_security_code" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;validate_security_code
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -888,6 +835,90 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main_holder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    主力持仓
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ranking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    股票排行(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../valuation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    估值分析(Editing)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    表现分析(Editing)
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1473,21 +1504,6 @@
       <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;CapitalFlowCurrent
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label=" CapitalFlowCurrent">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wisecon.stock.capital_flow.current.CapitalFlowCurrent.validate_security_code" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;validate_security_code
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2164,7 +2180,8 @@
 <span class="normal"><a href="#__codelineno-0-67">67</a></span>
 <span class="normal"><a href="#__codelineno-0-68">68</a></span>
 <span class="normal"><a href="#__codelineno-0-69">69</a></span>
-<span class="normal"><a href="#__codelineno-0-70">70</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span>
+<span class="normal"><a href="#__codelineno-0-71">71</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TypeMarket</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="n">plate_code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2210,6 +2227,7 @@
 </span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
 </span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
 </span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">request_set</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;当前股票资金流量统计&quot;</span><span class="p">,</span> <span class="p">)</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">validate_max_security_codes</span><span class="p">(</span><span class="n">security_code</span><span class="o">=</span><span class="n">security_code</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
                   </details>
 
@@ -2224,36 +2242,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="wisecon.stock.capital_flow.current.CapitalFlowCurrent.validate_security_code" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">validate_security_code</span>
-
-
-<a href="#wisecon.stock.capital_flow.current.CapitalFlowCurrent.validate_security_code" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">validate_security_code</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
-</span></code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        
-
-            <details class="quote">
-              <summary>Source code in <code>wisecon\stock\capital_flow\current.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-84">84</a></span>
-<span class="normal"><a href="#__codelineno-0-85">85</a></span>
-<span class="normal"><a href="#__codelineno-0-86">86</a></span>
-<span class="normal"><a href="#__codelineno-0-87">87</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84"></a><span class="k">def</span> <span class="nf">validate_security_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">security_code</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">security_code</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;security_code maximum length is 10.&quot;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
 
 
 
@@ -3276,7 +3264,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../performance/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 表现分析(Editing)">
+          <a href="../constituent_stock/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 成分股">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3286,20 +3274,20 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                表现分析(Editing)
+                成分股
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../etf/etf/" class="md-footer__link md-footer__link--next" aria-label="下一页: ETF(Editing)">
+          <a href="../main_holder/" class="md-footer__link md-footer__link--next" aria-label="下一页: 主力持仓">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                ETF(Editing)
+                主力持仓
               </div>
             </div>
             <div class="md-footer__button md-icon">
