@@ -3,12 +3,12 @@ from wisecon.types import APIDataV1RequestData, BaseMapping
 
 
 __all__ = [
-    "StockRankMapping",
-    "StockRank",
+    "StockRankStatisticMapping",
+    "StockRankStatistic",
 ]
 
 
-class StockRankMapping(BaseMapping):
+class StockRankStatisticMapping(BaseMapping):
     """字段映射 个股上榜统计"""
     columns: Dict = {
         "SECUCODE": "证券代码",
@@ -39,7 +39,7 @@ class StockRankMapping(BaseMapping):
     }
 
 
-class StockRank(APIDataV1RequestData):
+class StockRankStatistic(APIDataV1RequestData):
     """查询 个股上榜统计"""
 
     def __init__(
@@ -53,9 +53,9 @@ class StockRank(APIDataV1RequestData):
         """
         Notes:
             ```python
-            from wisecon.stock.main_holder import *
+            from wisecon.stock.ranking import *
 
-            data = StockRank(statistics_cycle="1m").load()
+            data = StockRankStatistic(statistics_cycle="1m").load()
             data.to_frame(chinese_column=True)
             ```
 
@@ -68,7 +68,7 @@ class StockRank(APIDataV1RequestData):
         """
         self.statistics_cycle = statistics_cycle
         self.size = size
-        self.mapping = StockRankMapping()
+        self.mapping = StockRankStatisticMapping()
         self.verbose = verbose
         self.logger = logger
         self.kwargs = kwargs
