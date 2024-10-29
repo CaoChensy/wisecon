@@ -1,6 +1,5 @@
 from typing import Any, Dict, Callable, Optional
-from wisecon.types import BaseMapping
-from .base import StockFormRequestData
+from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
 __all__ = [
@@ -45,7 +44,7 @@ class StockDividendMapping(BaseMapping):
     }
 
 
-class StockDividend(StockFormRequestData):
+class StockDividend(APIDataV1RequestData):
     """查询 上市公司分红数据"""
     def __init__(
             self,

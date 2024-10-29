@@ -1,6 +1,5 @@
 from typing import Any, Dict, Literal, Callable, Optional
-from wisecon.types import BaseMapping
-from .base import StockFormRequestData
+from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
 __all__ = [
@@ -56,7 +55,7 @@ class FreeHolderStockMapping(BaseMapping):
     }
 
 
-class FreeHolderStock(StockFormRequestData):
+class FreeHolderStock(APIDataV1RequestData):
     """查询 上市公司十大流通股东持股"""
     def __init__(
             self,

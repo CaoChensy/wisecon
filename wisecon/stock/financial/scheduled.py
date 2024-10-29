@@ -1,6 +1,5 @@
 from typing import Any, Dict, Callable, Optional
-from wisecon.types import BaseMapping
-from .base import StockFormRequestData
+from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
 __all__ = [
@@ -36,7 +35,7 @@ class ScheduledDisclosureMapping(BaseMapping):
     }
 
 
-class ScheduledDisclosure(StockFormRequestData):
+class ScheduledDisclosure(APIDataV1RequestData):
     """查询 上市公司预约披露时间"""
     def __init__(
             self,
