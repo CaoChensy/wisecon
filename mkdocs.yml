@@ -185,7 +185,7 @@ nav:
           - 资金流分析: api/stock/capital_flow.md
           - 主力持仓: api/stock/main_holder.md
           - 估值分析: api/stock/valuation.md
-          - 股票排行(Editing): api/stock/ranking.md
+          - 股票排行: api/stock/ranking.md
       - ETF(Editing): api/etf/etf.md
       - 公募基金(Editing): api/fund/value.md
       - 宏观经济(Editing): api/macro.md
