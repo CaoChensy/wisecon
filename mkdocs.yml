@@ -188,7 +188,6 @@ nav:
           - 股票排行: api/stock/ranking.md
           - 新上市: api/stock/new_ipo.md
           - ETF行情: api/stock/etf.md
-      - ETF(Editing): api/etf/etf.md
       - 公募基金(Editing): api/fund/value.md
       - 宏观经济(Editing): api/macro.md
       - 财经文本:
