@@ -20,6 +20,21 @@ class APICListRequestData(BaseRequestData):
     def base_url(self) -> str:
         return "https://push2.eastmoney.com/api/qt/clist/get"
 
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "pn": 1,
+            "po": 1,
+            "np": 1,
+            "fltt": 2,
+            "invt": 2,
+            "dect": 1,
+            "wbp2u": "|0|0|0|web",
+            "_": time2int(),
+        }
+        params.update(update)
+        return params
+
     def clean_json(
             self,
             json_data: Optional[Dict],
