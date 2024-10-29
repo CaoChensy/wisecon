@@ -9,10 +9,6 @@
          <lastmod>2024-10-29</lastmod>
     </url>
     <url>
-         <loc>https://caochensy.github.io/wisecon/api/etf/etf/</loc>
-         <lastmod>2024-10-29</lastmod>
-    </url>
-    <url>
          <loc>https://caochensy.github.io/wisecon/api/fund/value/</loc>
          <lastmod>2024-10-29</lastmod>
     </url>
@@ -22,6 +18,10 @@
     </url>
     <url>
          <loc>https://caochensy.github.io/wisecon/api/stock/constituent_stock/</loc>
+         <lastmod>2024-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://caochensy.github.io/wisecon/api/stock/etf/</loc>
          <lastmod>2024-10-29</lastmod>
     </url>
     <url>
