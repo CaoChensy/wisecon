@@ -81,6 +81,8 @@ class CurrentMarket(APICListRequestData):
         """
         Notes:
             ```python
+            from wisecon.stock.market import *
+
             # 查询ETF市场当前行情
             data = CurrentMarket(market="ETF",).load()
             data.to_frame(chinese_column=True)
