@@ -231,28 +231,28 @@ class NewIPOList(APIDataV1RequestData):
             ```python
             from wisecon.stock.new_ipo import *
 
-            data = NewIPOList(market="全部股票", verbose=True).load()
+            data = NewIPOList(market="全部股票").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="沪市主板", verbose=True).load()
+            data = NewIPOList(market="沪市主板").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="科创板", verbose=True).load()
+            data = NewIPOList(market="科创板").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="深市主板", verbose=True).load()
+            data = NewIPOList(market="深市主板").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="创业板", verbose=True).load()
+            data = NewIPOList(market="创业板").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="北交所", verbose=True).load()
+            data = NewIPOList(market="北交所").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="可转债", verbose=True).load()
+            data = NewIPOList(market="可转债").load()
             data.to_frame(chinese_column=True)
 
-            data = NewIPOList(market="REITs", verbose=True).load()
+            data = NewIPOList(market="REITs").load()
             data.to_frame(chinese_column=True)
             ```
 
