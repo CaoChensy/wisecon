@@ -43,7 +43,19 @@ class ETFGoldHistory(APIDataV1RequestData):
         """
         Notes:
             ```python
+            from wisecon.stock.etf import *
 
+            # 1. 查询 ETF白银历史行情
+            data = ETFGoldHistory(market="ETF白银").load()
+            data.to_frame(chinese_column=True)
+
+            # 2. 查询 ETF黄金某时点
+            data = ETFGoldHistory(market="ETF黄金", date="2024-10-25").load()
+            data.to_frame(chinese_column=True)
+
+            # 3. 查询 ETF黄金历史行情，并指定查询开始日期
+            data = ETFGoldHistory(market="ETF黄金", start_date="2024-10-25").load()
+            data.to_frame(chinese_column=True)
             ```
 
         Args:
