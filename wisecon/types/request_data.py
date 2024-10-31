@@ -112,7 +112,7 @@ class BaseRequestData(LoggerMixin, ValidateParams):
     def request_set(
             self,
             _headers: Optional[Dict] = None,
-            response_type: Optional[Literal["json", "text"]] = "json",
+            response_type: Optional[Literal["json", "text", "html"]] = "json",
             description: Optional[str] = "",
             other_headers: Optional[Dict] = None
     ):
@@ -130,6 +130,10 @@ class BaseRequestData(LoggerMixin, ValidateParams):
     def params(self) -> Dict:
         """"""
         return dict()
+
+    def params_drop_none(self, params: Dict) -> Dict:
+        """"""
+        return {k: v for k, v in params.items() if v is not None}
 
     def request(self) -> Response:
         """"""
@@ -149,9 +153,20 @@ class BaseRequestData(LoggerMixin, ValidateParams):
         response = self.request()
         return response.text
 
+    def request_html(self) -> bytes:
+        """"""
+        response = self.request()
+        return response.content
+
     def data(self, data: List[Dict], metadata: Optional[Metadata]) -> ResponseData:
         """"""
         return ResponseData(data=data, metadata=metadata)
+
+    def clean_html(
+            self,
+            html: Optional[bytes],
+    ) -> List[Dict]:
+        return []
 
     def clean_content(
             self,
@@ -171,6 +186,9 @@ class BaseRequestData(LoggerMixin, ValidateParams):
         if self.response_type == "text":
             content = self.request_text()
             data = self.clean_content(content)
+        elif self.response_type == "html":
+            html = self.request_html()
+            data = self.clean_html(html)
         elif self.response_type == "json":
             json_data = self.request_json()
             data = self.clean_json(json_data)
