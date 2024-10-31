@@ -181,7 +181,7 @@ nav:
           - Tick: api/stock/tick.md
           - 股东分析: api/stock/holder.md
           - 上市公司财务报表: api/stock/financial.md
-          - 成分股: api/stock/constituent_stock.md
+          - 成分股与市场行情: api/stock/constituent_stock.md
           - 资金流分析: api/stock/capital_flow.md
           - 主力持仓: api/stock/main_holder.md
           - 估值分析: api/stock/valuation.md
