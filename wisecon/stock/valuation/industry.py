@@ -50,7 +50,7 @@ class IndustryValuation(APIDataV1RequestData):
         Notes:
             ```python
             # 1. 查询某日期全部行业估值
-            data = IndustryValuation(date="2024-10-10", verbose=True).load()
+            data = IndustryValuation(date="2024-10-10").load()
             data.to_frame(chinese_column=True)
 
             # 2. 查询某周期某行业估值
