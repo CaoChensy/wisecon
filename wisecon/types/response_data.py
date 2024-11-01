@@ -16,8 +16,12 @@ class Metadata(BaseModel):
     description: str = Field(default="")
     response: Dict[str, Any] = Field(default={})
 
-    def __init__(self, **kwargs):
-        """"""
+    def __init__(self, **kwargs: Any):
+        """元数据
+
+        Args:
+            **kwargs: 参数
+        """
         super().__init__(**kwargs)
         self.columns = {k: v for k, v in self.columns.items() if v}
 
@@ -31,7 +35,7 @@ class ResponseData(BaseModel):
             self,
             data: List[Dict],
             metadata: Optional[Metadata] = None,
-            **kwargs
+            **kwargs: Any,
     ):
         """封装请求返回数据方法类
 
@@ -101,7 +105,7 @@ class ResponseData(BaseModel):
     def to_markdown(
             self,
             chinese_column: Optional[bool] = False,
-            **kwargs,
+            **kwargs: Any,
     ) -> str:
         """返回 Markdown 格式的数据
 
@@ -185,8 +189,8 @@ class ResponseData(BaseModel):
     def to_string(
             self,
             chinese_column: Optional[bool] = False,
-            **kwargs
-    ):
+            **kwargs: Any
+    ) -> str:
         """将数据转换为 string 格式
 
         Args:
@@ -201,11 +205,11 @@ class ResponseData(BaseModel):
     def to_sql(
             self,
             name: str,
-            con,
+            con: Any,
             chinese_column: Optional[bool] = False,
             if_exists: Literal["fail", "replace", "append"] = "fail",
             index: Optional[bool] = True,
-            **kwargs
+            **kwargs: Any,
     ):
         """将数据存储至 Database 中
 
@@ -227,7 +231,7 @@ class ResponseData(BaseModel):
             name: str,
             chinese_column: Optional[bool] = False,
             if_exists: Literal["fail", "replace", "append"] = "replace",
-            **kwargs,
+            **kwargs: Any,
     ):
         """将数据存储至 duckdb 数据库中
 

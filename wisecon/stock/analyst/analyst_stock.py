@@ -57,7 +57,7 @@ class ResearcherStock(APIAnalystInvest):
             ```
 
         Args:
-            industry_code: 行业代码
+            analyst_code: 分析师代码
             current: 是否当前持股
             size: 返回数据量
             verbose: 是否打印日志

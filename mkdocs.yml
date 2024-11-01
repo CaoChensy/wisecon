@@ -201,6 +201,6 @@ nav:
       - 其他工具:
           - Time: api/utils/time.md
       - Typing:
-          - Data: api/typing/data.md
+          - Data: api/typing/response_data.md
   - Blog:
       - blog: blog/index.md
