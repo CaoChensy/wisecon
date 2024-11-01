@@ -189,6 +189,7 @@ nav:
           - 新上市: api/stock/new_ipo.md
           - ETF行情: api/stock/etf.md
           - 融资融券: api/stock/margin.md
+          - 行业/地区/概念编码: api/stock/plate_mapping.md
       - 公募基金(Editing): api/fund/value.md
       - 宏观经济(Editing): api/macro.md
       - 财经文本:

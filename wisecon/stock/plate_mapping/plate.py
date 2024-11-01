@@ -30,6 +30,14 @@ class PlateCode(APICListRequestData):
             # 1. 查询有哪些概念板块
             data = PlateCode(plate_type="概念").load()
             data.to_frame(chinese_column=True)
+
+            # 2. 查询有哪些地区板块
+            data = PlateCode(plate_type="地区").load()
+            data.to_frame(chinese_column=True)
+
+            # 3. 查询有哪些行业板块
+            data = PlateCode(plate_type="行业").load()
+            data.to_frame(chinese_column=True)
             ```
 
         Args:
