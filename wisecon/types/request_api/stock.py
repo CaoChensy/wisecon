@@ -11,6 +11,7 @@ __all__ = [
     "APIStockKline",
     "APIStockKlineWithSSE",
     "APIMainHolder",
+    "APIAnalystInvest",
     "APIMainHolderDetail"
 ]
 
@@ -211,6 +212,34 @@ class APIMainHolder(BaseRequestData):
         """"""
         data = json_data.pop("data", {})
         self.metadata.response = json_data
+        return data
+
+
+class APIAnalystInvest(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://data.eastmoney.com/dataapi/invest/list"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "columns": "ALL",
+            "source": "WEB",
+            "client": "WEB",
+            "pageNumber": "1",
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.pop("result", {})
+        data = response.pop("data", [])
+        self.metadata.response = response
         return data
 
 
