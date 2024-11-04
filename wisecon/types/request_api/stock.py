@@ -12,7 +12,8 @@ __all__ = [
     "APIStockKlineWithSSE",
     "APIMainHolder",
     "APIAnalystInvest",
-    "APIMainHolderDetail"
+    "APIMainHolderDetail",
+    "APIStockTrends2",
 ]
 
 
@@ -267,5 +268,49 @@ class APIMainHolderDetail(BaseRequestData):
         data = json_data.pop("data", {})
         self.metadata.response = json_data
         return data
+
+
+class APIStockTrends2(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://push2his.eastmoney.com/api/qt/stock/trends2/get"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "fields1": "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f17",
+            "fields2": "f51,f52,f53,f54,f55,f56,f57,f58",
+            "mpi": "1000",
+            "iscr": "0",
+            "iscca": "0",
+            "wbp2u": "|0|0|0|web",
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """
+        Args:
+            json_data:
+
+        Returns:
+
+
+            response = json_data.get("data", {})
+            data = response.pop("klines")
+            data = [dict(zip(columns, item.split(","))) for item in data]
+            self.metadata.response = response
+        """
+        columns = list(self.mapping.columns.keys())
+        response = json_data.pop("data", {})
+        data = response.pop("trends", [])
+        data = [dict(zip(columns, item.split(","))) for item in data]
+        self.metadata.response = response
+        return data
+
 
 # todo: 封装请求数据类
