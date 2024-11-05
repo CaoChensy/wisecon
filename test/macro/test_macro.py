@@ -159,7 +159,7 @@ class TestCPI(unittest.TestCase):
         """"""
         data = StockOpen(size=10).load()
         data.show_columns()
-        print(data.to_frame(chinese_column=True))
+        print(data.to_markdown(chinese_column=True))
 
     def test_stock_statistics(self):
         """"""
