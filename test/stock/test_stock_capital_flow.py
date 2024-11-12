@@ -127,6 +127,11 @@ class TestCurrentCapitalFlow(unittest.TestCase):
         print(data.metadata)
         print(data.to_frame(chinese_column=True).to_markdown())
 
+    def test_market_sh(self):
+        """"""
+        data = CapitalFlowCurrent(market="沪市", verbose=True, size=10).load()
+        print(data.to_markdown(chinese_column=True))
+
     def test_stock(self):
         """"""
         data = CapitalFlowCurrent(security_code=["601012", "300750"], verbose=True, size=10).load()
