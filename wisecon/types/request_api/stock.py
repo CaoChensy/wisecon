@@ -5,8 +5,10 @@ from wisecon.types.request_data import BaseRequestData
 
 __all__ = [
     "APICListRequestData",
+    "APIStockFFlowKLineRequestData",
     "APIStockFFlowDayLineRequestData",
     "APIUListNPRequestData",
+    "APIDataRequestData",
     "APIDataV1RequestData",
     "APIStockKline",
     "APIStockKlineWithSSE",
@@ -49,6 +51,24 @@ class APICListRequestData(BaseRequestData):
         return data
 
 
+class APIStockFFlowKLineRequestData(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        return "https://push2.eastmoney.com/api/qt/stock/fflow/kline/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        columns = list(self.mapping.columns.keys())
+        response = json_data.get("data", {})
+        data = response.pop("klines")
+        data = [dict(zip(columns, item.split(","))) for item in data]
+        self.metadata.response = response
+        return data
+
+
 class APIStockFFlowDayLineRequestData(BaseRequestData):
     """"""
     def base_url(self) -> str:
@@ -81,6 +101,62 @@ class APIUListNPRequestData(BaseRequestData):
         data = response.pop("diff")
         self.metadata.response = response
         return data
+
+
+class APIDataRequestData(BaseRequestData):
+    """"""
+    conditions: Optional[List[str]]
+    security_code: Optional[str]
+    start_date: Optional[str]
+    end_date: Optional[str]
+    date: Optional[str]
+
+    def base_url(self) -> str:
+        """"""
+        return "https://datacenter-web.eastmoney.com/api/data/get"
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data.get("result", {})
+        try:
+            data = response.pop("data")
+            self.metadata.response = response
+            return data
+        except Exception as e:
+            raise ValueError(f"Error in cleaning json data; response: {json_data}")
+
+    def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
+        """"""
+        if hasattr(self, "start_date") and self.start_date:
+            self.conditions.append(f"({date_name}>='{self.start_date}')")
+        if hasattr(self, "end_date") and self.end_date:
+            self.conditions.append(f"({date_name}<='{self.end_date}')")
+        if hasattr(self, "date") and self.date:
+            self.conditions.append(f"({date_name}='{self.date}')")
+
+    def filter_security_code(self):
+        """"""
+        if self.security_code:
+            self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "extraCols": "",
+            "filter": "",
+            "sr": "",
+            "st": "",
+            "token": "",
+            "var": "",
+            "source": "QuoteWeb",
+            "client": "WEB",
+            "_": time2int(),
+        }
+        params.update(update)
+        return params
 
 
 class APIDataV1RequestData(BaseRequestData):

@@ -78,7 +78,10 @@ class TestMarginTradePlate(unittest.TestCase):
 
 
 class TestMarginTradeStock(unittest.TestCase):
-    """"""
+    """
+    融资融券交易明细:
+        个股融资融券
+    """
     def test_margin_trade_stock_total(self):
         """"""
         data = MarginTradingStock(date="2024-10-30", cycle=1, verbose=True).load()
@@ -94,3 +97,14 @@ class TestMarginTradeStock(unittest.TestCase):
         data = MarginTradingStock(market="科创板", date="2024-10-30", cycle=1, verbose=True).load()
         print(data.to_frame(chinese_column=True).to_markdown())
 
+
+class TestDailyMarginTrade(unittest.TestCase):
+    """
+    融资融券交易明细:
+        日融资融券交易明细
+    """
+
+    def test_margin_trade_daily(self):
+        """"""
+        data = MarginTradingDaily().load()
+        print(data.to_markdown(chinese_column=True))
