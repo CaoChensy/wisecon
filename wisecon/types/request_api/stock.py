@@ -56,6 +56,14 @@ class APIStockFFlowKLineRequestData(BaseRequestData):
     def base_url(self) -> str:
         return "https://push2.eastmoney.com/api/qt/stock/fflow/kline/get"
 
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "_": time2int(),
+        }
+        params.update(update)
+        return params
+
     def clean_json(
             self,
             json_data: Optional[Dict],

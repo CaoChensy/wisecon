@@ -145,3 +145,47 @@ class TestCurrentCapitalFlow(unittest.TestCase):
         pprint.pprint(data.to_dict(chinese_column=True)[-1])
         print(data.metadata)
         print(data.to_frame(chinese_column=True).to_markdown())
+
+
+class TestMinutesCapitalFlow(unittest.TestCase):
+
+    def test_columns(self):
+        """"""
+        data = CapitalFlowMinutes(market="沪B", verbose=True, size=10).load()
+        pprint.pprint(data.to_dict(chinese_column=True)[-1])
+        print(data.metadata)
+
+    def test_market_minutes(self):
+        """"""
+        data = CapitalFlowMinutes(market="沪深两市", verbose=True, size=10).load()
+        print(data.to_frame().to_markdown())
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_market_minutes_sh(self):
+        """"""
+        data = CapitalFlowMinutes(market="沪市", verbose=True, size=10).load()
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_plate_minutes_conception(self):
+        """"""
+        data = CapitalFlowMinutes(plate_code="BK1044", verbose=True, size=10).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_plate_Minutes_zone(self):
+        """BK0158"""
+        data = CapitalFlowMinutes(plate_code="BK0158", verbose=True, size=10).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_plate_Minutes_industry(self):
+        """BK1027"""
+        data = CapitalFlowMinutes(plate_code="BK1027", verbose=True, size=10).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
+
+    def test_security_code(self):
+        """"""
+        data = CapitalFlowMinutes(security_code="300750", size=10).load()
+        print(data.metadata.response)
+        print(data.to_frame(chinese_column=True).to_markdown())
