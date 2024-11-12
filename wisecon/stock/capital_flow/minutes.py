@@ -81,7 +81,6 @@ class CapitalFlowMinutes(APIStockFFlowKLineRequestData):
             plate_code: 板块代码, 支持地区板块、行业板块、概念板块
             security_code: 股票代码
             size: 数据条数
-            sort_by: 排序字段名称, 可通过 `CapitalFlowMinutesMapping` 查询
             verbose: 是否打印日志
             logger: 自定义日志函数
             **kwargs: 其他参数

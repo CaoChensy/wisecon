@@ -59,7 +59,7 @@ class KLine(APIStockKline):
         Args:
             security_code: 股票代码
             plate_code: 板块代码
-            end: 截止日期
+            end_date: 截止日期
             size: 返回数据条数
             period: K线周期`["1m", "5m", "15m", "30m", "60m", "1D", "1W", "1M"]`
             adjust: 复权类型`["前复权", "后赋权", "不赋权"]`
