@@ -82,11 +82,12 @@ class ValidateParams:
         """"""
         self.validate_code(code)
 
-    def validate_max_security_codes(self, security_code: Union[str, List[str]]) -> None:
+    def validate_max_security_codes(self, security_code: Union[None, str, List[str]]) -> None:
         """"""
-        self.validate_code(code=security_code)
-        if isinstance(security_code, list) and len(security_code) > 10:
-            raise ValueError("security_code maximum length is 10.")
+        if security_code:
+            self.validate_code(code=security_code)
+            if isinstance(security_code, list) and len(security_code) > 10:
+                raise ValueError("security_code maximum length is 10.")
 
     def validate_size(self, size: int, max_size: int):
         """"""
