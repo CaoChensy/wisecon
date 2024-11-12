@@ -14,6 +14,7 @@ __all__ = [
     "APIAnalystInvest",
     "APIMainHolderDetail",
     "APIStockTrends2",
+    "APIMarketSummary",
 ]
 
 
@@ -310,6 +311,29 @@ class APIStockTrends2(BaseRequestData):
         data = response.pop("trends", [])
         data = [dict(zip(columns, item.split(","))) for item in data]
         self.metadata.response = response
+        return data
+
+
+class APIMarketSummary(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://quote.eastmoney.com/newapi/sczm"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {}
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        data_name = ["ss", "cyb", "hs"]
+        data = [json_data.pop(d_name) for d_name in data_name]
+        self.metadata.response = json_data
         return data
 
 

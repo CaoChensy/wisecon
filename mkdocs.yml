@@ -177,6 +177,7 @@ nav:
       - Quick start: index.md
   - API Documentation:
       - 证券数据:
+          - 市场全貌: api/stock/market.md
           - KLine: api/stock/kline.md
           - Tick: api/stock/tick.md
           - 股东分析: api/stock/holder.md

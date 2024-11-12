@@ -33,3 +33,12 @@ class TestETFMarket(unittest.TestCase):
         """"""
         data = CurrentMarket(market="上证AB股比价").load()
         print(data.to_frame(chinese_column=True).to_markdown())
+
+
+class TestLastDayMarketSummary(unittest.TestCase):
+    """"""
+    def test_last_day_market_summary(self):
+        """"""
+        data = LastDayMarketSummary().load()
+        print(data.to_frame(chinese_column=True).to_markdown())
+
