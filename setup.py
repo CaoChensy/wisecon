@@ -2,11 +2,11 @@ import io
 import setuptools
 from zlai import __version__
 
-__title__ = "quant_tools"
+__title__ = "wisecon"
 __license__ = "MIT"
-__description__ = "llm"
+__description__ = "Quant/Data API"
 __author_email__ = "chensy.cao@foxmail.com"
-__url__ = "https://quant_tools-llm.github.io/quant_tools-doc/#/"
+__url__ = "https://caochensy.github.io/wisecon/"
 
 
 with open("requirements.txt", "r") as f:
