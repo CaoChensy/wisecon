@@ -32,6 +32,7 @@ class KLine(APIStockKline):
     """
     def __init__(
             self,
+            market_code: Optional[str] = None,
             security_code: Optional[str] = None,
             plate_code: Optional[str] = None,
             end_date: Optional[str] = "20500101",
@@ -47,6 +48,10 @@ class KLine(APIStockKline):
             ```python
             from wisecon.stock.kline import *
 
+            # 0. 查询沪深300 K线数据
+            data = KLine(market_code="000300", period="1D", size=5).load()
+            data.to_frame(chinese_column=True)
+
             # 1. 查询股票的 K线数据
             data = KLine(security_code="300069", period="1D", size=5).load()
             data.to_frame(chinese_column=True)
@@ -57,6 +62,7 @@ class KLine(APIStockKline):
             ```
 
         Args:
+            market_code: 市场代码
             security_code: 股票代码
             plate_code: 板块代码
             end_date: 截止日期
@@ -67,6 +73,7 @@ class KLine(APIStockKline):
             logger: 日志对象
             **kwargs: 其他参数
         """
+        self.market_code = market_code
         self.security_code = security_code
         self.plate_code = plate_code
         self.end_date = end_date
@@ -95,7 +102,9 @@ class KLine(APIStockKline):
 
     def params_secid(self) -> str:
         """"""
-        if self.security_code:
+        if self.market_code:
+            return f"1.{self.market_code}"
+        elif self.security_code:
             return f"0.{self.security_code}"
         elif self.plate_code:
             return f"90.{self.plate_code}"
