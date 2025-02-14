@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable, Optional, Literal
+from typing import Any, Dict, Callable, Optional, Literal, Annotated
 from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
@@ -31,14 +31,14 @@ class ETFGoldHistory(APIDataV1RequestData):
     """查询 白银/黄金ETF历史行情"""
     def __init__(
             self,
-            market: Literal["ETF白银", "ETF黄金"] = "ETF黄金",
-            start_date: Optional[str] = None,
-            end_date: Optional[str] = None,
-            date: Optional[str] = None,
-            size: Optional[int] = 100,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            market: Annotated[Literal["ETF白银", "ETF黄金"], "只能指定['ETF白银', 'ETF黄金']两个市场", False] = "ETF黄金",
+            start_date: Annotated[Optional[str], "", False] = None,
+            end_date: Annotated[Optional[str], "", False] = None,
+            date: Annotated[Optional[str], "", False] = None,
+            size: Annotated[Optional[int], "", False] = 100,
+            verbose: Annotated[Optional[bool], "", False] = False,
+            logger: Annotated[Optional[Callable], "", False] = None,
+            **kwargs: Annotated[Any, "", False]
     ):
         """
         Notes:
