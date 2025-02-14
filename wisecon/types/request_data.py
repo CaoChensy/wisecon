@@ -140,7 +140,7 @@ class BaseRequestData(LoggerMixin, ValidateParams):
         """"""
         base_url = self.base_url()
         params = self.params()
-        self._logger(msg=f"URL: {assemble_url(base_url, params)}\n", color="green")
+        self._logger(msg=f"[URL] {assemble_url(base_url, params)}\n", color="green")
         response = requests.get(base_url, params=params, headers=self.headers)
         return response
 
