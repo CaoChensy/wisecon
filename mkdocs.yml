@@ -199,6 +199,8 @@ nav:
           - 财经研报(Editing): api/text/reports.md
       - 其他数据:
           - 汽车销售数据: api/other/car_sales.md
+          - 电影票房数据: api/other/movie.md
+          - 电视收视率: api/other/tv.md
       - 其他工具:
           - Time: api/utils/time.md
       - Typing:
