@@ -2,10 +2,12 @@ import os
 import time
 import random
 import requests
+from requests import Response
 from pydantic import BaseModel
 from typing import List, Dict, Union, Literal, Optional
 from wisecon.utils import tqdm_progress_bar
-from wisecon.types.request_data import BaseRequestData
+from wisecon.types.request_data import BaseRequestData, assemble_url
+from wisecon.types.response_data import ResponseData
 
 
 __all__ = [
@@ -27,6 +29,7 @@ class ReportData(BaseModel):
 
 class APIReportRequest(BaseRequestData):
     """"""
+    page_no: int
     reports_data: List[ReportData]
     q_type: Optional[Union[int, str]] = None
     report_type: Optional[TypeReport] = "*"
@@ -56,15 +59,6 @@ class APIReportRequest(BaseRequestData):
         params.update(update)
         return params
 
-    def clean_json(
-            self,
-            json_data: Optional[Dict],
-    ) -> List[Dict]:
-        """"""
-        data = json_data.pop("data")
-        self.metadata.response = json_data
-        return data
-
     def random_cb(self) -> str:
         """"""
         return str(int(random.random() * 1E7 + 1))
@@ -90,6 +84,34 @@ class APIReportRequest(BaseRequestData):
                 _report.error = str(e)
             self.reports_data.append(_report)
 
+    def data_page(self):
+        """"""
+        base_url = self.base_url()
+        params = self.params()
+        self._logger(msg=f"[URL] {assemble_url(base_url, params)}\n", color="green")
+        response = requests.get(base_url, params=params, headers=self.headers)
+        json_data = response.json()
+        total_page = json_data.get("TotalPage")
+        page_no = json_data.get("pageNo")
+        return json_data, total_page, page_no
+
+    def request(self) -> List[Dict]:
+        """"""
+        json_data, total_page, page_no = self.data_page()
+        data = json_data.pop("data")
+        self.metadata.response = json_data
+        while page_no < total_page:
+            self.page_no += 1
+            json_data, total_page, page_no = self.data_page()
+            page_data = json_data.pop("data")
+            data.extend(page_data)
+            self.metadata.response = json_data
+        return data
+
+    def load(self) -> ResponseData:
+        """"""
+        return self.data(data=self.request(), metadata=self.metadata)
+
     def save(
             self,
             path: str = "./reports",
@@ -101,15 +123,23 @@ class APIReportRequest(BaseRequestData):
         cache_path = os.path.join(path, "cache")
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
+        pdf_path = cache_path = os.path.join(path, "pdf")
+        if not os.path.exists(pdf_path):
+            os.makedirs(pdf_path)
 
         if info_codes is None:
-            report_data = self.load().to_frame()
-            info_codes = report_data["infoCode"].tolist()
-            report_data.to_csv(os.path.join(cache_path, f"{str(int(time.time() * 1E3))}.csv"), index=False)
-
-        self.bytes_file(info_codes=info_codes)
-        for _report in self.reports_data:
-            if isinstance(_report.content, bytes):
-                file_path = os.path.join(path, f"{_report.code}.pdf")
-                with open(file_path, "wb") as f:
-                    f.write(_report.content)
+            response_data = self.load()
+            if len(response_data.data) > 0:
+                report_data = response_data.to_frame()
+                info_codes = report_data["infoCode"].tolist()
+                report_data.to_csv(os.path.join(cache_path, f"{str(int(time.time() * 1E3))}.csv"), index=False)
+            else:
+                info_codes = []
+                self._logger(msg=f"[{__class__.__name__}] Not find report.")
+        if len(info_codes) > 0:
+            self.bytes_file(info_codes=info_codes)
+            for _report in self.reports_data:
+                if isinstance(_report.content, bytes):
+                    file_path = os.path.join(pdf_path, f"{_report.code}.pdf")
+                    with open(file_path, "wb") as f:
+                        f.write(_report.content)
