@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable, Optional, Literal
+from typing import Any, Dict, Callable, Optional, Literal, Annotated
 from wisecon.types import BaseMapping, APIStockTrends2
 
 
@@ -26,14 +26,16 @@ class KlineMin(APIStockTrends2):
     """查询 股票-KlineMin，可以获取最大近5天的分钟级K线数据"""
     def __init__(
             self,
-            security_code: Optional[str] = None,
-            plate_code: Optional[str] = None,
-            n_days: Optional[int] = 1,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            security_code: Annotated[Optional[str], "证券代码", False] = None,
+            plate_code: Annotated[Optional[str], "板块代码", False] = None,
+            n_days: Annotated[Optional[int], "数据时限", False] = 1,
+            verbose: Annotated[Optional[bool], "是否打印日志", False] = False,
+            logger: Annotated[Optional[Callable], "日志对象", False] = None,
+            **kwargs: Annotated[Any, "其他参数", False]
     ):
         """
+        查询股票分钟级的K线数据
+
         Notes:
             ```python
             from wisecon.stock.kline import *

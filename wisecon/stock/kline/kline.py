@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable, Optional, Literal
+from typing import Any, Dict, Callable, Optional, Literal, Annotated
 from wisecon.types import BaseMapping, APIStockKline
 
 
@@ -32,16 +32,16 @@ class KLine(APIStockKline):
     """
     def __init__(
             self,
-            market_code: Optional[str] = None,
-            security_code: Optional[str] = None,
-            plate_code: Optional[str] = None,
-            end_date: Optional[str] = "20500101",
-            size: Optional[int] = 120,
-            period: Literal["1m", "5m", "15m", "30m", "60m", "1D", "1W", "1M"] = "5m",
-            adjust: Literal["前复权", "后赋权", "不赋权"] = "前复权",
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            market_code: Annotated[Optional[str], "市场代码", False] = None,
+            security_code: Annotated[Optional[str], "证券代码", False] = None,
+            plate_code: Annotated[Optional[str], "板块代码", False] = None,
+            end_date: Annotated[Optional[str], "开始时间", False] = "20500101",
+            size: Annotated[Optional[int], "返回数据条数", False] = 120,
+            period: Annotated[Literal["1m", "5m", "15m", "30m", "60m", "1D", "1W", "1M"], "", False] = "5m",
+            adjust: Annotated[Literal["前复权", "后赋权", "不赋权"], "", False] = "前复权",
+            verbose: Annotated[Optional[bool], "是否显示日志", False] = False,
+            logger: Annotated[Optional[Callable], "日志对象", False] = None,
+            **kwargs: Annotated[Any, "其他参数", False]
     ):
         """
         Notes:
