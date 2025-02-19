@@ -34,7 +34,7 @@ class KlineMin(APIStockTrends2):
             **kwargs: Annotated[Any, "其他参数", False]
     ):
         """
-        查询股票分钟级的K线数据
+        查询股票1分钟级的K线数据
 
         Notes:
             ```python
