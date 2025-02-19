@@ -6,7 +6,7 @@ class TestKLine(unittest.TestCase):
 
     def test_300(self):
         """"""
-        data = KLine(market_code="000300", period="1D", size=5).load()
+        data = KLine(market_code="000300", period="1D", size=5, verbose=True).load()
         print(data.to_markdown(chinese_column=True))
 
     def test_stock(self):
