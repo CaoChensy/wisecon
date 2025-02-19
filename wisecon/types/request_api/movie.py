@@ -11,7 +11,7 @@ __all__ = [
 class APIMovieRequestData(BaseRequestData):
     """"""
     def base_url(self) -> str:
-        return "https://piaofang.maoyan.com/i/api/getBoxList"
+        return "https://piaofang.maoyan.com/getBoxList"
 
     def base_param(self, update: Dict) -> Dict:
         """"""

@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable, Optional
+from typing import Any, Dict, Callable, Optional, Annotated
 from wisecon.types import BaseMapping, APIMarketSummary
 
 
@@ -23,19 +23,19 @@ class LastDayMarketSummaryMapping(BaseMapping):
 
 
 class LastDayMarketSummary(APIMarketSummary):
-    """查询 市场总貌"""
+    """查询 查询昨日市场（深市、沪市、创业板）总体交易数据"""
     def __init__(
             self,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            verbose: Annotated[Optional[bool], "", False] = False,
+            logger: Annotated[Optional[Callable], "", False] = None,
+            **kwargs: Annotated[Any, "", False],
     ):
         """
         Notes:
             ```python
             from wisecon.stock.market import *
 
-            # 查询ETF市场当前行情
+            # 市场总貌：查询昨日市场（深市、沪市、创业板）总体交易数据
             data = LastDayMarketSummary().load()
             data.to_frame(chinese_column=True)
             ```

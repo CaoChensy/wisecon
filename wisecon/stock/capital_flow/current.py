@@ -1,4 +1,4 @@
-from typing import Any, List, Dict, Union, Literal, Callable, Optional
+from typing import Any, List, Dict, Union, Literal, Callable, Optional, Annotated
 from .base import CapitalFlowCurrentBaseMapping, CapitalFlowCurrentRequestData
 
 
@@ -24,15 +24,21 @@ class CapitalFlowCurrent(CapitalFlowCurrentRequestData):
     """
     def __init__(
             self,
-            market: Optional[TypeMarket] = None,
-            plate_code: Optional[Union[str, List[str]]] = None,
-            security_code: Optional[Union[str, List[str]]] = None,
-            size: Optional[int] = 0,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            market: Annotated[Optional[TypeMarket], "市场类型", False] = None,
+            plate_code: Annotated[Optional[Union[str, List[str]]], "板块代码", False] = None,
+            security_code: Annotated[Optional[Union[str, List[str]]], "证券代码", False] = None,
+            size: Annotated[Optional[int], "数据量大小", False] = 10,
+            verbose: Annotated[Optional[bool], "是否打印日志", False] = False,
+            logger: Annotated[Optional[Callable], "日志打印函数", False] = None,
+            **kwargs: Annotated[Any, "其他参数", False],
     ):
         """
+        查询 当前股票资金流量统计，最多可以同步查询10条，超过10条请使用 `StockFlow` 方法。
+
+        1. 查询沪深两市市场当前资金动向数据
+        2. 查询某行业、地区、概念板块当前资金动向数据
+        3. 查询具体股票的当前资金动向数据
+
         Notes:
             ```python
             from wisecon.stock.capital_flow import *

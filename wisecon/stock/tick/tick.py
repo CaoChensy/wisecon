@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable, Optional, List
+from typing import Any, Dict, Callable, Annotated, Optional
 from wisecon.types import BaseMapping, APIStockKlineWithSSE
 from wisecon.types.columns import StockFeatures
 
@@ -18,16 +18,19 @@ class Tick(APIStockKlineWithSSE):
     """查询 股票实时tick数据"""
     def __init__(
             self,
-            code: Optional[str] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            code: Annotated[Optional[str], "", False] = None,
+            verbose: Annotated[Optional[bool], "", False] = False,
+            logger: Annotated[Optional[Callable], "", False] = None,
+            **kwargs: Annotated[Any, "", False],
     ):
         """
+        股票实时tick数据
+
         Notes:
             ```python
             from wisecon.stock.tick import Tick
 
+            # 查询证券代码301618的实时tick数据
             data = Tick(code="301618").load()
             print(data.to_frame(chinese_column=True))
             ```

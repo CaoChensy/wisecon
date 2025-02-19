@@ -1,4 +1,4 @@
-from typing import Any, Dict, Literal, Callable, Optional
+from typing import Any, Dict, Literal, Callable, Optional, Annotated
 from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
@@ -78,22 +78,23 @@ class StockBalance(APIDataV1RequestData):
     """查询 上市公司资产负债报表"""
     def __init__(
             self,
-            security_code: Optional[str] = None,
-            market: Optional[TypeMarket] = None,
-            industry_name: Optional[str] = None,
-            size: Optional[int] = 50,
-            start_date: Optional[str] = None,
-            end_date: Optional[str] = None,
-            date: Optional[str] = None,
-            verbose: Optional[bool] = False,
-            logger: Optional[Callable] = None,
-            **kwargs: Any
+            security_code: Annotated[Optional[str], "证券代码", False] = None,
+            market: Annotated[Optional[TypeMarket], '市场名称: ["沪深A股", "沪市A股", "科创板", "深市A股", "创业板", "京市A股"]', False] = None,
+            industry_name: Annotated[Optional[str], "行业名称", False] = None,
+            size: Annotated[Optional[int], "返回数据量", False] = 50,
+            start_date: Annotated[Optional[str], "开始日期", False] = None,
+            end_date: Annotated[Optional[str], "结束日期", False] = None,
+            date: Annotated[Optional[str], "日期: 一般是季度末日期", False] = None,
+            verbose: Annotated[Optional[bool], "", False] = False,
+            logger: Annotated[Optional[Callable], "", False] = None,
+            **kwargs: Annotated[Any, "", False]
     ):
         """
         Notes:
             ```python
             from wisecon.stock.financial import StockBalance
 
+            # 查询第三季度上市公司资产负债表数据
             data = StockBalance(date="2024-09-30", size=5).load()
             data.to_frame(chinese_column=True)
             ```

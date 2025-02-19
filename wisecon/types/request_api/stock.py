@@ -244,14 +244,22 @@ class APIStockKline(BaseRequestData):
 
 
 class APIStockKlineWithSSE(BaseRequestData):
-    """"""
+    """
+    URL - 1
+        https://push2his.eastmoney.com/api/qt/stock/kline/get
+        https://push2his.eastmoney.com/api/qt/stock/kline/sse
+
+    URL - 2
+        https://push2.eastmoney.com/api/qt/stock/get
+        https://push2.eastmoney.com/api/qt/stock/sse
+    """
     def base_url(self) -> str:
         """"""
-        return "https://push2his.eastmoney.com/api/qt/stock/kline/get"
+        return "https://push2.eastmoney.com/api/qt/stock/get"
 
     def base_sse(self) -> str:
         """"""
-        return "https://push2his.eastmoney.com/api/qt/stock/kline/sse"
+        return "https://push2.eastmoney.com/api/qt/stock/sse"
 
     def clean_json(
             self,
