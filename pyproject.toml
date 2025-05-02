@@ -1,20 +1,19 @@
 [build-system]
-# Minimum requirements for the build system to execute.
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-
-[tool.poetry]
+[project]
 name = "wisecon"
-version = "0.0.7"
+version = "0.1.0"
 description = "A quant Python package."
-authors = ["chensy cao <chensy.cao@foxmail.com>"]
-maintainers = []
-license = "MIT"
 readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "chensy cao", email = "chensy.cao@foxmail.com" }]
+maintainers = [{ name = "chensy cao", email = "chensy.cao@foxmail.com" }]
+keywords = ["Quant", "Financial", "MCP"]
 homepage = "https://caochensy.github.io/wisecon/"
 repository = "https://github.com/CaoChensy/wisecon.git"
-keywords = ["Quant", "Financial"]
+license = { text = "MIT" }
 classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -24,49 +23,32 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-packages = [
-    { include = "wisecon" },
+dependencies = [
+    "black>=25.1.0",
+    "bs4>=0.0.2",
+    "click>=8.1.8",
+    "fastmcp>=2.2.6",
+    "numpy>=2.2.5",
+    "pandas>=2.2.3",
+    "requests>=2.32.3",
+    "tqdm>=4.67.1",
 ]
 
+[project.scripts]
+mcp-server-fetch = "mcp_server_fetch:main"
 
-[tool.poetry.dependencies]
-# base
-python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
-pandas = ">=1.0"
-requests = "^2.32.3"
-pydantic = "^2.8.2"
-numpy = ">=1.23.5"
-tqdm = ">=4.65.0"
-colorama = ">=0.4.6"
-bs4 = {version = "^0.0.2", optional = true}
-black = {version = "^24.10.0", optional = true}
-mkdocs-glightbox = {version = "^0.4.0", optional = true}
-mkdocs-minify-plugin = {version = "^0.8.0", optional = true}
-mkdocs-material = {extras = ["imaging"], version = "^9.5.42", optional = true}
-mkdocstrings = {extras = ["python"], version = "^0.26.2", optional = true}
-mkdocs-git-revision-date-localized-plugin = {version = "^1.3.0", optional = true}
-mkdocs-git-committers-plugin-2 = {version = "^2.4.1", optional = true}
-mkdocs-git-authors-plugin = {version = "^0.9.0", optional = true}
-mkdocs-rss-plugin = {version = "^1.15.0", optional = true}
+[tool.uv]
+dev-dependencies = ["pyright>=1.1.389", "ruff>=0.7.3"]
 
+[project.optional-dependencies]
+mkdocs = [
+    "mkdocs-glightbox>=0.4.0",
+    "mkdocs-minify-plugin>=0.8.0",
+    "mkdocs-material>=9.5.42",
+    "mkdocstrings>=0.26.2",
+    "mkdocs-git-revision-date-localized-plugin>=1.3.0",
+    "mkdocs-git-committers-plugin-2>=2.4.1",
+    "mkdocs-git-authors-plugin>=0.9.0",
+    "mkdocs-rss-plugin>=1.15.0",
+]
 
-[tool.poetry.group.test.dependencies]
-python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
-pandas = ">=1.0"
-requests = "^2.32.3"
-pydantic = "^2.8.2"
-numpy = ">=1.23.5"
-tqdm = ">=4.65.0"
-colorama = ">=0.4.6"
-bs4 = {version = "^0.0.2", optional = true}
-
-
-[tool.poetry.extras]
-all = []
-
-
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/CaoChensy/wisecon/issues"
-
-
-[tool.poetry.scripts]
