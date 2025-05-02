@@ -36,6 +36,6 @@ jobs:
 
     - name: Publish to PyPI
       env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        UV_PYPI_TOKEN: ${{ secrets.UV_PYPI_TOKEN }}
       run: |
         uv publish
