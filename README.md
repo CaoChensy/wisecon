@@ -50,6 +50,29 @@ WisEcon 是一款专注于金融市场的量化分析工具，旨在为投资者
 pip install wisecon
 ```
 
+## MCP-Server
+
+> 研报MCP
+
+
+
+> 股票数据MCP
+
+```json
+{
+  "mcpServers": {
+    "wisecon-mcp": {
+      "command": "uvx",
+      "args": [
+         "--from",
+         "wisecon",
+         "wisecon-mcp-server"
+      ]
+    }
+  }
+}
+```
+
 [Quick Start](https://caochensy.github.io/wisecon/)
 
 -----
