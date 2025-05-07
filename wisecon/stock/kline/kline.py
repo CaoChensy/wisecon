@@ -105,7 +105,10 @@ class KLine(APIStockKline):
         if self.market_code:
             return f"1.{self.market_code}"
         elif self.security_code:
-            return f"0.{self.security_code}"
+            if self.security_code.startswith("6"):
+                return f"1.{self.security_code}"
+            else:
+                return f"0.{self.security_code}"
         elif self.plate_code:
             return f"90.{self.plate_code}"
 
