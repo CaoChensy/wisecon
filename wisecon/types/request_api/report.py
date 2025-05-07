@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-TypeReport = Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报"]
+TypeReport = Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报", "*"]
 
 
 class ReportData(BaseModel):
