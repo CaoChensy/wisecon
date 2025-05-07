@@ -37,6 +37,10 @@ dependencies = [
     "tqdm>=4.67.1",
 ]
 
+packages = [
+    { include = "wisecon" },
+]
+
 [project.scripts]
 wisecon-stock-server = "wisecon.mcp.stock:stock_mcp_server"
 wisecon-report-server = "wisecon.mcp.report:report_mcp_server"

@@ -45,39 +45,47 @@ def get_industry_name_by_code(code: Annotated[str, Field(description="行业代�
 
 
 @mcp.tool()
-def get_industry_code_by_name(name: Annotated[str, Field(description="行业名称")]) -> str:
-    """根据行业名称获取行业代码"""
+def get_industry_code_by_name(keyword: Annotated[str, Field(description="行业名称关键词")]) -> str:
+    """根据行业名称关键词进行模糊查询，获取与该关键词匹配的行业代码"""
     con_map = ConceptionMap()
-    return validate_response_data(con_map.get_code_by_name(name))
+    return validate_response_data(con_map.get_code_by_name(keyword))
 
 
 @mcp.tool()
-def list_industry() -> str:
+def list_industry() -> dict:
     """获取行业列表"""
     con_map = ConceptionMap()
-    columns = ["bkCode", "bkName"]
-    return validate_response_data(con_map.map_industry.to_frame()[columns])
+    df_industry = con_map.map_industry.to_frame()
+    data = dict(zip(df_industry.bkCode, df_industry.bkName))
+    return data
 
 
 @mcp.tool()
 def list_report(
+        report_type: Annotated[Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报", "*"], Field(description="研报类型，'*' 为不限定研报类型")],
         code: Annotated[str, Field(description="股票代码, 如600000")] = None,
-        industry: Annotated[str, Field(description="行业名称(如 '房地产开发'), '*' 为不限定行业")] = "*",
-        industry_code: Annotated[str, Field(description="行业代码(如 '451'), '*' 为不限定行业")] = "*",
+        industry_code: Annotated[Union[str, int], Field(description="行业代码(如 '451'), '*' 为不限定行业")] = "*",
         date: Annotated[str, Field(description="研报发布日期(yyyy-MM-dd, 如：2024-09-23), 默认为查询当天")] = None,
-        report_type: Annotated[Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报"], Field(description="研报类型，'*' 为不限定行业")] = "*",
         size: Annotated[int, Field(description="获取研报数量，默认10")] = 10,
 ):
-    """List all available reports."""
+    """List all available reports.
+
+    industry_code: 行业代码可以查询 tool `get_industry_code_by_name` 获取行业代码
+    """
     if date is None:
         date = time.strftime("%Y-%m-%d", time.localtime())
     report = Report(
-        code=code, industry=industry, industry_code=industry_code, begin_time=date,
+        code=code, industry_code=industry_code, begin_time=date,
         end_time=date, report_type=report_type, size=size)
     data = report.load()
-    columns = ["title", "orgSName", "infoCode"]
-    return validate_response_data(data.to_frame()[columns])
-
+    if len(data.data) > 0:
+        df_data = data.to_frame()
+        columns = ["title", "orgSName", "infoCode"]
+        if "industryName" in df_data.columns:
+            columns.append("industryName")
+        return validate_response_data(df_data[columns])
+    else:
+        return "No data found."
 
 @mcp.tool()
 def fetch_report_text_by_code(
