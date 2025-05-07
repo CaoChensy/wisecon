@@ -1,28 +1,12 @@
 import click
-import pandas as pd
 from pydantic import Field
 from fastmcp import FastMCP
-from typing import Union, Literal, Optional
+from typing import Union, Literal
 from wisecon.stock.kline import KLine
+from wisecon.mcp.validate import *
 
 
 mcp = FastMCP("Wisecon MCP")
-
-
-def validate_response_data(data: Union[list, pd.DataFrame]) -> str:
-    """"""
-    if len(data) == 0:
-        return "No data found."
-    prefix = ""
-    if len(data) > 50:
-        prefix = "Data too large, showing first 50 rows:\n\n"
-
-    if isinstance(data, list):
-        data = str(data[:50])
-    elif isinstance(data, pd.DataFrame):
-        data = data.head(50).to_markdown(index=False)
-    data = f"{prefix}{data}"
-    return data
 
 
 @mcp.tool()
@@ -34,13 +18,13 @@ def fetch_stock_data(
     """"""
     data = KLine(security_code=security_code, period=period, size=size).load()
     response = data.to_frame(chinese_column=True)
-    return response.to_markdown()
+    return validate_response_data(response)
 
 
 @click.command()
 @click.option("--port", "-p", default=8000, type=int, required=False, help="port")
 @click.option("--transport", "-p", default="stdio", type=str, required=False, help="transport")
-def wisecon_mcp_server(
+def stock_mcp_server(
         transport: Literal["stdio", "sse"] = "stdio",
         port: Union[int, str] = None,
 ) -> None:

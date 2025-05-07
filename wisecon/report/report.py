@@ -1,10 +1,13 @@
-from typing import Any, Dict, Union, Callable, Optional
+import os
+import time
+import requests
+from typing import Any, List, Dict, Union, Callable, Optional
 from wisecon.types import BaseMapping
 from wisecon.types.request_api.report import *
-
+from wisecon.utils import tqdm_progress_bar
+from lumix.documents import StructuredPDF
 
 __all__ = [
-    "ReportMapping",
     "Report",
 ]
 
@@ -88,7 +91,7 @@ class Report(APIReportRequest):
         """
 
         Args:
-            code:
+            code: 股票代码
             industry:
             industry_code:
             size:
@@ -143,3 +146,103 @@ class Report(APIReportRequest):
         if self.code:
             params.update({"code": self.code})
         return self.base_param(update=params)
+
+    def bytes_file(
+            self,
+            info_codes: List[str]
+    ):
+        """"""
+        self.reports_data = []
+        base_url = """https://pdf.dfcfw.com/pdf/H3_{}_1.pdf""".format
+        for info_code in tqdm_progress_bar(info_codes):
+            _report = ReportData(code=info_code)
+            try:
+                response = requests.get(base_url(info_code), headers=self.headers)
+                _report.content = response.content
+            except Exception as e:
+                self._logger(msg=f"[{__class__.__name__}] Load `{info_code}` error, error message: {e}", color="red")
+                _report.error = str(e)
+            self.reports_data.append(_report)
+
+    def to_bytes_content(self, info_code: str) -> bytes:
+        """"""
+        base_url = f"""https://pdf.dfcfw.com/pdf/H3_{info_code}_1.pdf?1746631765000.pdf"""
+        try:
+            response = requests.get(base_url, headers=self.headers)
+            return response.content
+        except Exception as e:
+            msg = f"[{__class__.__name__}] Load `{info_code}` error, error message: {e}"
+            self._logger(msg=msg, color="red")
+            raise Exception(msg)
+
+    def to_text(self, info_code: str) -> str:
+        """"""
+        bytes_data = self.to_bytes_content(info_code=info_code)
+        pdf = StructuredPDF(path_or_data=bytes_data)
+        return pdf.to_text()
+
+    def save_pdf(self, info_code: str, path: Optional[str] = None):
+        """"""
+        if path is None:
+            path = f"{info_code}.pdf"
+        bytes_data = self.to_bytes_content(info_code=info_code)
+        with open(path, "wb") as f:
+            f.write(bytes_data)
+
+    def save(
+            self,
+            path: str = "./reports",
+            info_codes: Optional[List[str]] = None,
+    ):
+        """"""
+        if not os.path.exists(path):
+            os.makedirs(path)
+        cache_path = os.path.join(path, "cache")
+        if not os.path.exists(cache_path):
+            os.makedirs(cache_path)
+        pdf_path = cache_path = os.path.join(path, "pdf")
+        if not os.path.exists(pdf_path):
+            os.makedirs(pdf_path)
+
+        if info_codes is None:
+            response_data = self.load()
+            if len(response_data.data) > 0:
+                report_data = response_data.to_frame()
+                info_codes = report_data["infoCode"].tolist()
+                report_data.to_csv(os.path.join(cache_path, f"{str(int(time.time() * 1E3))}.csv"), index=False)
+            else:
+                info_codes = []
+                self._logger(msg=f"[{__class__.__name__}] Not find report.")
+        if len(info_codes) > 0:
+            self.bytes_file(info_codes=info_codes)
+            for _report in self.reports_data:
+                if isinstance(_report.content, bytes):
+                    file_path = os.path.join(pdf_path, f"{_report.code}.pdf")
+                    with open(file_path, "wb") as f:
+                        f.write(_report.content)
+
+
+def report_info(
+            code: Optional[str] = None,
+            industry: Optional[str] = "*",
+            industry_code: Optional[Union[str, int]] = "*",
+            size: Optional[int] = 5,
+            rating: Optional[str] = "*",
+            rating_change: Optional[str] = "*",
+            begin_time: Optional[str] = "*",
+            end_time: Optional[str] = "*",
+            page_no: Optional[int] = 1,
+            report_type: Optional[TypeReport] = "*",
+            q_type: Optional[Union[int, str]] = None,
+):
+    """"""
+    report = Report(
+        code=code, industry=industry, industry_code=industry_code, size=size,
+        rating=rating, rating_change=rating_change, begin_time=begin_time,
+        end_time=end_time, page_no=page_no, report_type=report_type, q_type=q_type
+    )
+    columns = [
+
+    ]
+    data = report.load().to_frame(chinese_column=True)
+    return data.to_markdown(index=False)

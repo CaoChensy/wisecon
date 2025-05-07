@@ -2,10 +2,9 @@ import time
 import requests
 from pydantic import BaseModel, Field
 from typing import Any, Dict, Union, Callable, Optional
-from zlai.utils.mixin import LoggerMixin
-from zlai.tools.utils import headers
-from zlai.types.tools import ResponseData
-from .base import *
+from wisecon.utils import LoggerMixin
+from wisecon.types.headers import headers
+from wisecon.types import ResponseData
 
 
 __all__ = [
@@ -78,7 +77,7 @@ class ProfitForecast(LoggerMixin):
         """"""
         base_url = "https://datacenter-web.eastmoney.com/api/data/v1/get"
         params = self.query_config.to_params()
-        response = requests.get(base_url, params=params, headers=headers)
+        response = requests.get(base_url, params=params, headers=headers.headers)
         metadata = response.json().get("result", {})
         data = metadata.pop("data")
         self.update_metadata(metadata)
