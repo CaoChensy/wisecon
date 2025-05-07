@@ -1,11 +1,9 @@
-import os
+
 import time
 import random
 import requests
-from requests import Response
 from pydantic import BaseModel
 from typing import List, Dict, Union, Literal, Optional
-from wisecon.utils import tqdm_progress_bar
 from wisecon.types.request_data import BaseRequestData, assemble_url
 from wisecon.types.response_data import ResponseData
 
@@ -67,23 +65,6 @@ class APIReportRequest(BaseRequestData):
         """"""
         return str(int(time.time() * 1E3))
 
-    def bytes_file(
-            self,
-            info_codes: List[str]
-    ):
-        """"""
-        self.reports_data = []
-        base_url = """https://pdf.dfcfw.com/pdf/H3_{}_1.pdf""".format
-        for info_code in tqdm_progress_bar(info_codes):
-            _report = ReportData(code=info_code)
-            try:
-                response = requests.get(base_url(info_code), headers=self.headers)
-                _report.content = response.content
-            except Exception as e:
-                self._logger(msg=f"[{__class__.__name__}] Load `{info_code}` error, error message: {e}", color="red")
-                _report.error = str(e)
-            self.reports_data.append(_report)
-
     def data_page(self):
         """"""
         base_url = self.base_url()
@@ -111,35 +92,3 @@ class APIReportRequest(BaseRequestData):
     def load(self) -> ResponseData:
         """"""
         return self.data(data=self.request(), metadata=self.metadata)
-
-    def save(
-            self,
-            path: str = "./reports",
-            info_codes: Optional[List[str]] = None,
-    ):
-        """"""
-        if not os.path.exists(path):
-            os.makedirs(path)
-        cache_path = os.path.join(path, "cache")
-        if not os.path.exists(cache_path):
-            os.makedirs(cache_path)
-        pdf_path = cache_path = os.path.join(path, "pdf")
-        if not os.path.exists(pdf_path):
-            os.makedirs(pdf_path)
-
-        if info_codes is None:
-            response_data = self.load()
-            if len(response_data.data) > 0:
-                report_data = response_data.to_frame()
-                info_codes = report_data["infoCode"].tolist()
-                report_data.to_csv(os.path.join(cache_path, f"{str(int(time.time() * 1E3))}.csv"), index=False)
-            else:
-                info_codes = []
-                self._logger(msg=f"[{__class__.__name__}] Not find report.")
-        if len(info_codes) > 0:
-            self.bytes_file(info_codes=info_codes)
-            for _report in self.reports_data:
-                if isinstance(_report.content, bytes):
-                    file_path = os.path.join(pdf_path, f"{_report.code}.pdf")
-                    with open(file_path, "wb") as f:
-                        f.write(_report.content)
