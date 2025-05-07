@@ -11,12 +11,14 @@ class TestKLine(unittest.TestCase):
 
     def test_stock(self):
         """"""
-        data = KLine(security_code="300069", period="1D", size=5).load()
+        # data = KLine(security_code="300069", period="1D", size=5, verbose=True).load()
+        # data = KLine(security_code="601939", period="1D", size=5, verbose=True).load()
+        data = KLine(security_code="002006", period="1D", size=5, verbose=True).load()
         print(data.to_markdown(chinese_column=True))
 
     def test_plate(self):
         """"""
-        data = KLine(plate_code="BK0887", period="1D", size=5).load()
+        data = KLine(plate_code="BK0887", period="1D", size=5, verbose=True).load()
         print(data.to_markdown(chinese_column=True))
 
     def test_loop_period(self):
