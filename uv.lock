@@ -2541,6 +2541,20 @@ wheels = [
 ]
 
 [[package]]
+name = "webdriver-manager"
+version = "4.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "python-dotenv" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/24/4f/6e44478908c5133f680378d687f14ecaa99feed2c535344fcf68d8d21500/webdriver_manager-4.0.2.tar.gz", hash = "sha256:efedf428f92fd6d5c924a0d054e6d1322dd77aab790e834ee767af392b35590f", size = 25940, upload_time = "2024-07-25T08:13:49.331Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/b5/3bd0b038d80950ec13e6a2c8d03ed8354867dc60064b172f2f4ffac8afbe/webdriver_manager-4.0.2-py2.py3-none-any.whl", hash = "sha256:75908d92ecc45ff2b9953614459c633db8f9aa1ff30181cefe8696e312908129", size = 27778, upload_time = "2024-07-25T08:13:47.917Z" },
+]
+
+[[package]]
 name = "websocket-client"
 version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2626,6 +2640,7 @@ dependencies = [
     { name = "selenium" },
     { name = "tabulate" },
     { name = "tqdm" },
+    { name = "webdriver-manager" },
 ]
 
 [package.optional-dependencies]
@@ -2669,6 +2684,7 @@ requires-dist = [
     { name = "selenium", specifier = ">=4.32.0" },
     { name = "tabulate", specifier = ">=0.9.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
+    { name = "webdriver-manager", specifier = ">=4.0.2" },
 ]
 provides-extras = ["mkdocs"]
 

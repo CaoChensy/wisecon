@@ -1,6 +1,8 @@
 import os
 import time
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from urllib.parse import urlparse
 
 
@@ -37,7 +39,8 @@ def fetch_pdf_bytes_use_selenium(url: str, timeout: int = 10) -> bytes:
         }
         chrome_options.add_experimental_option("prefs", prefs)
         chrome_options.add_argument("--headless=new")
-        driver = webdriver.Chrome(options=chrome_options)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.get(url)
 
         sleep_time = 0
