@@ -94,7 +94,7 @@ def fetch_report_text_by_code(
 ) -> str:
     """Fetch report data."""
     if re.match(r"^AP\d+$", info_code):
-        report = Report()
+        report = Report(verbose=True)
         text = report.to_text(info_code=info_code, tool="scrapy")
         return text
     else:

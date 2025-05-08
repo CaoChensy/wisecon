@@ -170,10 +170,12 @@ class Report(APIReportRequest):
         base_url = f"""https://pdf.dfcfw.com/pdf/H3_{info_code}_1.pdf?1746631765000.pdf"""
         try:
             if tool == "request":
+                self._logger(msg=f"[{__class__.__name__}] Use: {tool}")
                 response = requests.get(base_url, headers=self.headers)
                 return response.content
             elif tool == "scrapy":
-                response = fetch_pdf_bytes(base_url)
+                self._logger(msg=f"[{__class__.__name__}] Use: {tool}")
+                response = fetch_pdf_bytes(base_url, headers=self.headers)
                 return response
         except Exception as e:
             msg = f"[{__class__.__name__}] Load `{info_code}` error, error message: {e}"

@@ -1,5 +1,6 @@
 from scrapy import Spider, Request
 from scrapy.crawler import CrawlerProcess
+from typing import Dict
 
 
 __all__ = [
@@ -17,14 +18,15 @@ class PDFResponse:
 class PDFSpider(Spider):
     name = 'pdf_spider'
 
-    def __init__(self, target_url=None, result_obj=None, *args, **kwargs):
+    def __init__(self, target_url=None, result_obj=None, headers=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.target_url = target_url
         self.result_obj = result_obj
+        self.headers = headers
 
     def start_requests(self):
         if self.target_url:
-            yield Request(url=self.target_url, callback=self.parse_pdf)
+            yield Request(url=self.target_url, callback=self.parse_pdf, headers=self.headers)
         else:
             self.logger.error("未提供 target_url")
 
@@ -33,10 +35,10 @@ class PDFSpider(Spider):
             self.result_obj.bytes_data = response.body
 
 
-def fetch_pdf_bytes(url: str) -> bytes:
+def fetch_pdf_bytes(url: str, headers: Dict) -> bytes:
     """"""
     pdf_response = PDFResponse()
     process = CrawlerProcess({'LOG_LEVEL': 'WARNING'})
-    process.crawl(PDFSpider, target_url=url, result_obj=pdf_response)
+    process.crawl(PDFSpider, target_url=url, result_obj=pdf_response, headers=headers)
     process.start()
     return pdf_response.bytes_data
