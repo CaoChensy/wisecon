@@ -87,6 +87,7 @@ def list_report(
     else:
         return "No data found."
 
+
 @mcp.tool()
 def fetch_report_text_by_code(
         info_code: Annotated[str, Field(description="研报信息代码")]
@@ -94,7 +95,7 @@ def fetch_report_text_by_code(
     """Fetch report data."""
     if re.match(r"^AP\d+$", info_code):
         report = Report()
-        text = report.to_text(info_code=info_code)
+        text = report.to_text(info_code=info_code, tool="scrapy")
         return text
     else:
         return "请输入正确的研报信息代码，如：`AP202505061668519723`"

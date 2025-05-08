@@ -1,10 +1,11 @@
 import os
 import time
 import requests
-from typing import Any, List, Dict, Union, Callable, Optional
+from typing import Any, List, Dict, Union, Callable, Literal, Optional
 from wisecon.types import BaseMapping
 from wisecon.types.request_api.report import *
 from wisecon.utils import tqdm_progress_bar
+from wisecon.utils.scrapy_pdf import fetch_pdf_bytes
 from lumix.documents import StructuredPDF
 
 __all__ = [
@@ -164,28 +165,32 @@ class Report(APIReportRequest):
                 _report.error = str(e)
             self.reports_data.append(_report)
 
-    def to_bytes_content(self, info_code: str) -> bytes:
+    def to_bytes_content(self, info_code: str, tool: Literal["request", "scrapy"] = "request") -> bytes:
         """"""
         base_url = f"""https://pdf.dfcfw.com/pdf/H3_{info_code}_1.pdf?1746631765000.pdf"""
         try:
-            response = requests.get(base_url, headers=self.headers)
-            return response.content
+            if tool == "request":
+                response = requests.get(base_url, headers=self.headers)
+                return response.content
+            elif tool == "scrapy":
+                response = fetch_pdf_bytes(base_url)
+                return response
         except Exception as e:
             msg = f"[{__class__.__name__}] Load `{info_code}` error, error message: {e}"
             self._logger(msg=msg, color="red")
             raise Exception(msg)
 
-    def to_text(self, info_code: str) -> str:
+    def to_text(self, info_code: str, tool: Literal["request", "scrapy"] = "request") -> str:
         """"""
-        bytes_data = self.to_bytes_content(info_code=info_code)
+        bytes_data = self.to_bytes_content(info_code=info_code, tool=tool)
         pdf = StructuredPDF(path_or_data=bytes_data)
         return pdf.to_text()
 
-    def save_pdf(self, info_code: str, path: Optional[str] = None):
+    def save_pdf(self, info_code: str, path: Optional[str] = None, tool: Literal["request", "scrapy"] = "request"):
         """"""
         if path is None:
             path = f"{info_code}.pdf"
-        bytes_data = self.to_bytes_content(info_code=info_code)
+        bytes_data = self.to_bytes_content(info_code=info_code, tool=tool)
         with open(path, "wb") as f:
             f.write(bytes_data)
 
