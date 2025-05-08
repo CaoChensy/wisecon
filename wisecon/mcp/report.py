@@ -1,9 +1,10 @@
 import re
+import os
 import time
 import click
 from pydantic import Field
 from fastmcp import FastMCP
-from typing import Union, Literal, Annotated
+from typing import List, Union, Literal, Annotated
 from wisecon.report import Report, ConceptionMap
 from wisecon.mcp.validate import *
 from mcp.server.session import ServerSession
@@ -94,11 +95,39 @@ def fetch_report_text_by_code(
 ) -> str:
     """Fetch report data."""
     if re.match(r"^AP\d+$", info_code):
-        report = Report(verbose=True)
-        text = report.to_text(info_code=info_code, tool="scrapy")
+        report = Report()
+        text = report.to_text(info_code=info_code, tool="selenium")
         return text
     else:
         return "请输入正确的研报信息代码，如：`AP202505061668519723`"
+
+
+@mcp.tool()
+def remove_report_cache() -> str:
+    """删除缓存的研报文件数据，返回删除的文件名列表。"""
+    if os.getenv("WISECON_REPORT_DIR"):
+        path = os.getenv("WISECON_REPORT_DIR")
+    else:
+        user_home = os.path.expanduser('~')
+        path = os.path.join(user_home, "wisecon_report")
+
+    files = os.listdir(path)
+    if len(files) == 0:
+        return "No report files found in cache."
+
+    removed_files = []
+    for file in files:
+        if re.search(r"AP.*\.pdf$", file):
+            os.remove(os.path.join(path, file))
+            removed_files.append(file)
+    return validate_response_data(removed_files)
+
+
+@mcp.tool()
+def get_tool_version() -> str:
+    """获取当前工具的版本号"""
+    from wisecon import __version__
+    return __version__
 
 
 @click.command()
