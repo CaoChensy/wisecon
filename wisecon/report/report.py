@@ -82,7 +82,7 @@ class Report(APIReportRequest):
             begin_time: Optional[str] = "*",
             end_time: Optional[str] = "*",
             page_no: Optional[int] = 1,
-            report_type: Optional[TypeReport] = "*",
+            report_type: Optional[TypeReport] = None,
             q_type: Optional[Union[int, str]] = None,
             verbose: Optional[bool] = False,
             logger: Optional[Callable] = None,
@@ -248,7 +248,7 @@ def report_info(
             begin_time: Optional[str] = "*",
             end_time: Optional[str] = "*",
             page_no: Optional[int] = 1,
-            report_type: Optional[TypeReport] = "*",
+            report_type: Optional[TypeReport] = None,
             q_type: Optional[Union[int, str]] = None,
 ):
     """"""
