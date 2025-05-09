@@ -16,7 +16,7 @@ def fetch_pdf_bytes_use_selenium(url: str, timeout: int = 10) -> bytes:
         path = os.getenv("WISECON_REPORT_DIR")
     else:
         user_home = os.path.expanduser('~')
-        path = os.path.join(user_home, "wisecon_report")
+        path = os.path.join(user_home, "wisecon", "report")
 
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
@@ -38,8 +38,11 @@ def fetch_pdf_bytes_use_selenium(url: str, timeout: int = 10) -> bytes:
         }
         chrome_options.add_experimental_option("prefs", prefs)
         chrome_options.add_argument("--headless=new")
-        service = Service(executable_path=os.getenv("WISECON_CHROME_DRIVER_PATH"))
-        driver = webdriver.Chrome(service=service, options=chrome_options)
+        try:
+            service = Service(executable_path=os.getenv("WISECON_CHROME_DRIVER_PATH"))
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+        except Exception as e:
+            raise Exception(f"Failed to start ChromeDriver or WISECON_CHROME_DRIVER_PATH is not set: {e}")
         driver.get(url)
 
         sleep_time = 0
