@@ -4,10 +4,11 @@ import time
 import click
 from pydantic import Field
 from fastmcp import FastMCP
-from typing import List, Union, Literal, Annotated
+from typing import List, Union, Optional, Literal, Annotated
 from wisecon.report import Report, ConceptionMap
 from wisecon.mcp.validate import *
 from mcp.server.session import ServerSession
+from wisecon.types.request_api.report import TypeReport
 
 
 ####################################################################################
@@ -63,18 +64,38 @@ def list_industry() -> dict:
 
 @mcp.tool()
 def list_report(
-        report_type: Annotated[Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报", "*"], Field(description="研报类型，'*' 为不限定研报类型")],
+        report_type: Annotated[TypeReport, Field(description="研报类型")],
         code: Annotated[str, Field(description="股票代码, 如600000")] = None,
-        industry_code: Annotated[Union[str, int], Field(description="行业代码(如 '451'), '*' 为不限定行业")] = "*",
+        industry: Annotated[str, Field(description="行业名称，如 '军工'")] = None,
+        industry_code: Annotated[Optional[Union[str, int]], Field(description="行业代码(如 '451'), '*' 为不限定行业")] = None,
         date: Annotated[str, Field(description="研报发布日期(yyyy-MM-dd, 如：2024-09-23), 默认为查询当天")] = None,
         size: Annotated[int, Field(description="获取研报数量，默认10")] = 10,
-):
+) -> str:
     """List all available reports.
 
     industry_code: 行业代码可以查询 tool `get_industry_code_by_name` 获取行业代码
     """
     if date is None:
         date = time.strftime("%Y-%m-%d", time.localtime())
+
+    if industry_code is None:
+        if industry is None:
+            industry_code = "*"
+        else:
+            con_map = ConceptionMap()
+            df_industry_choice = con_map.get_code_by_name(industry)
+            if len(df_industry_choice) == 0:
+                return f"Can't find industry `{industry}`"
+            elif len(df_industry_choice) > 0:
+                return f"Find multiple industry, Need choose one of the following industry code:\n\n{df_industry_choice.to_markdown(index=False)}"
+            else:
+                industry_code = df_industry_choice.bkCode.tolist()[0]
+
+    if industry_code is not None:
+        report_type: TypeReport = "行业研报"
+    if code is not None:
+        report_type: TypeReport = "个股研报"
+
     report = Report(
         code=code, industry_code=industry_code, begin_time=date,
         end_time=date, report_type=report_type, size=size)
