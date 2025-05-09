@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-TypeReport = Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报", "*"]
+TypeReport = Literal["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报", "不限类型"]
 
 
 class ReportData(BaseModel):
@@ -35,7 +35,7 @@ class APIReportRequest(BaseRequestData):
     def reports_type(self):
         """"""
         report_types = ["个股研报", "行业研报", "策略报告", "宏观研究", "券商晨报"]
-        if self.report_type is None or self.report_type == "*":
+        if self.report_type is None or self.report_type == "不限类型":
             self.q_type = "*"
         elif self.report_type in report_types:
             self.q_type = report_types.index(self.report_type)
