@@ -176,6 +176,8 @@ nav:
   - Quick start:
       - Quick start: index.md
       - Agent: docs/agent.md
+  - MCP:
+      - Report MCP Server: mcp/report.md
   - API Documentation:
       - 证券数据:
           - 市场全貌: api/stock/market.md

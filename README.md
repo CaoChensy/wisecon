@@ -73,23 +73,6 @@ pip install wisecon
 }
 ```
 
-> 研报解读MCP
-
-```json
-{
-  "mcpServers": {
-    "wisecon-mcp": {
-      "command": "uvx",
-      "args": [
-         "--from",
-         "wisecon",
-         "wisecon-report-server"
-      ]
-    }
-  }
-}
-```
-
 [Quick Start](https://caochensy.github.io/wisecon/)
 
 -----
