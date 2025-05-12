@@ -12,9 +12,9 @@ class TestPlateMapping(unittest.TestCase):
         print(data.to_frame(chinese_column=True).to_markdown())
 
     def test_plate_conception(self):
-        data = PlateCode(plate_type="概念").load()
+        data = PlateCode(plate_type="概念", verbose=True).load()
         print(data.to_frame(chinese_column=True).to_markdown())
 
     def test_industry_code(self):
-        data = IndustryCode().load()
+        data = IndustryCode(verbose=True).load()
         print(data.to_markdown(chinese_column=True))

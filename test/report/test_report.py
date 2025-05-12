@@ -67,23 +67,25 @@ class TestReport(unittest.TestCase):
         print(content)
         report.save_pdf(info_code="AP202409231639991919")
 
-
-class TestReportMapping(unittest.TestCase):
-    """"""
-    def test_report_mapping(self):
+    def test_fetch_with_scrapy(self):
         """"""
-        con_map = ConceptionMap()
-        print(con_map.map_district)
+        report = Report()
+        data = report.to_bytes_content(info_code="AP202409231639991919", tool="scrapy")
+        report = Report()
+        data = report.to_bytes_content(info_code="AP202409231639991919", tool="scrapy")
+        print(type(data), len(data))
 
-    def test_get_name(self):
+    def test_fetch_with_request(self):
         """"""
-        con_map = ConceptionMap()
-        print(con_map.get_code_by_name(name="玻璃"))
+        report = Report()
+        data = report.to_bytes_content(info_code="AP202409231639991919", tool="request")
+        print(type(data), len(data))
 
-    def test_get_code(self):
+    def test_fetch_with_httpx(self):
         """"""
-        con_map = ConceptionMap()
-        print(con_map.get_name_by_code(code="451"))
+        report = Report()
+        data = report.to_bytes_content(info_code="AP202409231639991919", tool="httpx")
+        print(type(data), len(data))
 
     def test_range_report(self):
         """"""
@@ -92,37 +94,6 @@ class TestReportMapping(unittest.TestCase):
             print(d)
             report = Report(verbose=True, begin_time=d, end_time=d, size=100)
             report.save(path="/Users/chensy/Desktop/reports")
-
-
-class TestMCPReport(unittest.TestCase):
-    """"""
-    def test_get_now_date(self):
-        """"""
-        print(get_now_date())
-
-    def test_get_industry_name_by_code(self):
-        """"""
-        data = get_industry_name_by_code(code="451")
-        print(data)
-
-    def test_get_industry_code_by_name(self):
-        """"""
-        data = get_industry_code_by_name("玻璃")
-        print(data)
-
-    def test_list_report(self):
-        """"""
-        data = list_industry()
-        print(data)
-
-    def test_fetch_report_text(self):
-        """"""
-        data = fetch_report_text_by_code(**{"info_code": "AP202505061668519723"})
-        print(data)
-
-    def test_fetch_report_text_by_code_error(self):
-        data = fetch_report_text_by_code(info_code="-asd919")
-        print(data)
 
 # class TestProfitForecast(unittest.TestCase):
 #
