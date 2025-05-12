@@ -1,9 +1,13 @@
 from typing import List, Dict, Optional
+
+from wisecon.types import ResponseData
 from wisecon.utils import time2int
 from wisecon.types.request_data import BaseRequestData
 
 
 __all__ = [
+    "APISearch",
+    "APIConceptionBK",
     "APICListRequestData",
     "APIStockFFlowKLineRequestData",
     "APIStockFFlowDayLineRequestData",
@@ -18,6 +22,41 @@ __all__ = [
     "APIStockTrends2",
     "APIMarketSummary",
 ]
+
+
+class APISearch(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        return "https://search-codetable.eastmoney.com/codetable/search/web"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "client": "web",
+            "clientType": "webSuggest",
+            "clientVersion": "lastest",
+            "pageIndex": 1,
+            "pageSize": 5,
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ) -> List[Dict]:
+        """"""
+        response = json_data
+        data = response.pop("result")
+        self.metadata.response = response
+        return data
+
+
+class APIConceptionBK(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://reportapi.eastmoney.com/report/bk"
 
 
 class APICListRequestData(BaseRequestData):
@@ -49,6 +88,20 @@ class APICListRequestData(BaseRequestData):
         data = response.pop("diff")
         self.metadata.response = response
         return data
+
+    def load(self) -> ResponseData:
+        """"""
+        data = []
+        params = self.params()
+        json_data = self.load_response_json(params=params)
+        batch_data = self.clean_json(json_data)
+        data.extend(batch_data)
+        while len(data) < self.metadata.response.get("total"):
+            params["pn"] = params["pn"] + 1
+            json_data = self.load_response_json(params)
+            batch_data = self.clean_json(json_data)
+            data.extend(batch_data)
+        return ResponseData(data=data, metadata=self.metadata)
 
 
 class APIStockFFlowKLineRequestData(BaseRequestData):

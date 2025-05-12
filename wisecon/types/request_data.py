@@ -136,10 +136,11 @@ class BaseRequestData(LoggerMixin, ValidateParams):
         """"""
         return {k: v for k, v in params.items() if v is not None}
 
-    def request(self) -> Response:
+    def request(self, params: Optional[Dict] = None) -> Response:
         """"""
         base_url = self.base_url()
-        params = self.params()
+        if params is None:
+            params = self.params()
         self._logger(msg=f"[URL] {assemble_url(base_url, params)}\n", color="green")
         response = requests.get(base_url, params=params, headers=self.headers)
         return response
@@ -181,6 +182,11 @@ class BaseRequestData(LoggerMixin, ValidateParams):
     ) -> List[Dict]:
         """"""
         return []
+
+    def load_response_json(self, params: Optional[Dict] = None) -> Dict:
+        """"""
+        response = self.request(params)
+        return response.json()
 
     def load(self) -> ResponseData:
         """"""
