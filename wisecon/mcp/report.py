@@ -4,8 +4,9 @@ import time
 import click
 from pydantic import Field
 from fastmcp import FastMCP
-from typing import List, Union, Optional, Literal, Annotated
-from wisecon.report import Report, ConceptionMap
+from typing import Union, Optional, Literal, Annotated
+from wisecon.report import Report
+from wisecon.stock.index import ConceptionMap
 from wisecon.mcp.validate import *
 from mcp.server.session import ServerSession
 from wisecon.types.request_api.report import TypeReport
