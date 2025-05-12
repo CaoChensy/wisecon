@@ -74,7 +74,7 @@ class ListConceptionStock(APICListRequestData):
     """板块下的股票列表"""
     def __init__(
             self,
-            conception_code: Optional[str] = "",
+            bk_code: str,
             sort_by: Optional[str] = "f12",
             page_size: Optional[int] = 50,
             verbose: Optional[bool] = False,
@@ -92,14 +92,14 @@ class ListConceptionStock(APICListRequestData):
             ```
 
         Args:
-            conception_code: 板块代码
+            bk_code: 板块代码
             sort_by: 排序字段
             page_size: 每页数据量
             verbose: 是否打印日志
             logger: 自定义日志打印函数
             **kwargs: 其他参数
         """
-        self.conception_code = conception_code
+        self.bk_code = bk_code
         self.sort_by = sort_by
         self.page_size = page_size
         self.mapping = ListConceptionMapping()
@@ -114,7 +114,7 @@ class ListConceptionStock(APICListRequestData):
             "pn": 1,
             "pz": self.page_size,
             "fid": self.sort_by,
-            "fs": f"b:{self.conception_code}",
+            "fs": f"b:{self.bk_code}",
             "fields": "f12,f14",
         }
         return self.base_param(update=params)

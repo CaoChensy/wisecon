@@ -1,3 +1,5 @@
+import re
+
 import click
 import time
 from pydantic import Field
@@ -6,7 +8,7 @@ from mcp.server.session import ServerSession
 from typing import Union, Literal, Annotated
 from wisecon.stock.kline import KLine
 from wisecon.mcp.validate import *
-from wisecon.stock.index import SearchKeyword, ConceptionMap
+from wisecon.stock.index import SearchKeyword, ConceptionMap, ListConceptionStock
 from wisecon.stock.financial import StockBalance, StockIncome, StockCashFlow
 from wisecon.utils.time import is_quarter_end
 
@@ -64,13 +66,44 @@ def fetch_stock_data(
 def search_keyword(
         keyword: Annotated[str, Field(description="keyword")],
 ):
-    """搜索关键词，关键词可以是名称、代码、简称、拼音
-    查询板块代码、行业代码、概念代码、地域代码、指数代码、基金代码、股票代码等信息"""
+    """根据关键词搜索行业、概念、地区、指数、基金、股票代码；关键词可以是名称、代码、简称、拼音等。
+
+    搜索仅返回5条信息，如需更多结果，请使用其他接口。如：
+        1. 使用`list_stock`可以获取所有行业、地区、概念板块下的股票列表；
+    """
+    keyword = re.sub("概念|行业|板块|指数|地域|基金|股票|代码", "", keyword)
     data = SearchKeyword(keyword=keyword).load()
     columns = [
         "code", "shortName", "securityTypeName", "market",
     ]
     return validate_response_data(data.to_frame()[columns])
+
+
+@mcp.tool()
+def list_stock(
+        bk_code: Annotated[str, Field(description="板块代码")],
+):
+    """
+    Args:
+        bk_code: 可以是股票行业、概念、地区板块代码
+    """
+    list_stock = ListConceptionStock(bk_code)
+    return validate_response_data(list_stock.load().to_frame())
+
+
+@mcp.tool()
+def fetch_capital_flow(
+        security_code: Annotated[str, Field(description="security code")],
+
+):
+    """
+
+    Args:
+        security_code:
+
+    Returns:
+
+    """
 
 
 @mcp.tool()
