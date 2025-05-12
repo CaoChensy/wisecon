@@ -1,7 +1,6 @@
 import re
-
-import click
 import time
+import click
 from pydantic import Field
 from fastmcp import FastMCP
 from mcp.server.session import ServerSession
@@ -10,6 +9,7 @@ from wisecon.stock.kline import KLine
 from wisecon.mcp.validate import *
 from wisecon.stock.index import SearchKeyword, ConceptionMap, ListConceptionStock
 from wisecon.stock.financial import StockBalance, StockIncome, StockCashFlow
+from wisecon.stock.capital_flow import PlateFlow
 from wisecon.utils.time import is_quarter_end
 
 
@@ -93,17 +93,21 @@ def list_stock(
 
 @mcp.tool()
 def fetch_capital_flow(
-        security_code: Annotated[str, Field(description="security code")],
-
+        bk_code: Annotated[str, Field(description="板块代码")],
+        days: Annotated[Literal[1, 3, 5, 10], Field(description="statistical period")] = 10,
+        size: Annotated[int, Field(description="")] = 50,
 ):
-    """
+    """ 板块资金流向
 
     Args:
-        security_code:
+        bk_code: 板块代码，可以是股票行业、概念、地区板块代码
+        days: 1, 3, 5, 10
+        size: 50
 
     Returns:
-
     """
+    data = PlateFlow(plate_code=bk_code, days=days, size=size)
+    return validate_response_data(data.load().to_frame(chinese_column=True))
 
 
 @mcp.tool()
