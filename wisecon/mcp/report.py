@@ -5,7 +5,7 @@ import click
 from pydantic import Field
 from fastmcp import FastMCP
 from typing import Union, Optional, Literal, Annotated
-from wisecon.report import Report
+from wisecon.report import Report, Announcement
 from wisecon.stock.index import ConceptionMap
 from wisecon.mcp.validate import *
 from mcp.server.session import ServerSession
@@ -109,6 +109,25 @@ def list_report(
         return validate_response_data(df_data[columns])
     else:
         return "No data found."
+
+
+@mcp.tool()
+def list_announcement(
+        ann_type: Annotated[Literal["不限公告", "财务报告", "融资公告", "风险提示", "信息变更", "重大事项", "资产重组", "持股变动"], Field(description="公告类型")],
+        date: Annotated[str, Field(description="公告日期, yyyy-MM-dd")],
+        security_code: Annotated[str, Field(description="证券代码")] = None,
+):
+    """获取指定日期之后公布的公告列表
+
+    Args:
+        ann_type: 公告类型
+        date: 公告日期，格式为yyyy-MM-dd，如`2023-01-01`为获取2023年1月1日之后公布的公告
+        security_code: 证券代码，如`600000`，默认为空，表示获取所有证券的公告
+    """
+    ann = Announcement(node_name=ann_type, date=date)
+    data = ann.load().to_frame()
+    columns = ["art_code", "title", "codes", "columns", "notice_date"]
+    return validate_response_data(data[columns])
 
 
 @mcp.tool()

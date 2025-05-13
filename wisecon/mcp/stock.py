@@ -36,6 +36,13 @@ mcp = FastMCP("Wisecon MCP")
 
 
 @mcp.tool()
+def get_tool_version() -> str:
+    """获取当前工具的版本号"""
+    from wisecon import __version__
+    return __version__
+
+
+@mcp.tool()
 def get_now_date():
     """获取当前日期"""
     return time.strftime("%Y-%m-%d", time.localtime())

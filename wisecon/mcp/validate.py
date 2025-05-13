@@ -13,7 +13,7 @@ def validate_response_data(data: Union[list, pd.DataFrame]) -> str:
         return "No data found."
     prefix = ""
     if len(data) > 50:
-        prefix = "Data too large, showing first 50 rows:\n\n"
+        prefix = f"Data too large with {len(data)} items, showing first 50 items:\n\n"
 
     if isinstance(data, list):
         data = str(data[:50])
