@@ -1,5 +1,5 @@
+from datetime import datetime
 from typing import List, Dict, Optional
-
 from wisecon.types import ResponseData
 from wisecon.utils import time2int
 from wisecon.types.request_data import BaseRequestData
@@ -21,6 +21,7 @@ __all__ = [
     "APIMainHolderDetail",
     "APIStockTrends2",
     "APIMarketSummary",
+    "APIAnnouncement",
 ]
 
 
@@ -482,4 +483,56 @@ class APIMarketSummary(BaseRequestData):
         return data
 
 
-# todo: 封装请求数据类
+class APIAnnouncement(BaseRequestData):
+    """"""
+    date: str
+
+    def base_url(self) -> str:
+        """"""
+        return "https://np-anotice-stock.eastmoney.com/api/security/ann"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {
+            "sr": "-1",
+            "page_size": 50,
+            "page_index": 1,
+            "client_source": "web",
+            "s_node": "0",
+        }
+        params.update(update)
+        return params
+
+    def clean_json(
+            self,
+            json_data: Optional[Dict],
+    ):
+        """"""
+        response = json_data.get("data", {})
+        data = response.get("list", [])
+        self.metadata.response = response
+        return data
+
+    def load(self) -> ResponseData:
+        """"""
+        params = self.params()
+        json_data = self.load_response_json(params=params)
+        batch_data = self.clean_json(json_data)
+        date_data = [
+            item for item in batch_data
+            if datetime.strptime(item.get("notice_date").split(" ")[0], "%Y-%m-%d")\
+               >= datetime.strptime(self.date, "%Y-%m-%d")]
+        if len(batch_data) > len(date_data):
+            return ResponseData(data=date_data, metadata=self.metadata)
+        else:
+            while True:
+                params["page_index"] += 1
+                json_data = self.load_response_json(params=params)
+                batch_data = self.clean_json(json_data)
+                _date_data = [
+                    item for item in batch_data
+                    if datetime.strptime(item.get("notice_date").split(" ")[0], "%Y-%m-%d")\
+                       >= datetime.strptime(self.date, "%Y-%m-%d")]
+                date_data.extend(_date_data)
+                if len(batch_data) > len(_date_data):
+                    return ResponseData(data=date_data, metadata=self.metadata)
