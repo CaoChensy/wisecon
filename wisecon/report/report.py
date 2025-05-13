@@ -2,8 +2,7 @@ import os
 import time
 import requests
 from typing import Any, List, Dict, Union, Callable, Literal, Optional
-from wisecon.types import BaseMapping
-from wisecon.types.request_api.report import *
+from wisecon.types import BaseMapping, APIReportRequest, TypeReport, ReportData
 from wisecon.utils import tqdm_progress_bar
 from lumix.documents import StructuredPDF
 
@@ -166,7 +165,7 @@ class Report(APIReportRequest):
 
     def to_bytes_content(self, info_code: str, tool: Literal["request", "scrapy", "httpx", "selenium"] = "request") -> bytes:
         """"""
-        base_url = f"""https://pdf.dfcfw.com/pdf/H3_{info_code}_1.pdf?1746631765000.pdf"""
+        base_url = f"""https://pdf.dfcfw.com/pdf/H3_{info_code}_1.pdf"""
         try:
             if tool == "request":
                 self._logger(msg=f"[{__class__.__name__}] Use: {tool}")
