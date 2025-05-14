@@ -1,8 +1,13 @@
+import json
+import requests
+from urllib.parse import quote
 from datetime import datetime
 from typing import List, Dict, Optional
-from wisecon.types import ResponseData
+from requests import Response
 from wisecon.utils import time2int
+from wisecon.types import ResponseData, assemble_url
 from wisecon.types.request_data import BaseRequestData
+from lumix.structured import ParseDict
 
 
 __all__ = [
@@ -22,6 +27,7 @@ __all__ = [
     "APIStockTrends2",
     "APIMarketSummary",
     "APIAnnouncement",
+    "APIAskSecretary",
 ]
 
 
@@ -481,6 +487,58 @@ class APIMarketSummary(BaseRequestData):
         data = [json_data.pop(d_name) for d_name in data_name]
         self.metadata.response = json_data
         return data
+
+
+class APIAskSecretary(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://search-api-web.eastmoney.com/search/jsonp"
+
+    def base_param(self, update: Dict) -> Dict:
+        """"""
+        params = {}
+        params.update(update)
+        return params
+
+    def clean_content(
+            self,
+            content: Optional[str],
+    ) -> List[Dict]:
+        """"""
+        response = ParseDict.greedy_dict(content)[0]
+        result_data = response.pop("result")
+        data = result_data.pop("wenDongMiWeb", [])
+        self.metadata.response = response
+        return data
+
+    def request(self, params: Optional[Dict] = None) -> Response:
+        """"""
+        base_url = self.base_url()
+        if params is None:
+            params = self.params()
+        url = assemble_url(base_url, params)
+        self._logger(msg=f"[URL] {url}\n", color="green")
+        response = requests.get(url, headers=self.headers)
+        return response
+
+    def load(self) -> ResponseData:
+        """"""
+        data = []
+        params = self.params()
+        params["param"] = quote(json.dumps(params["param"], ensure_ascii=False, separators=(',', ':')))
+        text_data = self.load_response_text(params=params)
+        batch_data = self.clean_content(text_data)
+        data.extend(batch_data)
+        total = self.metadata.response.get("hitsTotal")
+        while len(data) < total:
+            _param = self.params()
+            _param["param"]["param"]["wenDongMiWeb"]["pageindex"] += 1
+            params["param"] = quote(json.dumps(_param["param"], ensure_ascii=False, separators=(',', ':')))
+            text_data = self.load_response_text(params=params)
+            batch_data = self.clean_content(text_data)
+            data.extend(batch_data)
+        return ResponseData(data=data, metadata=self.metadata)
 
 
 class APIAnnouncement(BaseRequestData):

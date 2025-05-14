@@ -4,6 +4,7 @@
 /tmp
 /test/test_data
 /test/cache
+_trial_temp
 
 # User-specific stuff
 .idea

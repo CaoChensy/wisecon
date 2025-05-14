@@ -188,6 +188,11 @@ class BaseRequestData(LoggerMixin, ValidateParams):
         response = self.request(params)
         return response.json()
 
+    def load_response_text(self, params: Optional[Dict] = None) -> str:
+        """"""
+        response = self.request(params)
+        return response.text
+
     def load(self) -> ResponseData:
         """"""
         if self.response_type == "text":

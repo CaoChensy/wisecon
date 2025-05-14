@@ -5,7 +5,7 @@ import click
 from pydantic import Field
 from fastmcp import FastMCP
 from typing import Union, Optional, Literal, Annotated
-from wisecon.report import Report, Announcement
+from wisecon.report import Report, Announcement, AskSecretary
 from wisecon.stock.index import ConceptionMap
 from wisecon.mcp.validate import *
 from mcp.server.session import ServerSession
@@ -117,17 +117,38 @@ def list_announcement(
         date: Annotated[str, Field(description="公告日期, yyyy-MM-dd")],
         security_code: Annotated[str, Field(description="证券代码")] = None,
 ):
-    """获取指定日期之后公布的公告列表
+    """获取指定日期之后上市公司公布的公告列表，公告类型包括：不限公告、财务报告、融资公告、风险提示、信息变更、重大事项、资产重组、持股变动等
 
     Args:
         ann_type: 公告类型
         date: 公告日期，格式为yyyy-MM-dd，如`2023-01-01`为获取2023年1月1日之后公布的公告
         security_code: 证券代码，如`600000`，默认为空，表示获取所有证券的公告
     """
-    ann = Announcement(node_name=ann_type, date=date)
+    ann = Announcement(node_name=ann_type, date=date, security_code=security_code)
     data = ann.load().to_frame()
     columns = ["art_code", "title", "codes", "columns", "notice_date"]
     return validate_response_data(data[columns])
+
+
+@mcp.tool()
+def ask_secretary(
+        keyword: Annotated[str, Field(description="关键字")],
+        start_date: Annotated[str, Field(description="开始日期, yyyy-MM-dd")],
+        end_date: Annotated[str, Field(description="结束日期, yyyy-MM-dd")],
+) -> str:
+    """获取问董秘数据
+
+    Args:
+        keyword: 关键字，可以是股票代码、股票简称、股票名称等
+        start_date: 开始日期，格式为yyyy-MM-dd
+        end_date: 结束日期，格式为yyyy-MM-dd
+
+    Returns:
+    """
+    columns = ["title", "content", "securityShortName", "responseTime", "headCharacter", "gubaId"]
+    ask = AskSecretary(keyword=keyword, start_date=start_date, end_date=end_date, verbose=False)
+    data = ask.load().to_frame()[columns].to_dict("records")
+    return validate_response_data(data)
 
 
 @mcp.tool()
