@@ -7,6 +7,7 @@ __all__ = [
     "time2int",
     "year2date",
     "is_quarter_end",
+    "get_quarter_ends",
 ]
 
 
@@ -71,3 +72,36 @@ def is_quarter_end(date: datetime | str | None = None) -> bool:
         12: 31,
     }
     return date.month in quarter_ends and date.day == quarter_ends[date.month]
+
+
+def get_quarter_ends(start_date, end_date):
+    """
+
+    Args:
+        start_date:
+        end_date:
+
+    Returns:
+
+    """
+    quarter_ends = []
+
+    # 定义每个季度的最后一天
+    quarter_end_days = {
+        1: '03-31',
+        2: '06-30',
+        3: '09-30',
+        4: '12-31'
+    }
+
+    start_year = int(start_date[:4])
+    end_year = int(end_date[:4])
+
+    for year in range(start_year, end_year + 1):
+        for q in range(1, 5):
+            month_day = quarter_end_days[q]
+            q_end = f"{year}-{month_day}"
+            if start_date <= q_end <= end_date:
+                quarter_ends.append(q_end)
+
+    return quarter_ends

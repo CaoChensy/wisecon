@@ -68,6 +68,8 @@ class APIConceptionBK(BaseRequestData):
 
 class APICListRequestData(BaseRequestData):
     """"""
+    size: Optional[int]
+
     def base_url(self) -> str:
         return "https://push2.eastmoney.com/api/qt/clist/get"
 
@@ -103,12 +105,16 @@ class APICListRequestData(BaseRequestData):
         json_data = self.load_response_json(params=params)
         batch_data = self.clean_json(json_data)
         data.extend(batch_data)
-        while len(data) < self.metadata.response.get("total"):
+
+        if self.size is None:
+            self.size = self.metadata.response.get("total")
+
+        while len(data) < self.size and len(data) < self.metadata.response.get("total"):
             params["pn"] = params["pn"] + 1
             json_data = self.load_response_json(params)
             batch_data = self.clean_json(json_data)
             data.extend(batch_data)
-        return ResponseData(data=data, metadata=self.metadata)
+        return ResponseData(data=data[:self.size], metadata=self.metadata)
 
 
 class APIStockFFlowKLineRequestData(BaseRequestData):
@@ -229,6 +235,7 @@ class APIDataRequestData(BaseRequestData):
 
 class APIDataV1RequestData(BaseRequestData):
     """"""
+    size: Optional[int]
     conditions: Optional[List[str]]
     security_code: Optional[str]
     start_date: Optional[str]
@@ -278,6 +285,23 @@ class APIDataV1RequestData(BaseRequestData):
         }
         params.update(update)
         return params
+
+    def load(self) -> ResponseData:
+        """"""
+        data = []
+        params = self.params()
+        batch_data = self.load_response_json(params=params)
+        batch_data = self.clean_json(batch_data)
+        data.extend(batch_data)
+        if self.size is None:
+            self.size = self.metadata.response.get("count")
+
+        while len(data) < self.size and self.metadata.response.get("pages") > params["pageNumber"]:
+            params["pageNumber"] += 1
+            batch_data = self.load_response_json(params=params)
+            batch_data = self.clean_json(batch_data)
+            data.extend(batch_data)
+        return ResponseData(data=data[:self.size], metadata=self.metadata)
 
 
 class APIStockKline(BaseRequestData):
