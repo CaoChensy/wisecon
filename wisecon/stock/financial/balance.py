@@ -81,7 +81,7 @@ class StockBalance(APIDataV1RequestData):
             security_code: Annotated[Optional[str], "证券代码", False] = None,
             market: Annotated[Optional[TypeMarket], '市场名称: ["沪深A股", "沪市A股", "科创板", "深市A股", "创业板", "京市A股"]', False] = None,
             industry_name: Annotated[Optional[str], "行业名称", False] = None,
-            size: Annotated[Optional[int], "返回数据量", False] = 50,
+            size: Annotated[Optional[int], "返回数据量", False] = None,
             start_date: Annotated[Optional[str], "开始日期", False] = None,
             end_date: Annotated[Optional[str], "结束日期", False] = None,
             date: Annotated[Optional[str], "日期: 一般是季度末日期", False] = None,
@@ -161,7 +161,7 @@ class StockBalance(APIDataV1RequestData):
             "filter": self.params_filter(),
             "sortColumns": "NOTICE_DATE,SECURITY_CODE",
             "sortTypes": "-1,-1",
-            "pageSize": self.size,
+            "pageSize": 50,
             "pageNumber": 1,
             "reportName": "RPT_DMSK_FN_BALANCE",
         }
