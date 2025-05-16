@@ -107,8 +107,8 @@ def alpha_beta_ols(
     else:
         raise ValueError("Invalid daily_rf_type. Choose 'mean' or 'compound'.")
 
-    returns = prices.pct_change().dropna()
-    bench_returns = benchmark.pct_change().dropna()
+    returns = prices.pct_change()
+    bench_returns = benchmark.pct_change()
     excess_returns = returns - daily_rf
     excess_bench = bench_returns - daily_rf
 
@@ -118,6 +118,9 @@ def alpha_beta_ols(
     for i in returns.index[window - 1:]:
         window_returns = excess_returns.iloc[i - window + 1:i + 1]
         window_bench = excess_bench.iloc[i - window + 1:i + 1]
+        cond_inf_na = np.isinf(window_returns) | np.isinf(window_bench) | np.isnan(window_returns) | np.isnan(window_bench)
+        window_returns = window_returns[~cond_inf_na]
+        window_bench = window_bench[~cond_inf_na]
         X = sm.add_constant(window_bench)  # 添加截距项
         model = sm.OLS(window_returns, X).fit()
         df_alpha_beta.loc[i, "alpha"] = model.params.iloc[0] * window  # Alpha
