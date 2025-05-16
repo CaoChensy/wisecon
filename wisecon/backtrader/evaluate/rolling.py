@@ -174,7 +174,7 @@ class RollingPricesIndex:
 
         等同于调用call()方法
         """
-        return self.call()
+        return self.evaluate()
 
     @property
     def daily_returns(self) -> pd.Series:
@@ -347,7 +347,7 @@ class RollingPricesIndex:
         alpha = asset_return - (self.risk_free_rate + beta * (bench_return - self.risk_free_rate))
         return alpha
 
-    def call(self) -> pd.DataFrame:
+    def evaluate(self) -> pd.DataFrame:
         """计算并返回所有可用的滚动指标
 
         返回:
