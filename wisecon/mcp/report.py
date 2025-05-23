@@ -193,15 +193,17 @@ def get_tool_version() -> str:
 
 
 @click.command()
+@click.option("--host", "-p", default="127.0.0.1", type=str, required=False, help="host")
 @click.option("--port", "-p", default=8000, type=int, required=False, help="port")
 @click.option("--transport", "-p", default="stdio", type=str, required=False, help="transport")
-def report_mcp_server(
-        transport: Literal["stdio", "sse"] = "stdio",
+def stock_mcp_server(
+        host: str = None,
         port: Union[int, str] = None,
+        transport: Literal["stdio", "sse"] = "stdio",
 ) -> None:
     """"""
     if transport == "sse":
-        mcp.run(transport=transport, port=port)
+        mcp.run(transport=transport, port=port, host=host)
     else:
         mcp.run(transport=transport)
 
