@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from typing import Dict, Literal, Optional
-from .operator import *
 
 
 __all__ = [
