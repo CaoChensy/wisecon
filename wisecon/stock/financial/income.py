@@ -1,4 +1,4 @@
-from typing import Any, Dict, Literal, Callable, Optional
+from typing import Any, Dict, Literal, Annotated, Callable, Optional
 from wisecon.types import BaseMapping, APIDataV1RequestData
 
 
@@ -70,7 +70,7 @@ class StockIncome(APIDataV1RequestData):
             security_code: Optional[str] = None,
             market: Optional[TypeMarket] = None,
             industry_name: Optional[str] = None,
-            size: Optional[int] = 50,
+            size: Annotated[Optional[int], "返回数据量", False] = None,
             start_date: Optional[str] = None,
             end_date: Optional[str] = None,
             date: Optional[str] = None,
@@ -144,7 +144,7 @@ class StockIncome(APIDataV1RequestData):
             "filter": self.params_filter(),
             "sortColumns": "NOTICE_DATE,SECURITY_CODE",
             "sortTypes": "-1,-1",
-            "pageSize": self.size,
+            "pageSize": 50,
             "pageNumber": 1,
             "reportName": "RPT_DMSK_FN_INCOME",
         }
