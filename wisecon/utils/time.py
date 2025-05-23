@@ -8,6 +8,7 @@ __all__ = [
     "year2date",
     "is_quarter_end",
     "get_quarter_ends",
+    "days_between_dates",
 ]
 
 
@@ -105,3 +106,19 @@ def get_quarter_ends(start_date, end_date):
                 quarter_ends.append(q_end)
 
     return quarter_ends
+
+
+def days_between_dates(start: str, end: str) -> int:
+    """计算两个日期之间的天数
+
+    参数:
+    date1 (str): 第一个日期，格式为'YYYY-MM-DD'
+    date2 (str): 第二个日期，格式为'YYYY-MM-DD'
+
+    返回:
+    int: 两个日期之间的天数（绝对值）
+    """
+    d1 = datetime.strptime(start, "%Y-%m-%d")
+    d2 = datetime.strptime(end, "%Y-%m-%d")
+    delta = abs(d2 - d1)
+    return delta.days
