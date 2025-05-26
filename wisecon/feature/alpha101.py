@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
-from typing import Dict, Literal, Optional
+from scipy.stats import rankdata
+from typing import Dict, Union, Literal, Optional
+from wisecon.types.alpha import AlphaKlineData
 
 
 __all__ = [
@@ -13,7 +15,7 @@ class Alpha101:
 
     def __init__(
             self,
-            data: Optional[Dict[str, pd.DataFrame]] = None,
+            data: Optional[Union[AlphaKlineData, Dict[str, pd.DataFrame]]] = None,
             open: Optional[pd.DataFrame] = None,
             close: Optional[pd.DataFrame] = None,
             high: Optional[pd.DataFrame] = None,
@@ -25,6 +27,9 @@ class Alpha101:
             normalized: Optional[Literal["z-score", "min-max"]] = None,
     ):
         """"""
+        if isinstance(data, AlphaKlineData):
+            data = data.model_dump()
+
         self.open = data.get("open", open)
         self.close = data.get("close", close)
         self.high = data.get("high", high)
@@ -135,7 +140,8 @@ class Alpha101:
     ) -> pd.DataFrame:
         """"""
         return data.rolling(window=window).apply(
-            lambda x: pd.Series(x).rank(method=method).iloc[-1], raw=False
+            # lambda x: pd.Series(x).rank(method=method).iloc[-1], raw=False
+            lambda x: rankdata(x)[-1], raw=True
         )
 
     def ts_argmax(
@@ -246,19 +252,11 @@ class Alpha101:
         Returns:
 
         """
-        # 计算 log(volume) 的 2 日变化量
-        delta_log_volume = self.volume.apply(np.log).diff(2)
-
-        # 计算 (close - open) / open
-        price_change_ratio = (self.close - self.open) / self.open
-
-        # 对 delta_log_volume 和 price_change_ratio 进行排名
-        rank_delta_log_volume = self.rank(delta_log_volume)
-        rank_price_change_ratio = self.rank(price_change_ratio)
-
-        # 计算 6 日滚动相关性, 取负值
-        alpha_002 = -1 * rank_delta_log_volume.rolling(window=window, axis=0).corr(rank_price_change_ratio)
-        return alpha_002
+        return -1 * self.correlation(
+            self.rank(self.delta(self.log(self.volume), 2)),
+            self.rank((self.close - self.open) / self.open),
+            6
+        )
 
     def alpha_202(
             self,
@@ -313,23 +311,7 @@ class Alpha101:
 
         Returns:
         """
-        if self.normalized:
-            _open = self.normalized_data(self.open)
-            _volume = self.normalized_data(self.volume)
-        else:
-            _open = self.open
-            _volume = self.volume
-
-        # 计算开盘价和成交量的排名
-        rank_open = self.rank(_open)
-        rank_volume = self.rank(_volume)
-
-        # 计算 10 日滚动相关性
-        correlation = rank_open.rolling(window=window, axis=0).corr(rank_volume)
-
-        # 取负值
-        alpha_003 = -1 * correlation
-        return alpha_003
+        return -1 * self.correlation(self.rank(self.open), self.rank(self.volume), window=window)
 
     def alpha_203(
             self,
@@ -361,6 +343,23 @@ class Alpha101:
         return alpha_003
 
     def alpha_004(
+            self,
+            window: int = 9,
+    ):
+        """
+        (-1 * Ts_Rank(rank(low), 9))
+        Returns:
+        """
+        # 计算最低价的排名
+        rank_low = self.rank(self.low)
+
+        # 计算 9 日滚动时间序列排名
+        ts_rank_low = self.ts_rank(data=rank_low, window=window)
+
+        # 返回结果，取负值
+        return -1 * ts_rank_low
+
+    def alpha_204(
             self,
             window: int = 9,
     ):
@@ -814,7 +813,7 @@ class Alpha101:
         Returns:
 
         """
-        rank_stddev = rank(self.stddev(self.daily_returns, 2) / self.stddev(self.daily_returns, 5))
+        rank_stddev = self.rank(self.stddev(self.daily_returns, 2) / self.stddev(self.daily_returns, 5))
         # part_b = self.rank(self.delta(self.close, 1))
         return self.rank(2 - rank_stddev - self.rank(self.delta(self.close, 1)))
 
@@ -1502,7 +1501,7 @@ class Alpha101:
         """
         adv40 = self.sma(self.volume, 40)
         part_a = self.rank(self.close - self.ts_max(self.close, 5))
-        part_b = self.ts_rank(correlation(self.indneutralize(adv40, self.ind_mapping), self.low, 5), 3)
+        part_b = self.ts_rank(self.correlation(self.indneutralize(adv40, self.ind_mapping), self.low, 5), 3)
         return part_a.pow(part_b) * -1
 
     def alpha_091(self):
