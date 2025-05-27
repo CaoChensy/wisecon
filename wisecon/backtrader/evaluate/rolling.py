@@ -5,12 +5,12 @@ import statsmodels.api as sm
 
 
 __all__ = [
-    "alpha_beta_ols",
+    "rolling_alpha_beta_ols",
     "RollingPricesIndex",
 ]
 
 
-def alpha_beta_ols(
+def rolling_alpha_beta_ols(
         prices: pd.Series,
         benchmark: pd.Series,
         risk_free_rate: Optional[float] = 0.03,
@@ -114,8 +114,7 @@ def alpha_beta_ols(
 
     columns = ["alpha", "beta", "alpha_tstat", "beta_tstat", "r_squared"]
     df_alpha_beta = pd.DataFrame(index=returns.index, columns=columns, dtype=float)
-
-    for i in returns.index[window - 1:]:
+    for i in range(window - 1, len(returns)):
         window_returns = excess_returns.iloc[i - window + 1:i + 1]
         window_bench = excess_bench.iloc[i - window + 1:i + 1]
         cond_inf_na = np.isinf(window_returns) | np.isinf(window_bench) | np.isnan(window_returns) | np.isnan(window_bench)
@@ -123,11 +122,11 @@ def alpha_beta_ols(
         window_bench = window_bench[~cond_inf_na]
         X = sm.add_constant(window_bench)  # 添加截距项
         model = sm.OLS(window_returns, X).fit()
-        df_alpha_beta.loc[i, "alpha"] = model.params.iloc[0] * window  # Alpha
-        df_alpha_beta.loc[i, "beta"] = model.params.iloc[1]            # Beta
-        df_alpha_beta.loc[i, "alpha_tstat"] = model.tvalues.iloc[0]    # Alpha t-statistic
-        df_alpha_beta.loc[i, "beta_tstat"] = model.tvalues.iloc[1]     # Beta t-statistic
-        df_alpha_beta.loc[i, "r_squared"] = model.rsquared             # R-squared
+        df_alpha_beta.iloc[i, 0] = model.params.iloc[0] * window  # Alpha
+        df_alpha_beta.iloc[i, 1] = model.params.iloc[1]           # Beta
+        df_alpha_beta.iloc[i, 2] = model.tvalues.iloc[0]          # Alpha t-statistic
+        df_alpha_beta.iloc[i, 3] = model.tvalues.iloc[1]          # Beta t-statistic
+        df_alpha_beta.iloc[i, 4] = model.rsquared                 # R-squared
     return df_alpha_beta
 
 
@@ -180,7 +179,9 @@ class RollingPricesIndex:
     def daily_returns(self) -> pd.Series:
         """计算并缓存日收益率"""
         if self._daily_returns is None:
-            self._daily_returns = self.prices.pct_change()
+            returns = self.prices.pct_change()
+            # Replace infinite values with 0 while preserving NaN
+            self._daily_returns = returns.replace([np.inf, -np.inf], 0)
         return self._daily_returns
 
     def cumulative_return(self) -> pd.Series:
@@ -383,7 +384,7 @@ class RollingPricesIndex:
             })
 
         if self.ols_alpha and self.benchmark is not None and self.risk_free_rate is not None:
-            df_ols_alpha_beta = alpha_beta_ols(
+            df_ols_alpha_beta = rolling_alpha_beta_ols(
                 prices=self.prices, benchmark=self.benchmark,
                 risk_free_rate=self.risk_free_rate, window=self.window)
             for col in df_ols_alpha_beta.columns:

@@ -255,4 +255,5 @@ class PriceIndexEvaluator:
                 risk_free_rate=self.risk_free_rate
             )
             metrics.update(ols_results)
+        metrics = {key: float(round(val, 6)) for key, val in metrics.items()}
         return metrics
