@@ -1,15 +1,48 @@
 import time
-from datetime import datetime
-from typing import Tuple, Literal
+from datetime import datetime, timedelta
+from typing import Tuple, Literal, Optional
 
 
 __all__ = [
+    "get_now_date",
+    "date_add_subtract",
     "time2int",
     "year2date",
     "is_quarter_end",
     "get_quarter_ends",
     "days_between_dates",
 ]
+
+
+def get_now_date(format: Optional[str] = "%Y%m%d") -> str:
+    """
+    获取当前日期
+    Args:
+        format: 日期格式，默认为
+            - "%Y%m%d"
+            - "%Y-%m-%d"
+            - "%Y/%m/%d"
+
+    Returns:
+
+    """
+    return datetime.now().strftime(format)
+
+
+def date_add_subtract(date_str: str, days: int, date_format: str = "%Y-%m-%d") -> str:
+    """
+    日期加减
+    Args:
+        date_str:
+        days:
+        date_format:
+
+    Returns:
+
+    """
+    dt = datetime.strptime(date_str, date_format)
+    new_dt = dt + timedelta(days=days)
+    return new_dt.strftime(date_format)
 
 
 def time2int() -> str:
@@ -44,6 +77,7 @@ def is_quarter_end(date: datetime | str | None = None) -> bool:
     """判断给定日期是否为季度的最后一天
 
     Args:
+        date:
         date_input: 判断是否为季度的最后一天，支持以下输入格式：
             - None: 默认使用当前日期
             - datetime 对象

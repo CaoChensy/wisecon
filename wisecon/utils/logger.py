@@ -1,9 +1,10 @@
+import os
 try:
     from colorama import Fore, Style
 except ModuleNotFoundError:
     raise ModuleNotFoundError("pip install colorama")
 from typing import Dict, Union, Optional, Callable, Literal
-from logging import Logger
+from logging import Logger, FileHandler, Formatter, INFO
 
 
 __all__ = ["LoggerMixin"]
@@ -27,26 +28,82 @@ TypePrintColor = Literal['black', 'red', 'green', 'yellow', 'blue', 'cyan', 'mag
 
 class LoggerMixin:
     """"""
-    logger: Optional[Union[Logger, Callable]]
-    verbose: Optional[bool]
+    logger: Optional[Union[Logger, Callable]] = None
+    verbose: Optional[bool] = False
+    log_file: Optional[str] = None
+    logger_name: Optional[str] = None
+
+    def __del__(self):
+        """对象销毁时自动清理"""
+        self.close_handlers()
+
+    def _start_logging(self) -> None:
+        """初始化文件日志记录"""
+        if not self.log_file:
+            return  # 未指定日志文件时跳过
+
+        log_dir = os.path.dirname(self.log_file)
+        if log_dir and not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        # 创建文件处理器
+        file_handler = FileHandler(self.log_file)
+        formatter = Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+
+        # 配置日志记录器
+        if isinstance(self.logger, Logger):
+            # 如果已有logger，添加文件处理器
+            self.logger.addHandler(file_handler)
+        else:
+            # 否则创建新logger
+            logger_name = self.logger_name or __name__
+            self.logger = Logger(logger_name, level=INFO)
+            self.logger.addHandler(file_handler)
 
     def _logger(
             self,
             msg: str,
-            color: Optional[TypePrintColor] = None
+            color: Optional[TypePrintColor] = None,
+            level: Literal['info', 'debug', 'warning', 'error'] = 'info',
     ) -> None:
         """"""
-        if self.logger: self.logger.info(msg)
+        if self.logger:
+            logger_mapping = {
+                "info": self.logger.info,
+                "debug": self.logger.debug,
+                "warning": self.logger.warning,
+                "error": self.logger.error
+            }
+            logger_mapping.get(level, self.logger.info)(msg)
         if self.verbose:
             if color:
                 print(print_color_mapping.get(color) + msg + Style.RESET_ALL, flush=True)
             else:
                 print(msg, flush=True)
 
+    def info(self, msg: str, color: Optional[TypePrintColor] = "green"):
+        """"""
+        self._logger(msg=msg, color=color, level="info")
+
+    def debug(self, msg: str, color: Optional[TypePrintColor] = "blue"):
+        """"""
+        self._logger(msg=msg, color=color, level="debug")
+
+    def warning(self, msg: str, color: Optional[TypePrintColor] = "yellow"):
+        """"""
+        self._logger(msg=msg, color=color, level="warning")
+
+    def error(self, msg: str, color: Optional[TypePrintColor] = "red"):
+        """"""
+        self._logger(msg=msg, color=color, level="error")
+
     def _logger_base(self, msg: str, color: Optional[TypePrintColor] = None):
         """"""
-        if self.logger: self.logger.info(msg)
-        if self.verbose: print(print_color_mapping.get(color) + msg + Style.RESET_ALL, flush=True)
+        if self.logger:
+            self.logger.info(msg)
+        if self.verbose:
+            print(print_color_mapping.get(color) + msg + Style.RESET_ALL, flush=True)
 
     def _logger_agent_start(
             self,
@@ -172,3 +229,11 @@ class LoggerMixin:
             else:
                 print(msg)
             print()
+
+    def close_handlers(self):
+        """关闭所有日志处理器"""
+        if hasattr(self, 'logger') and isinstance(self.logger, Logger):
+            for handler in self.logger.handlers[:]:
+                self.logger.removeHandler(handler)
+                handler.close()
+            self.logger.handlers.clear()
