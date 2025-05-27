@@ -111,6 +111,8 @@ class KLine(APIStockKline):
                 return f"0.{self.security_code}"
         elif self.plate_code:
             return f"90.{self.plate_code}"
+        else:
+            raise ValueError("股票代码、市场代码、板块代码必须有一个")
 
     def params(self) -> Dict:
         """
