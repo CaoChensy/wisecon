@@ -407,11 +407,7 @@ class Alpha101:
         Returns:
 
         """
-        # 计算 10 日滚动相关性
-        correlation = self.open.rolling(window=10, axis=0).corr(self.volume)
-
-        # 返回结果，取负值
-        return -1 * correlation
+        return -1 * self.correlation(self.open, self.volume, window=10)
 
 
     def alpha_007(self):
@@ -420,19 +416,10 @@ class Alpha101:
         Returns:
 
         """
-        # 计算 20 日平均成交量
-        adv20 = self.volume.rolling(window=20).mean()
-        condition = adv20 < self.volume
-
-        # 计算收盘价的 7 日变化
-        delta_close = self.close.diff(7)
-        # 计算过去 60 天内收盘价变化的绝对值的排名
-        ts_rank_abs_delta_close = self.ts_rank(data=delta_close.abs(), window=60)
-
-        # 计算收盘价变化的符号
-        sign_delta_close = delta_close.apply(np.sign)
-
-        return (-1 * ts_rank_abs_delta_close * sign_delta_close).where(condition, -1.)
+        adv20 = self.sma(self.volume, 20)
+        part_a = adv20 < self.volume
+        part_b = -1 * self.ts_rank(self.delta(self.close, 7).abs(), 60) * self.sign(self.delta(self.close, 7))
+        return part_b.where(part_a, -1)
 
     def alpha_008(self):
         """
@@ -441,8 +428,8 @@ class Alpha101:
         Returns:
 
         """
-        rolling_open_sum = self.open.rolling(window=5).sum()
-        rolling_returns_sum = self.daily_returns.rolling(window=5).sum()
+        rolling_open_sum = self.ts_sum(self.open, 5)
+        rolling_returns_sum = self.ts_sum(self.daily_returns, 5)
         _product = rolling_open_sum * rolling_returns_sum
         _product_delay = self.delay(data=_product, period=10)
         return -1 * self.rank(data=(_product - _product_delay))
