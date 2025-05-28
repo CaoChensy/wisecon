@@ -7,7 +7,7 @@ class TestDividend(unittest.TestCase):
 
     def test_dividend(self):
         """"""
-        data = StockDividend(date="2024-09-30", size=5).load()
+        data = StockDividend(date="2025-03-31", size=5).load()
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
@@ -20,9 +20,9 @@ class TestStockBalance(unittest.TestCase):
     """"""
     def test_balance(self):
         """"""
-        data = StockBalance(date="2024-09-30", size=5).load()
+        data = StockBalance(date="2025-03-31", size=88, verbose=True).load()
         # pprint(data.to_dict(chinese_column=True)[0], indent=4)
-        data.show_columns()
+        # data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())
 
     def test_industry(self):
@@ -37,7 +37,8 @@ class TestStockBalance(unittest.TestCase):
 
 class TestEarnForcast(unittest.TestCase):
     def test_columns(self):
-        data = EarnForcast(date="2024-09-30", size=5).load()
+        data = EarnForcast(date="2024-09-30", size=5, verbose=True).load()
+        data = EarnForcast(date="2025-03-31", size=5, verbose=True).load()
         # pprint(data.to_dict(chinese_column=True)[0], indent=4)
         data.show_columns()
         print(data.to_frame(chinese_column=True).to_markdown())

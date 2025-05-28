@@ -27,3 +27,19 @@ class TestHolderStockAnalysis(unittest.TestCase):
             data = IndexStock(index_name=index_name, size=5).load()
             print(data.to_frame(chinese_column=True).to_markdown())
             print("=" * 100)
+
+
+class TestTotal(unittest.TestCase):
+    """"""
+
+    def test_list_all_stock(self):
+        """"""
+        list_stock = ListALLStock(size=10, market="沪深京A股")
+        print(list_stock.load().to_markdown(chinese_column=True))
+
+    def test_list_all_stock_not_size(self):
+        """"""
+        list_stock = ListALLStock(market="沪深京A股")
+        df_stock = list_stock.load().to_frame(chinese_column=True)
+        print(len(df_stock), df_stock.drop_duplicates().shape[0])
+

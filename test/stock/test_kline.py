@@ -13,7 +13,8 @@ class TestKLine(unittest.TestCase):
         """"""
         # data = KLine(security_code="300069", period="1D", size=5, verbose=True).load()
         # data = KLine(security_code="601939", period="1D", size=5, verbose=True).load()
-        data = KLine(security_code="002006", period="1D", size=5, verbose=True).load()
+        # data = KLine(security_code="002006", period="1D", size=5, verbose=True).load()
+        data = KLine(security_code="873132", period="1D", size=5, verbose=True).load()
         print(data.to_markdown(chinese_column=True))
 
     def test_plate(self):

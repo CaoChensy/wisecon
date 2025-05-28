@@ -45,15 +45,20 @@ class TestStockValuation(unittest.TestCase):
     """"""
     def test_valuation_date(self):
         """"""
-        data = StockValuation(date="2024-09-30").load()
-        print(data.to_frame(chinese_column=True).to_markdown())
+        data = StockValuation(date="2024-09-30", verbose=True).load()
+        print(data.to_frame().shape)
+        print(data.to_frame(chinese_column=True).head().to_markdown())
 
     def test_industry_code(self):
         """"""
         data = StockValuation(date="2024-09-30", industry_code="016023").load()
+        print(data.to_frame().shape)
         print(data.to_frame(chinese_column=True).to_markdown())
 
     def test_stock_code(self):
         """"""
-        data = StockValuation(start_data="2024-08-30", code="000059").load()
-        print(data.to_frame(chinese_column=True).to_markdown())
+        data = StockValuation(start_date="2024-08-30", security_code="000059", verbose=True)
+        print(data.params())
+        print(data.conditions)
+        # print(data.to_frame().shape)
+        # print(data.to_frame(chinese_column=True).to_markdown())
