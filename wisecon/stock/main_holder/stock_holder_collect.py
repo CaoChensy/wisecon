@@ -79,7 +79,7 @@ class StockHolderCollect(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date(date_name="REPORT_DATE")
+        self.filter_date(date_name="REPORT_DATE")
         if self.security_code:
             self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
         else:

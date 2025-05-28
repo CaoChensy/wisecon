@@ -130,8 +130,8 @@ class StockCashFlow(APIDataV1RequestData):
     def params_filter(self) -> str:
         """"""
         self.conditions.append('(SECURITY_TYPE_CODE in ("058001001","058001008"))')
-        self.filter_report_date()
-        self.filter_security_code()
+        self.filter_date(date_name="REPORT_DATE")
+        self.filter_code(self.security_code, code_name="SECURITY_CODE")
         if self.market:
             self.conditions.append(self.params_tread_market())
         if self.industry_name:

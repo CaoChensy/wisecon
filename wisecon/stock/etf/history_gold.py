@@ -88,7 +88,7 @@ class ETFGoldHistory(APIDataV1RequestData):
             "ETF黄金": '(INDICATOR_ID2="EMI00223865")(@NETPOSITION_TON<>"NULL")',
         }
         self.conditions.append(market_mapping[self.market])
-        self.filter_report_date(date_name="REPORT_DATE")
+        self.filter_date(date_name="REPORT_DATE")
         return "".join(self.conditions)
 
     def params(self) -> Dict:

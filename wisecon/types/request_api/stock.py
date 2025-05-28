@@ -259,7 +259,7 @@ class APIDataV1RequestData(BaseRequestData):
         except Exception as e:
             raise ValueError(f"Error in cleaning json data; response: {json_data}")
 
-    def filter_report_date(self, date_name: Optional[str] = "REPORT_DATE"):
+    def filter_date(self, date_name: Optional[str] = "REPORT_DATE",):
         """"""
         if hasattr(self, "start_date") and self.start_date:
             self.conditions.append(f"({date_name}>='{self.start_date}')")
@@ -268,16 +268,20 @@ class APIDataV1RequestData(BaseRequestData):
         if hasattr(self, "date") and self.date:
             self.conditions.append(f"({date_name}='{self.date}')")
 
-    def filter_security_code(self):
+    def filter_code(
+            self,
+            code_value: Optional[str] = None,
+            code_name: Optional[str] = "SECURITY_CODE",
+    ):
         """"""
-        if self.security_code:
-            self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
+        if code_value:
+            self.conditions.append(f'({code_name}="{code_value}")')
 
     def base_param(self, update: Dict) -> Dict:
         """"""
         params = {
             "columns": "ALL",
-            "pageNumber": "1",
+            "pageNumber": 1,
             "quoteColumns": "",
             "source": "WEB",
             "client": "WEB",
@@ -296,7 +300,7 @@ class APIDataV1RequestData(BaseRequestData):
         if self.size is None:
             self.size = self.metadata.response.get("count")
 
-        while len(data) < self.size and self.metadata.response.get("pages") > params["pageNumber"]:
+        while len(data) < self.size and int(self.metadata.response.get("pages")) > int(params["pageNumber"]):
             params["pageNumber"] += 1
             batch_data = self.load_response_json(params=params)
             batch_data = self.clean_json(batch_data)

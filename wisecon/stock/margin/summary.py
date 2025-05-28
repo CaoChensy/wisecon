@@ -107,7 +107,7 @@ class MarginTradingSummary(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date(date_name="DIM_DATE")
+        self.filter_date(date_name="DIM_DATE")
         market_mapping = {
             "沪市": "007", "深市": "001", "京市": "002"
         }

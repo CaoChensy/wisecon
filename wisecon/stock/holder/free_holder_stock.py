@@ -107,7 +107,7 @@ class FreeHolderStock(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date(date_name="END_DATE")
+        self.filter_date(date_name="END_DATE")
         if self.holder_type:
             self.conditions.append(f'(HOLDER_TYPE="{self.holder_type}")')
         if self.holder_change:

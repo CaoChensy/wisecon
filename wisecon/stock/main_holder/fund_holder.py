@@ -75,7 +75,7 @@ class FundHolderList(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date(date_name="REPORT_DATE")
+        self.filter_date(date_name="REPORT_DATE")
         if self.holder_code:
             self.conditions.append(f'(HOLDER_CODE="{self.holder_code}")')
         else:

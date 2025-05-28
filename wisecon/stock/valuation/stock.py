@@ -20,7 +20,7 @@ class StockValuationMapping(BaseMapping):
         "BOARD_NAME": "行业",
         "ORIG_BOARD_CODE": "行业编号",
         "TOTAL_MARKET_CAP": "总市值",
-        "NOTsizeED_MARKETCAP_A": "无限制市值",
+        "NOTLIMITED_MARKETCAP_A": "无限制市值",
         "CLOSE_PRICE": "最新价",
         "CHANGE_RATE": "涨跌幅(%)",
         "TOTAL_SHARES": "总股份数",
@@ -45,7 +45,7 @@ class StockValuation(APIDataV1RequestData):
             date: Optional[str] = None,
             start_date: Optional[str] = None,
             end_date: Optional[str] = None,
-            size: Optional[int] = 50,
+            size: Optional[int] = None,
             verbose: Optional[bool] = False,
             logger: Optional[Callable] = None,
             **kwargs: Any
@@ -95,7 +95,7 @@ class StockValuation(APIDataV1RequestData):
         """
         :return:
         """
-        self.filter_report_date(date_name="TRADE_DATE")
+        self.filter_date(date_name="TRADE_DATE")
         if self.industry_code:
             self.validate_code(code=self.industry_code, length=6)
             self.conditions.append(f"(BOARD_CODE=\"{self.industry_code}\")")
@@ -109,7 +109,7 @@ class StockValuation(APIDataV1RequestData):
         :return:
         """
         params = {
-            "pageSize": self.size,
+            "pageSize": 50,
             "reportName": "RPT_VALUEANALYSIS_DET",
             "sortColumns": "TRADE_DATE,SECURITY_CODE",
             "sortTypes": "-1,1",

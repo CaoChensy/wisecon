@@ -99,8 +99,8 @@ class EarnForcast(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date()
-        self.filter_security_code()
+        self.filter_date(date_name="REPORT_DATE")
+        self.filter_code(self.security_code, code_name="SECURITY_CODE")
         if self.forcast_state:
             self.conditions.append(f'(FORECAST_STATE="{self.forcast_state}")')
         if self.predict_finance:

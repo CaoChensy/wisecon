@@ -92,7 +92,7 @@ class IndustryValuation(APIDataV1RequestData):
 
     def params_filter(self) -> str:
         """"""
-        self.filter_report_date(date_name="TRADE_DATE")
+        self.filter_date(date_name="TRADE_DATE")
         self.params_industry_code()
         return "".join(self.conditions)
 

@@ -124,7 +124,7 @@ class MarginTradingStock(APIDataV1RequestData):
             "创业板": '"069001002002"',
             "京市A股": '"069001017"',
         }
-        self.filter_report_date(date_name="DATE")
+        self.filter_date(date_name="DATE")
         if self.market:
             self.conditions.append(f'(TRADE_MARKET_CODE in ({market_mapping[self.market]}))')
         return "".join(self.conditions)
