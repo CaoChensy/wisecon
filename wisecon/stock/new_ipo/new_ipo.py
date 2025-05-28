@@ -329,7 +329,7 @@ class NewIPOList(APIDataV1RequestData):
         if self.market not in ["可转债", "REITs"]:
             self.filter_date(date_name="APPLY_DATE")
         self.params_tread_market()
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""

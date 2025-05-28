@@ -94,7 +94,7 @@ class IndustryValuation(APIDataV1RequestData):
         """"""
         self.filter_date(date_name="TRADE_DATE")
         self.params_industry_code()
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

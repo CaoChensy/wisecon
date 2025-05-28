@@ -134,7 +134,7 @@ class StockIncome(APIDataV1RequestData):
             self.conditions.append(self.params_tread_market())
         if self.industry_name:
             self.conditions.append(f'(INDUSTRY_NAME="{self.industry_name}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

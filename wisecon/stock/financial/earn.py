@@ -112,7 +112,7 @@ class Earn(APIDataV1RequestData):
         if self.industry_name:
             self.conditions.append(f'(PUBLISHNAME="{self.industry_name}")')
 
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

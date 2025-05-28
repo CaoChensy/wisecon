@@ -97,7 +97,7 @@ class HolderStockAnalysis(APIDataV1RequestData):
             self.conditions.append(f'(HOLDNUM_CHANGE_TYPE="{self.params_hold_change()}")')
         if self.holder_name:
             self.conditions.append(f'(HOLDER_NAME+like+"%{self.holder_name}%")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

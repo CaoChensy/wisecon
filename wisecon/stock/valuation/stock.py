@@ -102,7 +102,7 @@ class StockValuation(APIDataV1RequestData):
         if self.security_code:
             self.validate_code(code=self.security_code, length=6)
             self.conditions.append(f"(SECURITY_CODE=\"{self.security_code}\")")
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

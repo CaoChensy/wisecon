@@ -80,7 +80,7 @@ class FundHolderList(APIDataV1RequestData):
             self.conditions.append(f'(HOLDER_CODE="{self.holder_code}")')
         else:
             raise
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

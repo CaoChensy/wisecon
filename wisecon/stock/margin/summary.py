@@ -113,7 +113,7 @@ class MarginTradingSummary(APIDataV1RequestData):
         }
         if self.market in market_mapping:
             self.conditions.append(f'(scdm="{market_mapping[self.market]}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""

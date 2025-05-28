@@ -84,7 +84,7 @@ class StockHolderCollect(APIDataV1RequestData):
             self.conditions.append(f'(SECURITY_CODE="{self.security_code}")')
         else:
             raise
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

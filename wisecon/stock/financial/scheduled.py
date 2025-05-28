@@ -88,7 +88,7 @@ class ScheduledDisclosure(APIDataV1RequestData):
         """
         self.filter_date(date_name="REPORT_DATE")
         self.filter_code(self.security_code, code_name="SECURITY_CODE")
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

@@ -115,7 +115,7 @@ class FreeHolder(APIDataV1RequestData):
             self.conditions.append(f'(HOLDER_NAME+like+"%{self.holder_name}%")')
         if self.holder_change:
             self.conditions.append(f'(HOLDNUM_CHANGE_NAME="{self.holder_change}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

@@ -90,7 +90,7 @@ class MarketValuation(APIDataV1RequestData):
         """"""
         self.filter_date(date_name="TRADE_DATE")
         self.params_market()
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""

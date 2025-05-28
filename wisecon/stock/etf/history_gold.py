@@ -89,7 +89,7 @@ class ETFGoldHistory(APIDataV1RequestData):
         }
         self.conditions.append(market_mapping[self.market])
         self.filter_date(date_name="REPORT_DATE")
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""

@@ -105,7 +105,7 @@ class EarnForcast(APIDataV1RequestData):
             self.conditions.append(f'(FORECAST_STATE="{self.forcast_state}")')
         if self.predict_finance:
             self.conditions.append(f'(PREDICT_FINANCE_CODE="{self.mapping.predict_finance_mapping[self.predict_finance]}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

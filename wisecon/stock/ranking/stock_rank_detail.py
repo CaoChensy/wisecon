@@ -98,7 +98,7 @@ class StockRankDetail(APIDataV1RequestData):
         """"""
         self.params_market()
         self.filter_date(date_name="TRADE_DATE")
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

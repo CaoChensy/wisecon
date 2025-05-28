@@ -69,7 +69,7 @@ class DepartmentStatistic(APIDataV1RequestData):
     def params_filter(self) -> str:
         """"""
         self.params_statistics_cycle()
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

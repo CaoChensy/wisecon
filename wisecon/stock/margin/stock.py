@@ -127,7 +127,7 @@ class MarginTradingStock(APIDataV1RequestData):
         self.filter_date(date_name="DATE")
         if self.market:
             self.conditions.append(f'(TRADE_MARKET_CODE in ({market_mapping[self.market]}))')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params_sort_column(self):
         """"""

@@ -77,7 +77,7 @@ class ResearcherStock(APIAnalystInvest):
     def params_filter(self) -> str:
         """"""
         self.conditions.append(f'(ANALYST_CODE="{self.analyst_code}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params_report_name(self) -> str:
         """"""

@@ -72,7 +72,7 @@ class DepartmentActive(APIDataV1RequestData):
     def params_filter(self) -> str:
         """"""
         self.filter_date(date_name="ONLIST_DATE")
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

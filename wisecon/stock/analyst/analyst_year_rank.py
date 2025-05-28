@@ -101,7 +101,7 @@ class AnalystYearRank(APIAnalystInvest):
             raise ValueError("year is required.")
         if self.industry_code:
             self.conditions.append(f'(INDUSTRY_CODE="{self.industry_code}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""

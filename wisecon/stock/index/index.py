@@ -76,7 +76,7 @@ class IndexStock(APIDataV1RequestData):
     def params_filter(self) -> str:
         """"""
         self.conditions.append(f'(TYPE="{self.params_index_name()}")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """

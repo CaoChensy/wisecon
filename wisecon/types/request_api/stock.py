@@ -13,6 +13,7 @@ from lumix.structured import ParseDict
 __all__ = [
     "APISearch",
     "APIConceptionBK",
+    "APIConceptionBKV2",
     "APICListRequestData",
     "APIStockFFlowKLineRequestData",
     "APIStockFFlowDayLineRequestData",
@@ -65,6 +66,12 @@ class APIConceptionBK(BaseRequestData):
         """"""
         return "https://reportapi.eastmoney.com/report/bk"
 
+
+class APIConceptionBKV2(BaseRequestData):
+    """"""
+    def base_url(self) -> str:
+        """"""
+        return "https://data.eastmoney.com/dataapi/bkzj/getbkzj"
 
 class APICListRequestData(BaseRequestData):
     """"""

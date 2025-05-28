@@ -91,7 +91,7 @@ class MarginTradingPlate(APIDataV1RequestData):
         self.conditions.append(f'(BOARD_TYPE_CODE="{self.params_plate_code()}")')
         if self.cycle > 1:
             self.conditions.append(f'(INTERVAL_TYPE="{self.cycle}日")')
-        return "".join(self.conditions)
+        return "".join(list(set(self.conditions)))
 
     def params(self) -> Dict:
         """"""
