@@ -409,7 +409,6 @@ class Alpha101:
         """
         return -1 * self.correlation(self.open, self.volume, window=10)
 
-
     def alpha_007(self):
         """
         ((adv20 < volume) ? ((-1 * ts_rank(abs(delta(close, 7)), 60)) * sign(delta(close, 7))) : (-1* 1))
