@@ -68,7 +68,7 @@ class KLine(APIStockKline):
             end_date: 截止日期
             size: 返回数据条数
             period: K线周期`["1m", "5m", "15m", "30m", "60m", "1D", "1W", "1M"]`
-            adjust: 复权类型`["前复权", "后赋权", "不赋权"]`
+            adjust: 复权类型`["前复权", "后复权", "不复权"]`
             verbose: 是否打印日志
             logger: 日志对象
             **kwargs: 其他参数
@@ -89,7 +89,7 @@ class KLine(APIStockKline):
 
     def params_adjust_type(self) -> int:
         """"""
-        adjust_mapping = {"前复权": 1, "后赋权": 2, "不赋权": 0}
+        adjust_mapping = {"前复权": 1, "后复权": 2, "不复权": 0}
         return adjust_mapping[self.adjust]
 
     def params_period(self) -> str:
