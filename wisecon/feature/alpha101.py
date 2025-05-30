@@ -820,7 +820,7 @@ class Alpha101(Operator):
         part_c = self.rank(self.vwap - self.delay(self.vwap, 5))
         return part_a * part_b - part_c
 
-    def alpha_048(self, ind_mapping):
+    def alpha_048(self):
         """
         Alpha#48:
         (
@@ -840,7 +840,7 @@ class Alpha101(Operator):
         """
         part_a = (self.correlation(self.delta(self.close, 1), self.delta(self.delay(self.close, 1), 1), 250) * self.delta(self.close, 1)) / self.close
         part_b = self.ts_sum((self.delta(self.close, 1) / self.delay(self.close, 1)).pow(2), 250)
-        return self.indneutralize(part_a, ind_mapping) / part_b
+        return self.indneutralize(part_a, self.ind_mapping) / part_b
 
     def alpha_049(self):
         """
@@ -1423,7 +1423,7 @@ class Alpha101(Operator):
         part_b = self.ts_rank(self.decay_linear(self.ts_argmax(self.correlation(self.ts_rank(self.close, 7), self.ts_rank(adv60, 4), 4), 13), 14), 13)
         return -1 * part_a.where(part_a > part_b, part_b)
 
-    def alpha_097(self, ind_mapping):
+    def alpha_097(self):
         """
         # Alpha#97
         (
@@ -1460,7 +1460,7 @@ class Alpha101(Operator):
         """
         adv60 = self.sma(self.volume, 60)
         # rank(decay_linear(delta(IndNeutralize((low*0.721 + vwap*0.279), industry), 3), 20))
-        part_a = self.rank(self.decay_linear(self.delta(self.indneutralize((self.low * 0.721 + self.vwap * (1 - 0.721)), ind_mapping), 3), 20))
+        part_a = self.rank(self.decay_linear(self.delta(self.indneutralize((self.low * 0.721 + self.vwap * (1 - 0.721)), self.ind_mapping), 3), 20))
         part_b = self.ts_rank(self.decay_linear(self.ts_rank(self.correlation(self.ts_rank(self.low, 8), self.ts_rank(adv60, 17), 5), 19), 16), 7)
         return -1 * (part_a - part_b)
 
@@ -1490,7 +1490,7 @@ class Alpha101(Operator):
         part_b = self.rank(self.correlation(self.low, self.volume, 6))
         return (part_a < part_b) * -1
 
-    def alpha_100(self, ind_mapping: Dict):
+    def alpha_100(self):
         """
         # Alpha#100
         (0 - (
@@ -1526,8 +1526,8 @@ class Alpha101(Operator):
         adv20 = self.sma(self.volume, 20)
         part_a = self.rank(((2 * self.close - self.low - self.high) / (self.high - self.low)) * self.volume)
         part_b = self.correlation(self.close, self.rank(adv20), 5) - self.rank(self.ts_argmin(self.close, 30))
-        part_c = 1.5 * self.scale(self.indneutralize(self.indneutralize(part_a, ind_mapping), ind_mapping))
-        part_d = self.scale(self.indneutralize(part_b, ind_mapping))
+        part_c = 1.5 * self.scale(self.indneutralize(self.indneutralize(part_a, self.ind_mapping), self.ind_mapping))
+        part_d = self.scale(self.indneutralize(part_b, self.ind_mapping))
         return (part_c - part_d) * (self.volume / adv20)
 
     def alpha_101(self):

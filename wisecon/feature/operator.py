@@ -13,7 +13,6 @@ class Operator:
     """"""
     normalized: Optional[Literal["z-score", "min-max"]]
 
-
     def normalized_data(self, data: pd.DataFrame,) -> pd.DataFrame:
         """"""
         if self.normalized == "z-score":
@@ -147,13 +146,13 @@ class Operator:
         long.columns = ["time", "code", "value"]
         long = long.merge(
             stock_industry, left_on="code", right_index=True, how="left"
-        ).drop(columns=["index"])
+        )
         long.dropna(subset=["value", "industry"], inplace=True)
 
         def zscore(group):
             return (group - group.mean()) / group.std() if len(group) > 1 else pd.Series([0] * len(group), index=group.index)
 
         long['alpha'] = long.groupby(['time', 'industry'])['value'].transform(zscore)
-        neutralized = long.pivot(index='date', columns='code', values='alpha')
+        neutralized = long.pivot(index='time', columns='code', values='alpha')
         neutralized = neutralized.reindex(columns=data.columns, index=data.index)
         return neutralized
