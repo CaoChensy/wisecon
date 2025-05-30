@@ -38,7 +38,7 @@ class KLine(APIStockKline):
             end_date: Annotated[Optional[str], "开始时间", False] = "20500101",
             size: Annotated[Optional[int], "返回数据条数", False] = 120,
             period: Annotated[Literal["1m", "5m", "15m", "30m", "60m", "1D", "1W", "1M"], "", False] = "5m",
-            adjust: Annotated[Literal["前复权", "后赋权", "不赋权"], "", False] = "前复权",
+            adjust: Annotated[Literal["前复权", "后复权", "不复权"], "", False] = "前复权",
             verbose: Annotated[Optional[bool], "是否显示日志", False] = False,
             logger: Annotated[Optional[Callable], "日志对象", False] = None,
             **kwargs: Annotated[Any, "其他参数", False]
